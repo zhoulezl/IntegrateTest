@@ -1,0 +1,110 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1718846432971,778,checkLogin,200,,登录门禁-生产 1-1,text,true,,709,192,1,2,https://usercenter.telecom.openmind.cn/oneid/captcha/checkLogin?community=openeuler&account=18781761229,766,0,714
+1718846433757,376,login,200,,登录门禁-生产 1-1,text,true,,2431,1335,1,2,https://usercenter.telecom.openmind.cn/oneid/login,375,0,0
+1718846434190,413,auth,200,,登录门禁-生产 1-1,text,true,,2043,2409,1,2,https://usercenter.telecom.openmind.cn/oneid/oidc/auth?client_id=658a392ad997cd15f2612a60&response_type=code&scope=openid+profile+email+phone+address+username+id_token&state=196699bc10364f5885a065ea45f3e911&redirect_uri=https://telecom.openmind.cn/,412,0,0
+1718846435768,130,创建模型-公仓,401,Unauthorized,冒烟测试 2-1,text,false,,786,458,1,2,https://telecom.openmind.cn/server/model,130,0,98
+1718846435899,33,获取用户模型列表,401,Unauthorized,冒烟测试 2-1,text,false,Test failed: text expected to contain /模型别名/,786,303,1,2,https://telecom.openmind.cn/server/model/caiwei?count=false&sort_by=most_likes&page_num=1&count_per_page=8,33,0,0
+1718846434605,3678,session-POST,200,OK,登录门禁-生产 1-1,text,true,,1582,282,1,2,https://telecom.openmind.cn/server/session,3678,0,3088
+1718846438298,3,调试取样器,200,OK,登录门禁-生产 1-1,text,true,,3164,0,1,2,null,0,0,0
+1718846438301,37,checkLogin,200,,登录门禁-生产 1-1,text,true,,709,192,1,2,https://usercenter.telecom.openmind.cn/oneid/captcha/checkLogin?community=openeuler&account=13280119798,37,0,0
+1718846438339,497,login,200,,登录门禁-生产 1-1,text,true,,2453,1335,1,2,https://usercenter.telecom.openmind.cn/oneid/login,496,0,0
+1718846438942,33,修改模型为私仓,404,Not Found,冒烟测试 2-1,text,false,,278,399,1,2,https://telecom.openmind.cn/server/model/,33,0,0
+1718846438976,63,获取用户模型详情,200,OK,冒烟测试 2-1,text,false,Expected to find an object with property ['data'] in path $ but found 'java.lang.String'. This is not a json object according to the JsonProvider: 'com.jayway.jsonpath.spi.json.JsonSmartJsonProvider'.,1896,629,1,2,https://telecom.openmind.cn/web/v1/model/caiwei,31,0,0
+1718846438976,31,获取用户模型详情-0,301,Moved Permanently,冒烟测试 2-1,text,true,,699,315,1,2,https://telecom.openmind.cn/server/model/caiwei/,31,0,0
+1718846439008,31,获取用户模型详情-1,200,OK,冒烟测试 2-1,text,true,,1197,314,1,2,https://telecom.openmind.cn/web/v1/model/caiwei,31,0,0
+1718846438838,392,auth,200,,登录门禁-生产 1-1,text,true,,2051,2417,1,2,https://usercenter.telecom.openmind.cn/oneid/oidc/auth?client_id=658a392ad997cd15f2612a60&response_type=code&scope=openid+profile+email+phone+address+username+id_token&state=196699bc10364f5885a065ea45f3e911&redirect_uri=https://telecom.openmind.cn/,392,0,0
+1718846439231,249,session-POST,200,OK,登录门禁-生产 1-1,text,true,,1586,282,1,2,https://telecom.openmind.cn/server/session,249,0,0
+1718846439481,0,调试取样器,200,OK,登录门禁-生产 1-1,text,true,,3312,0,1,2,null,0,0,0
+1718846442044,32,上传文件（app.py和requirements.txt）,404,Not Found,冒烟测试 2-1,text,false,,179,920,1,1,https://telecom.openmind.cn/coderepo/web/v1/file/caiwei//commit,31,0,0
+1718846442076,67,获取文件列表,200,OK,冒烟测试 2-1,text,false,Test failed: text expected to contain /app.py/,1912,654,1,1,https://telecom.openmind.cn/web/v1/file/caiwei?ref=main,32,0,0
+1718846442076,32,获取文件列表-0,301,Moved Permanently,冒烟测试 2-1,text,true,,715,332,1,1,https://telecom.openmind.cn/coderepo/web/v1/file/caiwei/?ref=main,32,0,0
+1718846442108,35,获取文件列表-1,200,OK,冒烟测试 2-1,text,true,,1197,322,1,1,https://telecom.openmind.cn/web/v1/file/caiwei?ref=main,35,0,0
+1718846442144,45,获取文件信息和属性 (获取app.py文件信息和属性),404,Not Found,冒烟测试 2-1,text,false,Test failed: code expected to contain /200/,631,348,1,1,https://telecom.openmind.cn/coderepo/web/v1/file/caiwei//info?ref=main&path=app.py,45,0,0
+1718846442190,45,获取文件内容 (获取requirements.txt文件内容成功),404,Not Found,冒烟测试 2-1,text,false,Test failed: code expected to contain /200/,631,361,1,1,https://telecom.openmind.cn/coderepo/web/v1/file/caiwei//content?ref=main&path=requirements.txt,45,0,0
+1718846442236,31,获取文件流 (获取requirements文件),404,Not Found,冒烟测试 2-1,text,false,Test failed: code expected to contain /200/,278,350,1,1,https://telecom.openmind.cn/coderepo/web/v1/file/caiwei//main/media/requirements.txt,31,0,0
+1718846443270,35,删除模型,404,Not Found,冒烟测试 2-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]04
+
+****** comparison: [[[2]]]04
+
+/",278,330,1,1,https://telecom.openmind.cn/server/model/,35,0,0
+1718846443305,1,调试取样器,200,OK,冒烟测试 2-1,text,true,,1233,0,1,1,null,0,0,0
+1718846446307,657,创建空间-公仓,201,Created,冒烟测试 2-1,text,true,,958,668,1,1,https://telecom.openmind.cn/server/space,657,0,0
+1718846446965,35,获取用户空间列表,200,OK,冒烟测试 2-1,text,true,,2027,373,1,1,https://telecom.openmind.cn/server/space/caiwei?count=false&sort_by=most_likes&page_num=1&count_per_page=8,35,0,0
+1718846450010,191,更新空间为私仓,202,Accepted,冒烟测试 2-1,text,true,,619,365,1,1,https://telecom.openmind.cn/server/space/8986,191,0,0
+1718846450202,35,获取用户空间详情,200,OK,冒烟测试 2-1,text,true,,1596,327,1,1,https://telecom.openmind.cn/server/space/caiwei/space_524456,35,0,0
+1718846453239,150,创建变量,201,Created,冒烟测试 2-1,text,true,,964,410,1,1,https://telecom.openmind.cn/server/space/8986/variable,150,0,0
+1718846453389,35,获取变量列表,200,OK,冒烟测试 2-1,text,true,,1092,343,1,1,https://telecom.openmind.cn/server/space/caiwei/space_524456/variable-secret,35,0,0
+1718846456425,44,修改变量的值,202,Accepted,冒烟测试 2-1,text,true,,619,376,1,1,https://telecom.openmind.cn/server/space/8986/variable/1431,44,0,0
+1718846456470,35,获取变量列表,200,OK,冒烟测试 2-1,text,true,,1089,343,1,1,https://telecom.openmind.cn/server/space/caiwei/space_524456/variable-secret,35,0,0
+1718846459506,43,删除变量,204,No Content,冒烟测试 2-1,text,true,,907,348,1,1,https://telecom.openmind.cn/server/space/8986/variable/1431,0,0,0
+1718846462550,42,创建机密变量,201,Created,冒烟测试 2-1,text,true,,964,404,1,1,https://telecom.openmind.cn/server/space/8986/secret,42,0,0
+1718846462595,35,获取机密变量列表,200,OK,冒烟测试 2-1,text,true,,1073,343,1,1,https://telecom.openmind.cn/server/space/caiwei/space_524456/variable-secret,35,0,0
+1718846465631,42,修改变量的值,202,Accepted,冒烟测试 2-1,text,true,,619,372,1,1,https://telecom.openmind.cn/server/space/8986/secret/1432,42,0,0
+1718846468676,42,删除变量,204,No Content,冒烟测试 2-1,text,true,,907,346,1,1,https://telecom.openmind.cn/server/space/8986/secret/1432,0,0,0
+1718846471719,421,上传文件（app.py和requirements.txt）,201,Created,冒烟测试 2-1,text,true,,1156,945,1,1,https://telecom.openmind.cn/coderepo/web/v1/file/caiwei/space_524456/commit,421,0,0
+1718846472141,226,获取文件列表,200,OK,冒烟测试 2-1,text,true,,2778,344,1,1,https://telecom.openmind.cn/coderepo/web/v1/file/caiwei/space_524456?ref=main,226,0,0
+1718846472368,33,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,997,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,33,0,0
+1718846482531,51,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,960,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,51,0,0
+1718846492590,37,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,960,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,36,0,0
+1718846502633,95,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,960,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,95,0,58
+1718846512735,38,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,960,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,38,0,0
+1718846522780,35,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,960,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,35,0,0
+1718846532822,35,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,960,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,35,0,0
+1718846542863,34,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,1010,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,34,0,0
+1718846542900,33,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,1010,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,33,0,0
+1718846542993,157,重启空间,201,Created,冒烟测试 2-1,text,true,,923,359,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456/restart,157,0,0
+1718846543151,33,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,1013,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,33,0,0
+1718846553188,35,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,1013,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,35,0,0
+1718846563229,115,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,1013,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,115,0,60
+1718846573349,40,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,1010,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,40,0,0
+1718846573392,34,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,1010,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,34,0,0
+1718846576427,184,暂停空间,201,Created,冒烟测试 2-1,text,true,,923,357,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456/pause,184,0,0
+1718846576612,34,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,1009,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,34,0,0
+1718846576649,34,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,1009,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,34,0,0
+1718846576684,147,恢复空间,201,Created,冒烟测试 2-1,text,true,,923,358,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456/resume,147,0,0
+1718846576832,34,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,1011,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,34,0,0
+1718846586870,38,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,1011,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,38,0,0
+1718846586911,34,获取应用程序信息,200,OK,冒烟测试 2-1,text,true,,1011,331,1,1,https://telecom.openmind.cn/server/space-app/caiwei/space_524456,34,0,0
+1718846587947,270,删除空间,204,No Content,冒烟测试 2-1,text,true,,907,334,1,1,https://telecom.openmind.cn/server/space/8986,0,0,0
+1718846588217,0,调试取样器,200,OK,冒烟测试 2-1,text,true,,1323,0,1,1,null,0,0,0
+1718846591219,240,创建组织,201,Created,冒烟测试 2-1,text,true,,1319,466,1,1,https://telecom.openmind.cn/server/organization,240,0,0
+1718846591459,35,获取组织列表,200,OK,冒烟测试 2-1,text,true,,1694,314,1,1,https://telecom.openmind.cn/server/organization,35,0,0
+1718846594496,38,更新组织信息,202,Accepted,冒烟测试 2-1,text,true,,978,382,1,1,https://telecom.openmind.cn/server/organization/org_344863,38,0,0
+1718846594535,33,获取组织详情,200,OK,冒烟测试 2-1,text,true,,1317,325,1,1,https://telecom.openmind.cn/server/organization/org_344863,33,0,0
+1718846595569,41,邀请成员为编辑权限,201,Created,冒烟测试 2-1,text,true,,1297,414,1,1,https://telecom.openmind.cn/server/invite,41,0,0
+1718846595611,35,邀请名单,200,OK,冒烟测试 2-1,text,true,,1294,354,1,1,https://telecom.openmind.cn/server/invite?org_name=org_344863&invitee=&inviter=&status=,35,0,0
+1718846596648,137,接受组织邀请,202,Accepted,冒烟测试 2-1,text,true,,972,384,1,1,https://telecom.openmind.cn/server/invite,137,0,0
+1718846596785,35,组织成员列表,200,OK,冒烟测试 2-1,text,true,,1475,332,1,1,https://telecom.openmind.cn/server/organization/org_344863/member,35,0,0
+1718846597821,157,修改成员权限为只读权限,202,Accepted,冒烟测试 2-1,text,true,,619,405,1,1,https://telecom.openmind.cn/server/organization/org_344863/member,157,0,0
+1718846597979,34,组织成员列表,200,OK,冒烟测试 2-1,text,true,,1474,332,1,1,https://telecom.openmind.cn/server/organization/org_344863/member,34,0,0
+1718846599015,220,成员离开组织,204,No Content,冒烟测试 2-1,text,true,,907,345,1,1,https://telecom.openmind.cn/server/organization/org_344863,0,0,0
+1718846599235,34,组织成员列表,200,OK,冒烟测试 2-1,text,true,,1209,332,1,1,https://telecom.openmind.cn/server/organization/org_344863/member,34,0,0
+1718846600271,41,邀请成员,201,Created,冒烟测试 2-1,text,true,,1297,414,1,1,https://telecom.openmind.cn/server/invite,41,0,0
+1718846601314,133,接受组织邀请,202,Accepted,冒烟测试 2-1,text,true,,972,384,1,1,https://telecom.openmind.cn/server/invite,133,0,0
+1718846604449,120,删除成员,204,No Content,冒烟测试 2-1,text,true,,907,387,1,1,https://telecom.openmind.cn/server/organization/org_344863/member,0,0,0
+1718846604569,34,组织成员列表,200,OK,冒烟测试 2-1,text,true,,1209,332,1,1,https://telecom.openmind.cn/server/organization/org_344863/member,34,0,0
+1718846607605,293,删除组织,204,No Content,冒烟测试 2-1,text,true,,907,347,1,1,https://telecom.openmind.cn/server/organization/org_344863,0,0,0
+1718846607898,1,调试取样器,200,OK,冒烟测试 2-1,text,true,,1323,0,1,1,null,0,0,0
+1718846610900,429,创建数据集-公仓,201,Created,冒烟测试 2-1,text,true,,958,511,1,1,https://telecom.openmind.cn/server/dataset,429,0,0
+1718846611332,34,获取用户数据集列表,200,OK,冒烟测试 2-1,text,true,,1540,375,1,1,https://telecom.openmind.cn/server/dataset/caiwei?count=false&sort_by=most_likes&page_num=1&count_per_page=8,34,0,0
+1718846614369,184,修改数据集为私仓,202,Accepted,冒烟测试 2-1,text,true,,619,405,1,1,https://telecom.openmind.cn/server/dataset/8987,184,0,0
+1718846614553,35,获取用户数据集详情,200,OK,冒烟测试 2-1,text,true,,1269,331,1,1,https://telecom.openmind.cn/server/dataset/caiwei/dataset_572495,35,0,0
+1718846617590,423,上传文件（app.py和requirements.txt）,201,Created,冒烟测试 2-1,text,true,,1160,935,1,1,https://telecom.openmind.cn/coderepo/web/v1/file/caiwei/dataset_572495/commit,423,0,0
+1718846618014,124,获取文件列表,200,OK,冒烟测试 2-1,text,true,,2786,346,1,1,https://telecom.openmind.cn/coderepo/web/v1/file/caiwei/dataset_572495?ref=main,124,0,0
+1718846618139,89,获取文件信息和属性 (获取app.py文件信息和属性),200,OK,冒烟测试 2-1,text,true,,1424,363,1,1,https://telecom.openmind.cn/coderepo/web/v1/file/caiwei/dataset_572495/info?ref=main&path=app.py,89,0,0
+1718846618229,123,获取文件内容 (获取requirements.txt文件内容成功),200,OK,冒烟测试 2-1,text,true,,1068,376,1,1,https://telecom.openmind.cn/coderepo/web/v1/file/caiwei/dataset_572495/content?ref=main&path=requirements.txt,123,0,0
+1718846618353,111,获取文件流 (获取requirements文件),200,OK,冒烟测试 2-1,text,true,,980,365,1,1,https://telecom.openmind.cn/coderepo/web/v1/file/caiwei/dataset_572495/main/media/requirements.txt,111,0,0
+1718846619471,281,删除数据集,204,No Content,冒烟测试 2-1,text,true,,907,336,1,1,https://telecom.openmind.cn/server/dataset/8987,0,0,0
+1718846619753,0,调试取样器,200,OK,冒烟测试 2-1,text,true,,1367,0,1,1,null,0,0,0
+1718846622755,35,修改用户信息,202,Accepted,冒烟测试 2-1,text,true,,886,381,1,1,https://telecom.openmind.cn/server/user,35,0,0
+1718846622790,34,获取用户信息,200,OK,冒烟测试 2-1,text,true,,1250,306,1,1,https://telecom.openmind.cn/server/user,34,0,0
+1718846625827,169,创建read令牌,201,Created,冒烟测试 2-1,text,true,,1184,384,1,1,https://telecom.openmind.cn/server/user/token,169,0,56
+1718846625997,34,获取令牌列表,200,OK,冒烟测试 2-1,text,true,,1335,312,1,1,https://telecom.openmind.cn/server/user/token,34,0,0
+1718846629032,340,删除read令牌,204,No Content,冒烟测试 2-1,text,true,,907,345,1,1,https://telecom.openmind.cn/server/user/token/user_token,0,0,0
+1718846629372,33,获取令牌列表,200,OK,冒烟测试 2-1,text,true,,1143,312,1,1,https://telecom.openmind.cn/server/user/token,33,0,0
+1718846632406,278,注销账号,204,No Content,冒烟测试 2-1,text,true,,907,328,1,1,https://telecom.openmind.cn/server/user,0,0,0
+1718846632685,33,获取用户信息,200,OK,冒烟测试 2-1,text,true,,1258,306,1,1,https://telecom.openmind.cn/server/user,33,0,0
+1718846635720,63,取消注销,202,Accepted,冒烟测试 2-1,text,true,,886,357,1,1,https://telecom.openmind.cn/server/user,63,0,0
+1718846635784,33,获取用户信息,200,OK,冒烟测试 2-1,text,true,,1250,306,1,1,https://telecom.openmind.cn/server/user,33,0,0

@@ -1,0 +1,106 @@
+{
+   用例名称:
+   用例编号:
+
+   场景接口列表:
+        {
+            url1?post/get?参数1=1&参数2=2...$所需参数1&所需参数2...,url2?post/get?参数1=1&参数2=2...$所需参数1&所需参数2...,...
+        }
+
+   是否需要验证sql:
+        是/否
+
+   数据库连接信息:
+        {
+            主机名:XXX
+            用户名:XXX
+            端口:XXX
+            口令:XXX
+        }
+
+   验证sql:
+        查询类接口需要与直接执行sql的结果进行比对
+
+   断言条件:
+        不需要验证sql时，确定接口测试的结果
+
+   收尾接口列表:
+        {
+            url1?post/get?参数1=1&参数2=2...$所需参数1&所需参数2...,url2?post/get?参数1=1&参数2=2...$所需参数1&所需参数2...,...
+        }
+
+   用例设计人:
+
+   用例设计时间:
+
+}
+
+{
+    场景接口列表:
+    {
+        url1?post/get?参数1=1&参数2=2...$所需参数1&所需参数2...,url2?post/get?参数1=1&参数2=2...$所需参数1&所需参数2...,...
+    }
+}
+
+class InterfaceLine:
+    url='*******************'
+    requestType=POST/GET
+    args[]
+    responseArgs[a,b,c]
+    response[a=a,b=b,c=c]
+
+
+
+
+1:2:aaaa
+2:2:1111
+
+
+
+
+{
+    'case_name': '接口测试测试用例1',
+    'case_id': 'api_test_code_001',
+    'case_pre_apis':
+        [
+            'https://easysoftware.test.osinfra.cn/api-search/software/docsAll',
+            'https://easysoftware.test.osinfra.cn/api-search/software/count'
+        ],
+    'case_pre_api_reqways':
+        [
+            'POST',
+            'POST'
+        ],
+    'case_pre_api_resargs':
+        [
+            '{"keyword":"测试","pageNum":1,"pageSize":3,"dataType":""}',
+            '{"keyword":"测试","keywordType":"all"}'
+        ],
+     'case_sql_inneed': '是/否',
+     'case_sql_connection':
+        '主机名:XXX\n
+        用户名:XXX\n
+        端口:XXX\n
+        口令:XXX\n',
+     'case_sql_query': 'select * from ...',
+     'case_assert': '？',
+     'case_after_apis':
+        [
+            'https://easysoftware.test.osinfra.cn/api-search/software/docsAll',
+            'https://easysoftware.test.osinfra.cn/api-search/software/count'
+        ],
+     'case_after_api_reqways':
+        [
+            'POST',
+            'POST'
+        ],
+     'case_after_api_resargs':
+        [
+            '{"keyword":"测试","pageNum":1,"pageSize":3,"dataType":""}',
+            '{"keyword":"测试","keywordType":"all"}'
+        ],
+     'case_designer': 'ly',
+     'case_design_time': '2024.6.7',
+     'case_isdone': False,
+     'case_status': False
+ }
