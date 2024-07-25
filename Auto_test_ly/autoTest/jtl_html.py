@@ -103,10 +103,7 @@ def generate_html_table(data):
     return html
 
 
-
-
 def make_table(file_path: str, getting_index: list):
-
     data = []
     with open(file_path, 'r', encoding='utf-8') as file:
         for line in file:
@@ -120,7 +117,7 @@ def make_table(file_path: str, getting_index: list):
             data[i] = None
 
     table = PrettyTable()
-    print(data)
+    # print(data)
     table.field_names = [data[0][i] for i in getting_index]
 
     for i in data[1::]:
