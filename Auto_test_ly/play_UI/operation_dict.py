@@ -1,6 +1,7 @@
 import inspect
+import re
 import time
-
+import pyautogui
 import playwright
 from playwright import sync_api
 from playwright.sync_api import expect
@@ -10,6 +11,16 @@ def shot(page, name, count):
     local_date = time.strftime("%Y-%m-%d", time.localtime(time.time()))
     shot_path = fr'D:\PY_pros\IntegrateTest\Auto_test_ly\test\shots\{local_date}OpenMind自动化测试截图'
     page.screenshot(path=fr'{shot_path}\{name}_{count}.png')
+
+
+def tag_list_operation(arglist):
+    res_list = []
+    for arg in arglist:
+        if ':' in arg:
+            arg = arg.split(':')
+            arg[1] = arg[1].replace('}', '').replace('{', '').split('|')
+        res_list.append(arg)
+    return res_list
 
 
 def login_sh(page: sync_api.Page):
@@ -109,6 +120,36 @@ def logout(page: sync_api.Page):
     page.get_by_text('退出登录').click()
 
 
+def edit_model_tags(page: sync_api.Page, arglist: list):
+    pass
+    name = inspect.currentframe().f_code.co_name
+    arglist = tag_list_operation(arglist)
+    page.get_by_text('编辑标签').click()
+    for arg in arglist:
+        if type(arg) == list:
+            page.get_by_placeholder(tag_dict[arg[0]]).click()
+            page.wait_for_timeout(500)
+            for index in range(len(arg[1])):
+                page.wait_for_timeout(200)
+                page.locator('.o-option').get_by_text(arg[1][index], exact=True).click()
+    page.get_by_text('提交').click()
+    page.get_by_placeholder('Update README.md').fill(arglist[-1])
+    page.locator('.o-btn.o-btn-primary.o-btn-large.o-btn-solid.o-dlg-btn').get_by_text('提交').click()
+
+
+def create_file(page: sync_api.Page, arglist: list):
+    name = inspect.currentframe().f_code.co_name
+    page.locator('.o-tab-nav').get_by_text('文件').click()
+    page.get_by_text('新建文件').click()
+    page.get_by_placeholder('请输入文件名').fill(arglist[0])
+    page.locator('.view-line').click()
+    pyautogui.write(arglist[1])  # ???什么类型啊这个元素vocal，整不会了
+    # page.locator('.mtk7').fill(arglist[1],force=True)
+    page.locator('.o-btn.o-btn-primary.o-btn-large.o-btn-solid.upload').get_by_text('提交').click()
+    page.locator('.o-textarea-textarea').fill(arglist[2])
+    page.locator('.o-btn.o-btn-primary.o-btn-large.o-btn-solid.o-dlg-btn').get_by_text('提交').click()
+
+
 def_dict = {'登录sh环境': login_sh,
             '鼠标悬停在个人头像上': hover_user_img,
             '悬停方式创建组织': hover_create_organization,
@@ -118,4 +159,12 @@ def_dict = {'登录sh环境': login_sh,
             '查看指定模型': show_point_model,
             '删除当前模型': delete_current_model,
             '退出登录': logout,
+            '编辑模型标签': edit_model_tags,
+            '新建文件': create_file
             }
+tag_dict = {'pipeline_tag': '新增标签',
+            'frameworks': '新增框架',
+            'license': '新增许可证',
+            ' library_name ': '新增库',
+            'hardwares': '新增硬件',
+            'language': '新增语言'}
