@@ -60,10 +60,11 @@ class QQMail:
 
 
 if __name__ == "__main__":
+
     data_create()
     config = ConfigParser()
     # 读取配置文件
-    config.read('config.ini')
+    config.read('config.ini', encoding='utf-8')
     # 获取邮箱部分的配置
     lsmtp_sender = config.get('DEFAULT', 'smtp_sender')
     lsmtp_password = config.get('DEFAULT', 'smtp_password')
