@@ -20,7 +20,7 @@ def generate_html_table(data):
             if row[7] == "true":
                 count += 1
         except Exception:
-            print(row)
+            pass
         # 处理时间戳
         try:
             time.localtime(int(int(row[0]) / 1000))
@@ -41,8 +41,7 @@ def generate_html_table(data):
              'width : 100%;\n'
              'white-space: nowrap;\n'
              'border-collapse :collapse;\n'
-             # 'marginleft: auto;\n'
-             # 'marginright: auto;\n'
+
              '}\n')
     html += ('table caption{\n'
              'font-size: 2em;\n'
@@ -81,11 +80,8 @@ def generate_html_table(data):
     html += ('</tr>\n</thead>\n'
              '<tbody>\n')
     html += f'<caption  >{date.tm_year}年{date.tm_mon}月{date.tm_mday}日接口自动化测试执行报告\n'
-    html += (
-        # f'<p style="background-color: #CCFFCC; color: {caption_color};font-size: 25px" >'
-        # f'今日共计执行{len(rows)}条用例，通过率为{"%0.2f" % (pass_precent * 100)}%</p>\n'
-        f'今日共计执行{len(rows)}条用例，通过率为{"%0.2f" % (pass_precent * 100)}%\n'
-        '</caption>\n')
+    html += (f'今日共计执行{len(rows)}条用例，通过率为{"%0.2f" % (pass_precent * 100)}%\n'
+             '</caption>\n')
 
     for row in rows:
         if not row:
@@ -117,7 +113,6 @@ def make_table(file_path: str, getting_index: list):
             data[i] = None
 
     table = PrettyTable()
-    # print(data)
     table.field_names = [data[0][i] for i in getting_index]
 
     for i in data[1::]:

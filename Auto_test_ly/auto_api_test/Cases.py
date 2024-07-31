@@ -5,7 +5,6 @@ import requests
 
 class Case:
     """
-        todo
             self.case_name = case[0]
             self.case_id = case[1]
             self.case_pre_apis = 测试的接口列表
@@ -30,9 +29,6 @@ class Case:
         self.case_pre_apis = case[2]
         self.case_pre_api_reqways = case[3]
         self.case_pre_api_reqargs = case[4]
-        # self.case_sql_inneed = case[5]
-        # self.case_sql_connection = case[6]
-        # self.case_sql_query = case[7]
         self.case_assert = case[5]
         self.case_after_apis = case[6]
         self.case_after_api_reqways = case[7]
