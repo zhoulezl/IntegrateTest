@@ -1,4 +1,4 @@
-import inspect
+# import inspect
 import time
 import pyautogui
 from playwright import sync_api
@@ -41,18 +41,17 @@ def login_sh(page: sync_api.Page):
         login_sh(page)
 
 
-
 def hover_user_img(page: sync_api.Page):
-    screenshot_count = 1
-    name = inspect.currentframe().f_code.co_name
+    # screenshot_count = 1
+    # name = inspect.currentframe().f_code.co_name
     page.hover('#e2e_header_isLogined')
     page.wait_for_timeout(200)
     # shot(page, name, screenshot_count)
 
 
 def hover_create_organization(page: sync_api.Page, arglist: list):
-    screenshot_count = 1
-    name = inspect.currentframe().f_code.co_name
+    # screenshot_count = 1
+    # name = inspect.currentframe().f_code.co_name
     page.locator('#e2e_headerUser_newOrg').hover()
     # shot(page, name, screenshot_count)
     page.locator('#e2e_headerUser_newOrg').click()
@@ -86,7 +85,7 @@ def hover_create_model(page: sync_api.Page, arglist: list):
 
 
 def enter_user_center(page: sync_api.Page):
-    name = inspect.currentframe().f_code.co_name
+    # name = inspect.currentframe().f_code.co_name
     # 进入个人中心
     page.locator('#e2e_headerUser_center').hover()
     page.locator('#e2e_headerUser_center').click()
@@ -94,35 +93,35 @@ def enter_user_center(page: sync_api.Page):
 
 
 def show_my_models(page: sync_api.Page):
-    name = inspect.currentframe().f_code.co_name
+    # name = inspect.currentframe().f_code.co_name
     page.locator('#e2e_myAside_creation').click()
     page.get_by_text('我的模型').click()
     page.wait_for_timeout(500)
 
 
 def show_point_model(page: sync_api.Page, arglist: list):
-    print(arglist)
-    name = inspect.currentframe().f_code.co_name
+    # print(arglist)
+    # name = inspect.currentframe().f_code.co_name
     page.locator('.title').get_by_text(arglist[0]).click()
     page.wait_for_timeout(500)
 
 
 def delete_current_model(page: sync_api.Page):
-    name = inspect.currentframe().f_code.co_name
+    # name = inspect.currentframe().f_code.co_name
     page.locator('.o-tab-nav').get_by_text('设置').click()
     page.locator('#e2e_deleteModel_inputValidation').fill('我已知晓，并确认删除模型')
     page.locator('#e2e_deleteModel_deleteBtn').click()
 
 
 def logout(page: sync_api.Page):
-    name = inspect.currentframe().f_code.co_name
+    # name = inspect.currentframe().f_code.co_name
     hover_user_img(page)
     page.get_by_text('退出登录').click()
     page.wait_for_timeout(1500)
 
 
 def edit_model_tags(page: sync_api.Page, arglist: list):
-    name = inspect.currentframe().f_code.co_name
+    # name = inspect.currentframe().f_code.co_name
     arglist = tag_list_operation(arglist)
     expect(page.locator('.o-btn.o-btn-primary.o-btn-large.o-btn-solid.use-openmind')).not_to_be_attached()
     page.get_by_text('编辑标签').click()
@@ -139,9 +138,8 @@ def edit_model_tags(page: sync_api.Page, arglist: list):
     page.wait_for_timeout(200)
 
 
-
 def create_file(page: sync_api.Page, arglist: list):
-    name = inspect.currentframe().f_code.co_name
+    # name = inspect.currentframe().f_code.co_name
     page.locator('.o-tab-nav').get_by_text('文件').click()
     page.get_by_text('新建文件').click()
     page.get_by_placeholder('请输入文件名').fill(arglist[0])
@@ -155,7 +153,7 @@ def create_file(page: sync_api.Page, arglist: list):
 
 
 def delete_file(page: sync_api.Page, arglist: list):
-    name = inspect.currentframe().f_code.co_name
+    # name = inspect.currentframe().f_code.co_name
     page.locator('.o-tab-nav').get_by_text('文件').click()
     page.get_by_title(arglist[0]).click()
     # page.locator('.hover-stress').get_by_title(arglist[0]).click()
@@ -163,6 +161,26 @@ def delete_file(page: sync_api.Page, arglist: list):
     page.wait_for_timeout(500)
     page.locator('.o-btn.o-btn-primary.o-btn-large.o-btn-solid.o-dlg-btn').get_by_text('删除').click()
     page.wait_for_timeout(500)
+
+
+def go_home(page: sync_api.Page):
+    page.locator('#e2e_headerNav_home').click()
+
+
+def go_models(page: sync_api.Page):
+    page.locator('#e2e_headerNav_models').click()
+
+
+def go_datasets(page: sync_api.Page):
+    page.locator('#e2e_headerNav_datasets').click()
+
+
+def go_spaces(page: sync_api.Page):
+    page.locator('#e2e_headerNav_spaces').click()
+
+
+def go_docs(page: sync_api.Page):
+    page.locator('#e2e_headerNav_docs').click()
 
 
 def_dict = {'登录sh环境': login_sh,
@@ -177,6 +195,11 @@ def_dict = {'登录sh环境': login_sh,
             '编辑模型标签': edit_model_tags,
             '新建文件': create_file,
             '删除文件': delete_file,
+            '进入首页': go_home,
+            '查看模型库': go_models,
+            '查看数据集': go_datasets,
+            '查看体验空间': go_spaces,
+            '查看文档': go_docs,
             }
 tag_dict = {'pipeline_tag': '新增标签',
             'frameworks': '新增框架',
