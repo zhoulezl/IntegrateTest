@@ -12,7 +12,8 @@ data_dict = {r'api_jmeter/openmind/model/basetest': 'openmind-模型模块-基�
              r'api_jmeter/openmind/oneid': 'openmind-oneid模块',
              r'api_jmeter/openeuler/easysoftware': 'openeuler_软件市场'}
 
-filepath = r'api_jmeter\openmind\model\basetest\20240709.xml'
+date = time.localtime()
+filepath = fr'api_jmeter\openmind\model\basetest\{date.tm_year}{date.tm_mon:02}{date.tm_mday:02}.xml'
 
 
 def make_table(file_path: str, getting_index: list):
@@ -61,7 +62,9 @@ def find_false(filepath):
     return marking_result_list
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
+
+def make_data_list():
     # 使用glob获取所有.jtl文件
     all_count = 0
     all_false_count = 0
@@ -74,7 +77,8 @@ if __name__ == '__main__':
         if glob.glob(f'{directory}/*.jtl'):
             # 开始处理数据
             if not glob.glob(f'{directory}/{date.tm_year}{date.tm_mon:02d}{date.tm_mday:02d}.jtl'):
-                print(f'{directory}路径下没有{date.tm_year}{date.tm_mon:02d}{date.tm_mday:02d}.jtl文件，请检查')
+                pass
+                # print(f'{directory}路径下没有{date.tm_year}{date.tm_mon:02d}{date.tm_mday:02d}.jtl文件，请检查')
             else:
                 for file_name in glob.glob(f'{directory}/{date.tm_year}{date.tm_mon:02d}{date.tm_mday:02d}.jtl'):
                     table = make_table(file_name, GETTING_INDEX)
@@ -82,19 +86,16 @@ if __name__ == '__main__':
                     for row in table.rows:
                         row[1], row[2], row[3], row[4], row[5] = row[3], row[1], row[5], row[2], row[4]
                         row.insert(4, (error_msg[row[1] + row[2] + 'request_way']))
-                        # print(row)
                         if row[-1] == 'false':
                             false_count += 1
                             row.append((error_msg[row[1] + row[2] + 'error_msg']))
                             if row[1] + row[2] + 'args' in error_msg.keys():
-                                # print(error_msg[row[1] + row[2] + 'args'])
                                 row.append((error_msg[row[1] + row[2] + 'args']))
                             else:
                                 row.append('-')
                             rew = copy.copy(row)
                             false_list.append(rew)
                             false_list[-1][0] = data_dict[directory]
-                        # print(row)
 
                     # table.field_names = ['测试时间','测试场景','测试步骤','接口地址','请求方式','状态码','测试结果','错误信息','传入参数']
                     # table.add_column(fieldname='测试结果')
@@ -102,10 +103,16 @@ if __name__ == '__main__':
                     all_count += len(table.rows)
                     all_false_count += false_count
                     data_list[data_dict[directory]] = [[len(table.rows), false_count, pass_precent], table.rows]
-    data_list["总计"] = [all_count, all_false_count, f"{'%0.2f'%((all_count - all_false_count) / all_count * 100)}%"]
-    # for data in data_list.keys():
-    #     # print(data_list[data][1])
-    #     for rows in data_list[data][1]:
-    #         for row in rows:
-    #             print(row)
-    make_excel(data_list,false_list)
+    data_list["总计"] = [all_count, all_false_count, f"{'%0.2f' % ((all_count - all_false_count) / all_count * 100)}%"]
+    return [data_list, false_list]
+
+
+def save_xlsx():
+    all_data_list = make_data_list()
+    data_list = all_data_list[0]
+    false_list = all_data_list[1]
+    make_excel(data_list, false_list)
+
+
+def save_xlsx_test(data_list, false_list):
+    make_excel(data_list, false_list)

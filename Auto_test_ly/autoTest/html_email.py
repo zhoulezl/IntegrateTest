@@ -1,5 +1,4 @@
 import copy
-import json
 import time
 from email.mime.application import MIMEApplication
 from smtplib import SMTP_SSL
@@ -10,6 +9,7 @@ import jtl_html
 import glob
 from configparser import ConfigParser
 
+from Auto_test_ly.autoTest.get_all_data import save_xlsx
 from Auto_test_ly.autoTest.xml_to_dict import find_false
 
 
@@ -80,15 +80,15 @@ if __name__ == "__main__":
     html_table = "<table style='border-collapse: collapse;  margin: auto;'>\n"
     date = time.localtime()
     html_table += "<tr style='background-color: #f2f2f2;'>\n"
-    html_table += "<th colspan='9' style='border: 1px solid #ddd; padding: 8px;'>{}</th>".format(
+    html_table += "<th colspan='5' style='border: 1px solid #ddd; padding: 8px;'>{}</th>".format(
         f"{date.tm_year}年{date.tm_mon}月{date.tm_mday}日接口自动化测试执行报告")
     html_table += "</tr>\n"
     # 报告总览表格
     html_table += "<tr text-align: center;'>\n"
-    html_table += "<th colspan='3', style='width: 100%;border: 2px solid #ddd; padding: 8px;'>{}</th>".format("模块名称")
-    html_table += "<th colspan='2', style='width: 50%;border: 2px solid #ddd; padding: 8px;'>{}</th>".format("调用次数")
-    html_table += "<th colspan='2', style='border: 2px solid #ddd; padding: 8px;'>{}</th>".format("失败次数")
-    html_table += "<th colspan='2', style='border: 2px solid #ddd; padding: 8px;'>{}</th>".format("通过率")
+    html_table += "<th colspan='2', style='width: 40%;border: 2px solid #ddd; padding: 8px;'>{}</th>".format("模块名称")
+    html_table += "<th colspan='1', style='width: 20%;border: 2px solid #ddd; padding: 8px;'>{}</th>".format("调用次数")
+    html_table += "<th colspan='1', style='width: 20%;border: 2px solid #ddd; padding: 8px;'>{}</th>".format("失败次数")
+    html_table += "<th colspan='1', style='width: 20%;border: 2px solid #ddd; padding: 8px;'>{}</th>".format("通过率")
     html_table += "</tr>\n"
     # 使用glob获取所有.jtl文件
     all_count = 0
@@ -127,16 +127,16 @@ if __name__ == "__main__":
 
                     html_table += "<tr text-align: center;'>\n"
                     html_table += (
-                        "<td text-align: center; colspan='3'; style='text-align: center;border: 1px solid #ddd;"
+                        "<td text-align: center; colspan='2'; style='text-align: center;border: 1px solid #ddd;"
                         " padding: 8px;'>{}</td>").format(data_dict[directory])
                     html_table += (
-                        "<td text-align: center; colspan='2' style='text-align: center;border: 1px solid #ddd; "
+                        "<td text-align: center; colspan='1' style='text-align: center;border: 1px solid #ddd; "
                         "padding: 8px;'>{}</td>").format(len(table.rows))
                     html_table += (
-                        "<td text-align: center; colspan='2' style='text-align: center;border: 1px solid #ddd; "
+                        "<td text-align: center; colspan='1' style='text-align: center;border: 1px solid #ddd; "
                         "padding: 8px;'>{}</td>").format(false_count)
                     html_table += (
-                        "<td text-align: center; colspan='2' style='text-align: center;border: 1px solid #ddd; "
+                        "<td text-align: center; colspan='1' style='text-align: center;border: 1px solid #ddd; "
                         "padding: 8px;'>{}%</td>").format(pass_precent)
                     html_table += "</tr>\n"
 
@@ -160,7 +160,6 @@ if __name__ == "__main__":
                     for row in table.rows:
                         html_table_inner += "<tr>\n"
                         for field in row:
-                            # if row[-3] == 'false':
                             if field == 'false':
                                 html_table_inner += ("<td style='border: 1px solid #ddd;background-color: #ffa07a;"
                                                      " padding: 8px;'>{}</td>").format(field)
@@ -176,48 +175,49 @@ if __name__ == "__main__":
     else:
         html_table += "<tr text-align: center;'>\n"
         html_table += (
-            "<td  colspan='3'; style='text-align: center; border: 1px solid #ddd; padding: 8px;'>{}</td>").format(
+            "<td  colspan='2'; style='text-align: center; border: 1px solid #ddd; padding: 8px;'>{}</td>").format(
             '总计')
-        html_table += "<td colspan='2' style='text-align: center; border: 1px solid #ddd; padding: 8px;'>{}</td>".format(
+        html_table += "<td colspan='1' style='text-align: center; border: 1px solid #ddd; padding: 8px;'>{}</td>".format(
             all_count)
-        html_table += "<td colspan='2' style='text-align: center; border: 1px solid #ddd; padding: 8px;'>{}</td>".format(
+        html_table += "<td colspan='1' style='text-align: center; border: 1px solid #ddd; padding: 8px;'>{}</td>".format(
             all_false_count)
-        html_table += "<td colspan='2' style='text-align: center; border: 1px solid #ddd; padding: 8px;'>{}</td>".format(
+        html_table += "<td colspan='1' style='text-align: center; border: 1px solid #ddd; padding: 8px;'>{}</td>".format(
             f"{'%0.2f' % ((all_count - all_false_count) / all_count * 100)}%")
         html_table += "</tr>\n"
 
         html_table += "</tr>\n"
-        html_table += ("<tr>\n<th colspan='9' style='background-color: #f2f2f2; border: 1px solid #ddd;"
-                       " padding: 8px;'>{}</th>").format(f"出错接口详情如下：")
-        html_table += "</tr>\n"
+        # html_table += ("<tr>\n<th colspan='9' style='background-color: #f2f2f2; border: 1px solid #ddd;"
+        #                " padding: 8px;'>{}</th>").format(f"出错接口详情如下：")
+        # html_table += "</tr>\n"
 
-        html_table += "<tr style='background-color: #f2f2f2;'>\n"
-        html_table += "<tr >\n"
-        html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("模块名称")
-        html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("测试场景")
-        html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("测试步骤")
-        html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("接口地址")
-        html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("请求方式")
-        html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("状态码")
-        html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("测试结果")
-        html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("错误信息")
-        html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("传入参数")
-        html_table += "</tr>\n"
+        # html_table += "<tr style='background-color: #f2f2f2;'>\n"
+        # html_table += "<tr >\n"
+        # html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("模块名称")
+        # html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("测试场景")
+        # html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("测试步骤")
+        # html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("接口地址")
+        # html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("请求方式")
+        # html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("状态码")
+        # html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("测试结果")
+        # html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("错误信息")
+        # html_table += "<th style=' border: 1px solid #ddd; padding: 8px;'>{}</th>".format("传入参数")
+        # html_table += "</tr>\n"
 
-        for row in false_list:
-            html_table += "<tr>\n"
-            for field in row:
-                html_table += ("<td style='border: 1px solid #ddd;"
-                               " padding: 8px;'>{}</td>").format(field)
-            html_table += "</tr>\n"
-        html_table += html_table_inner
+        # for row in false_list:
+        #     html_table += "<tr>\n"
+        #     for field in row:
+        #         html_table += ("<td style='border: 1px solid #ddd;"
+        #                        " padding: 8px;'>{}</td>").format(field)
+        #     html_table += "</tr>\n"
+        # html_table += html_table_inner
         html_table += "</table>"
         date = time.localtime()
 
         qq = QQMail(lsmtp_sender, lsmtp_password, lsmtp_receiver)
+        save_xlsx()
         if qq.login():
             qq.makeHeader(f"{date.tm_year}年{date.tm_mon}月{date.tm_mday}日接口自动化测试执行报告",
                           f"{date.tm_year}年{date.tm_mon}月{date.tm_mday}日接口自动化测试执行报告")
             qq.makeHtml_table(html_table)
-            # qq.addUploadFile(f"{date.tm_year}年{date.tm_mon}月{date.tm_day}日接口自动化测试执行报告.html", "./test.html")
+            # qq.addUploadFile(f"{date.tm_year}年{date.tm_mon}月{date.tm_day}日接口自动化测试执行报告.xlsx", "./test.html")
             qq.send()

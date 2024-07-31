@@ -42,7 +42,7 @@ import os
 
 
 
-#todo 2.在文件列表中依次获取页列表，放置在页列表 caseSheets中
+# 2.在文件列表中依次获取页列表，放置在页列表 caseSheets中
 class AutoTestFile:
     def __init__(self, caseFlie):
         self.caseFlie = caseFlie
@@ -56,7 +56,7 @@ class AutoTestFile:
         pass
 
 
-#3.todo 通过页名，取得每页的全部case
+#3. 通过页名，取得每页的全部case
 class CaseSheet:
     def __init__(self, caseSheet):
         self.caseSheet = caseSheet
@@ -76,7 +76,7 @@ class CaseSheet:
         pass
 
 
-#todo 每条case的执行
+# 每条case的执行
 class Case:
     def __init__(self, caseList):
         self.caseName = caseList[0]
@@ -97,7 +97,7 @@ class Case:
 
         self.caseTesting()
 if __name__ == '__main__':
-    # todo 1.获取当前目录下的自动化测试文件，放置在文件列表：caseFiles[]
+    #  1.获取当前目录下的自动化测试文件，放置在文件列表：caseFiles[]
     caseFlies = []
     for root, dirs, files in os.walk('.', topdown=False):
         for name in files:

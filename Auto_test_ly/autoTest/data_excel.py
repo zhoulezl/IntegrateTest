@@ -1,12 +1,10 @@
-import json
+import time
 
 from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
-from openpyxl.utils import get_column_letter
 
 
 def make_excel(data: dict, false_list: list):
-
     data = data
     # 创建一个新的工作簿
     wb = Workbook()
@@ -26,14 +24,17 @@ def make_excel(data: dict, false_list: list):
     fill_pass = PatternFill(start_color='B7DEE8', end_color='B7DEE8', fill_type='solid')
     fill_pass_in = PatternFill(start_color='DAEEF3', end_color='DAEEF3', fill_type='solid')
     # 写入数据到单元格
-    ws['A1'] = '2024年7月10日接口自动化测试报告'
+    date = time.localtime()
+    ws['A1'] = f'{date.tm_year}年{date.tm_mon}月{date.tm_mday}日接口自动化测试执行报告'
     ws['A2'] = '模块名称'
 
     ws['D2'] = '调用次数'
     ws['F2'] = '失败次数'
     ws['H2'] = '通过率'
-    title_list = ['测试时间', '测试场景', '测试步骤', '接口地址', '请求方式', '状态码', '测试结果', '错误信息','传入参数']
-    wrong_title_list = ['模块名称', '测试场景', '测试步骤', '接口地址', '请求方式', '状态码', '测试结果', '错误信息','传入参数']
+    title_list = ['测试时间', '测试场景', '测试步骤', '接口地址', '请求方式', '状态码', '测试结果', '错误信息',
+                  '传入参数']
+    wrong_title_list = ['模块名称', '测试场景', '测试步骤', '接口地址', '请求方式', '状态码', '测试结果', '错误信息',
+                        '传入参数']
     ws.column_dimensions['A'].width = 28
     ws.column_dimensions['B'].width = 20
     ws.column_dimensions['C'].width = 25
@@ -50,11 +51,10 @@ def make_excel(data: dict, false_list: list):
     ws.merge_cells('F2:G2')
     ws.merge_cells('H2:I2')
     ws.cell(row=1, column=1).font = Font(size=18, bold=True)
-    for col in range(1,10):
+    for col in range(1, 10):
         ws.cell(row=1, column=col).fill = fill_title
-    for col in range(1,10):
+    for col in range(1, 10):
         ws.cell(row=2, column=col).fill = fill_title_in
-    # ws.cell(row=1, column=2).font = Font(size=18, bold=True)
     ws.row_dimensions[1].height = 60
 
     ws.cell(row=2, column=1).font = Font(size=14)
@@ -106,14 +106,16 @@ def make_excel(data: dict, false_list: list):
     for col_num in range(1, 10):
         ws.cell(row=rol_num, column=col_num).value = wrong_title_list[col_num - 1]
         ws.cell(row=rol_num, column=col_num).font = Font(size=14)
-        ws.cell(row=rol_num, column=col_num).fill = fill_error_in
+        if col_num == 7:
+            ws.cell(row=rol_num, column=col_num).fill = fill_error_in
     rol_out.append(rol_num)
     rol_num += 1
     for false_data in false_list:
 
         for col_num in range(1, 10):
             ws.cell(row=rol_num, column=col_num, value=(false_data[col_num - 1]))
-            ws.cell(row=rol_num, column=col_num).fill = fill_error_in
+            if col_num == 7:
+                ws.cell(row=rol_num, column=col_num).fill = fill_error_in
         rol_num += 1
 
     # 开始写入数据
@@ -130,31 +132,17 @@ def make_excel(data: dict, false_list: list):
         for col_num in range(1, 10):
             ws.cell(row=rol_num, column=col_num).value = title_list[col_num - 1]
             ws.cell(row=rol_num, column=col_num).font = Font(size=14)
-            ws.cell(row=rol_num, column=col_num).fill = fill_pass_in
+            # ws.cell(row=rol_num, column=col_num).fill = fill_pass_in
         rol_num += 1
         for row in data[key][1]:
             for col_num in range(1, 10):
-                # print(row[col_num-1])
                 ws.cell(row=rol_num, column=col_num, value=(row[col_num - 1]))
-                ws.cell(row=rol_num, column=col_num).fill = fill_pass_in
+                # ws.cell(row=rol_num, column=col_num).fill = fill_pass_in
             rol_num += 1
-    wb.save('styled_excel.xlsx')
-
-    # # 设置合并单元格的样式
-    # merged_cell = ws['A1']
-    # merged_cell.font = bold_font
-    # merged_cell.border = thin_border
-    # # merged_cell.fill = fill
-    # merged_cell.alignment = Alignment(horizontal='center', vertical='center')
-    # merged_cell = ws['C2']
-    # merged_cell.font = bold_font
-    # merged_cell.border = thin_border
-    # # merged_cell.fill = fill
 
     # 设置对齐方式（居中）
     for col_num in range(1, 10):
         for rol_num in range(1, wb.worksheets[0].max_row + 1):
-            # ws.cell(row=rol_num, column=col_num).font = bold_font
             ws.cell(row=rol_num, column=col_num).border = thin_border
             ws.cell(row=rol_num, column=col_num).alignment = Alignment(horizontal='center', vertical='center')
             if col_num in (4, 8, 9) and rol_num >= rol_left and rol_num not in rol_out and ws.cell(row=rol_num,
@@ -162,6 +150,4 @@ def make_excel(data: dict, false_list: list):
                 ws.cell(row=rol_num, column=col_num).alignment = Alignment(horizontal='left', vertical='center',
                                                                            wrap_text=True)
     # 保存工作簿
-    wb.save('styled_excel.xlsx')
-
-# make_excel()
+    wb.save(fr'test_records\{date.tm_year}年{date.tm_mon}月{date.tm_mday}日接口自动化测试执行报告.xlsx')
