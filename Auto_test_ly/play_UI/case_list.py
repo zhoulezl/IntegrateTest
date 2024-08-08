@@ -19,3 +19,8 @@ def get_case_list(file_path):
                 case_list[i][1][j] = case_list[i][1][j].replace(')', '')
                 case_list[i][1][j] = case_list[i][1][j].split('(')
     return case_list
+
+
+if __name__ == '__main__':
+    x=get_case_list('UI自动化测试案例.xlsx')
+    print(x)

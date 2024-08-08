@@ -1,15 +1,14 @@
+import logging
 import subprocess
 import time
-from configparser import ConfigParser
 
 
 
-def data_create():
+def data_create(config):
     date = time.localtime()
     date_name = fr'{date.tm_year}{date.tm_mon:02}{date.tm_mday:02}'
-    config = ConfigParser()
-    # 读取配置文件
-    config.read('/app/app/config.ini', encoding='utf-8')
+    config = config
+
     jmx_list = config.get("'DEFAULT'", "'data_dict_key'").split(',')
     for dic in jmx_list:
         with open(dic+date_name+'.jtl', 'w') as f:
@@ -41,16 +40,16 @@ def data_create():
                 output, error = process.communicate()
                 # 打印执行结果
                 if process.returncode == 0:
-                    print('执行成功')
+                    logging.info('执行成功')
                     break
                 else:
-                    print('执行失败')
+                    logging.info('执行失败')
             except Exception as e:
                 error_count += 1
-                print('e:',e)
-                print('执行失败重试')
+                logging.info('e:',e)
+                logging.info('执行失败重试')
                 continue
             finally:
 
                 if error_count>2:
-                    print('重试次数过多，跳过')
+                    logging.info('重试次数过多，跳过')

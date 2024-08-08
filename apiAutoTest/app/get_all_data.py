@@ -4,26 +4,23 @@ import time
 import xmltodict
 from prettytable import PrettyTable
 from data_excel import make_excel
-import configparser
-
-config = configparser.ConfigParser()
+import logging
 # 读取配置文件
-# config.read(r'/app/app/config.ini', encoding='utf-8')
-config.read('/app/app/config.ini', encoding='utf-8')
+# config.read(r'/app/apiAutoTest/app/config.ini', encoding='utf-8')
+# config = None
 GETTING_INDEX = [0, 2, 3, 5, 7, 13]
 data_dict = {}
 # print(config.sections())
-print(config.options("'DEFAULT'"))
-data_dict_key = config.get("'DEFAULT'", "'data_dict_key'").split(',')
-data_dict_value = config.get("'DEFAULT'", "'data_dict_value'").split(',')
-for i in range(len(data_dict_key)):
-    data_dict[data_dict_key[i]] = data_dict_value[i]
-# print(data_dict)
 date = time.localtime()
+data_dict_key = []
+data_dict_value =[]
+# data_dict_key = config.get("'DEFAULT'", "'data_dict_key'").split(',')
+# data_dict_value = config.get("'DEFAULT'", "'data_dict_value'").split(',')
+# for i in range(len(data_dict_key)):
+#     data_dict[data_dict_key[i]] = data_dict_value[i]
 xml_filepath = []
-for path in data_dict_key:
-    xml_filepath.append(path + fr'{date.tm_year}{date.tm_mon:02}{date.tm_mday:02}.xml')
-print('xml_filepath:', xml_filepath)
+# for path in data_dict_key:
+#     xml_filepath.append(path + fr'{date.tm_year}{date.tm_mon:02}{date.tm_mday:02}.xml')
 
 
 def make_table(file_path: str, getting_index: list):
@@ -58,7 +55,7 @@ def make_table(file_path: str, getting_index: list):
 
 
 def find_false(filepath):
-    print('filepath:', filepath)
+    logging.info('filepath:', filepath)
     marking_result_list = {}
 
     with open(filepath, 'r', encoding='utf-8') as f:
@@ -94,7 +91,14 @@ def find_false(filepath):
 
 # if __name__ == '__main__':
 
-def make_data_list():
+def make_data_list(config):
+    data_dict_key = config.get("'DEFAULT'", "'data_dict_key'").split(',')
+    data_dict_value = config.get("'DEFAULT'", "'data_dict_value'").split(',')
+    for i in range(len(data_dict_key)):
+        data_dict[data_dict_key[i]] = data_dict_value[i]
+    xml_filepath = []
+    for path in data_dict_key:
+        xml_filepath.append(path + fr'{date.tm_year}{date.tm_mon:02}{date.tm_mday:02}.xml')
     # 使用glob获取所有.jtl文件
     all_count = 0
     all_false_count = 0
@@ -106,11 +110,11 @@ def make_data_list():
         for key in error_msg.keys():
             error_msgs[key] = error_msg[key]
 
-    # print('error_msgs:', error_msgs)
-    date = time.localtime()
     data_list = {}
     for directory in data_dict.keys():
         if glob.glob(f'{directory}*.jtl'):
+
+
             # 开始处理数据
             if not glob.glob(f'{directory}{date.tm_year}{date.tm_mon:02d}{date.tm_mday:02d}.jtl'):
                 pass
@@ -120,18 +124,25 @@ def make_data_list():
                     # try:
                     table = make_table(file_name, GETTING_INDEX)
                     # print('table:\n', table)
+                    cases = []
+                    pass_not_cases = []
                     false_count = 0
                     for row in table.rows:
+                        if row[1] == '调试取样器':
+                            continue
                         # print('修正前row:', row)
                         row[1], row[2], row[3], row[4], row[5] = row[3], row[1], row[5], row[2], row[4]
                         # print('修正后row:', row)
                         if row[1] + row[2] + 'request_way' in error_msgs.keys():
                             row.insert(4, (error_msgs[row[1] + row[2] + 'request_way']))
                         else:
-                            row.insert(4, ('-'))
-
+                            row.insert(4, '-')
+                        if row[1] not in cases:
+                            cases.append(row[1])
                         if row[-1] == 'false':
-                            false_count += 1
+                            if row[1] not in pass_not_cases:
+                                pass_not_cases.append(row[1])
+                                false_count += 1
                             row.append((error_msgs[row[1] + row[2] + 'error_msg']))
                             if row[1] + row[2] + 'args' in error_msgs.keys():
                                 row.append((error_msgs[row[1] + row[2] + 'args']))
@@ -142,16 +153,16 @@ def make_data_list():
                             false_list.append(rew)
                             false_list[-1][0] = data_dict[directory]
                             # print(false_list)
-
+                        # row[1] = row[1].split()[0]
                     # table.field_names = ['测试时间','测试场景','测试步骤','接口地址','请求方式','状态码','测试结果','错误信息','传入参数']
                     # table.add_column(fieldname='测试结果')
-                    if len(table.rows) == 0:
+                    if len(cases) == 0:
                         pass_precent = '-'
                     else:
-                        pass_precent = f"{'%.2f' % ((len(table.rows) - false_count) / len(table.rows) * 100)}%"
-                    all_count += len(table.rows)
+                        pass_precent = f"{'%.2f' % ((len(cases) - false_count) / len(cases) * 100)}%"
+                    all_count += len(cases)
                     all_false_count += false_count
-                    data_list[data_dict[directory]] = [[len(table.rows), false_count, pass_precent], table.rows]
+                    data_list[data_dict[directory]] = [[len(cases), false_count, pass_precent], table.rows]
                     # except Exception as e:
                     #     print(e)
     if all_count != 0:

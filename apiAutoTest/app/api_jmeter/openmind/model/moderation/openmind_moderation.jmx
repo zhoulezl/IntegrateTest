@@ -267,7 +267,7 @@
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename">/app/app/api_jmeter/openmind/model/moderation/a.jtl</stringProp>
+        <stringProp name="filename">/app/apiAutoTest/app/api_jmeter/openmind/model/moderation/a.jtl</stringProp>
       </ResultCollector>
       <hashTree/>
       <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="查看结果树">
@@ -307,7 +307,7 @@
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename">/app/app/api_jmeter/openmind/model/moderation/b.xml</stringProp>
+        <stringProp name="filename">/app/apiAutoTest/app/api_jmeter/openmind/model/moderation/b.xml</stringProp>
       </ResultCollector>
       <hashTree/>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="内容审核" enabled="true">

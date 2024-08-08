@@ -151,4 +151,4 @@ def make_excel(data: dict, false_list: list):
                 ws.cell(row=rol_num, column=col_num).alignment = Alignment(horizontal='left', vertical='center',
                                                                            wrap_text=True)
     # 保存工作簿
-    wb.save(fr'/app/app/test_records/{date.tm_year}年{date.tm_mon}月{date.tm_mday}日接口自动化测试执行报告.xlsx')
+    wb.save(fr'/app/apiAutoTest/app/test_records/{date.tm_year}年{date.tm_mon}月{date.tm_mday}日接口自动化测试执行报告.xlsx')

@@ -7,24 +7,26 @@ from configparser import ConfigParser
 
 config = ConfigParser()
 # 读取配置文件
-config.read('config.ini')
+config.read('config.ini', encoding='utf-8')
+
 
 # 这里是个类似反射的方法，用于按照名称来调用函数
 def call_function_by_name(func_name, *args, **kwargs):
-    module_name = __import__(config.get('DEFAULT', 'operation_dict'))
+    module_name = __import__('operation_dict')
     be_called_function = getattr(module_name, func_name)
     be_called_function(*args, **kwargs)
 
 
 if __name__ == '__main__':
-
-    browser_path = config.get('DEFAULT', 'browser_path')
-    file_path = config.get('DEFAULT', 'file_path')
+    print(config.options('"DEFAULT"'))
+    browser_path = config.get('"DEFAULT"', 'browser_path')
+    file_path = config.get('"DEFAULT"', 'file_path')
     # 启动 playwright driver 进程
     p = sync_playwright().start()
     # 启动浏览器，返回 Browser 类型对象
     executable_path = browser_path
-    browser = p.chromium.launch(headless=False, executable_path=executable_path)
+    browser = p.chromium.launch(headless=False)
+    # browser = p.chromium.launch(headless=False, executable_path=executable_path)
     # 创建新页面，返回 Page 类型对象
     # 创建 BrowserContext对象
     context = browser.new_context()
