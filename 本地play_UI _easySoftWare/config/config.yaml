@@ -1,0 +1,60 @@
+openSoftware:
+  lsmtp_receivers1:
+                   liuyu418@h-partners.com,
+                   2126744957@qq.com,
+                   george.cao@huawei.com,
+                   wangxiaoliang30@h-partners.com,
+                   guoxiaozhen1@h-partners.com,
+                   lichaoran1@huawei.com,
+                   caoyanan5@h-partners.com,
+  lsmtp_receivers:
+                    2126744957@qq.com,
+                    liuyu418@h-partners.com,
+#                    zhoule12@h-partners.com,
+#                    jun.zhongjun@huawei.com,
+#                    george.cao@huawei.com,
+  test_case:
+                  C:\Users\Administrator\Desktop\本地play_UI _easySoftWare\test_cases\软件市场UI自动化测试用例.xlsx
+  case_numbers:
+                  22
+  operation_dict: openSoftware_operation_dict
+  api_tag:
+                  openSoftware
+  email_name:
+                  软件中心UI自动化冒烟测试报告
+  model_names:
+                  软件中心-主页,
+                  软件中心-应用领域,
+                  软件中心-RPM,
+                  软件中心-应用镜像,
+                  软件中心-OEPKG,
+                  软件中心-软件包详情,
+                  软件中心-协作平台
+
+
+modelers:
+  lsmtp_receivers1:
+                    liuyu418@h-partners.com,
+                    2126744957@qq.com,
+                    george.cao@huawei.com,
+                    wangxiaoliang30@h-partners.com,
+                    guoxiaozhen1@h-partners.com,
+                    lichaoran1@huawei.com,
+                    caoyanan5@h-partners.com,
+  lsmtp_receivers:
+                    2126744957@qq.com,
+                    liuyu418@h-partners.com,
+#                    zhoule12@h-partners.com,
+#                    jun.zhongjun@huawei.com,
+#                    george.cao@huawei.com,
+  test_case:
+                    C:\Users\Administrator\Desktop\本地play_UI _easySoftWare\test_cases\魔乐社区UI自动化测试用例.xlsx
+  case_numbers: 7
+  operation_dict: modelers_operation_dict
+  api_tag: modelers
+  email_name:
+                魔乐社区UI自动化冒烟测试报告
+  model_names:
+                modelers-账号功能,
+                modelers-个人中心
+#  model_names: modelers-数据集
