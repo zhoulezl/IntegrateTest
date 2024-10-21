@@ -328,6 +328,59 @@ def field_search_result_detail(page: sync_api.Page, arglist: list):
     page.close()
     # app_binary_download(page)
     return page1
+    
+# appversion
+def appversion_enter(page: sync_api.Page):
+    """
+        进入上游监控页面
+    """
+    page.locator("#e2e_headerNav_upstream").get_by_text("上游兼容应用全景").click()
+    page.wait_for_timeout(2000)
+    return page
+
+
+def appversion_choose(page: sync_api.Page, arglist: list):
+    page.locator("a").filter(has_text="显示全部").first.click()
+    page.wait_for_timeout(2000)
+    page.locator("span").filter(has_text=re.compile(rf"^{arglist[0]}$")).click()
+    page.wait_for_timeout(1000)
+    page.locator(".o-radio-label").get_by_text(arglist[1]).click()
+    page.wait_for_timeout(1000)
+    list_a = arglist[2].split('|')
+    for tip in list_a:
+        page.locator(".o-checkbox-label").get_by_text(tip).click()
+        page.wait_for_timeout(2000)
+    page.wait_for_timeout(2000)
+    return page
+
+
+def appversion_search(page: sync_api.Page, arglist: list):
+    page.get_by_placeholder('请输入应用名称相关信息').fill(arglist[0])
+    page.keyboard.press('Enter')
+    return page
+
+
+def appversion_sort(page: sync_api.Page, arglist: list):
+    page.locator("a").filter(has_text=arglist[0]).click()
+    page.wait_for_timeout(2000)
+    return page
+
+
+def appversion_pagesize(page: sync_api.Page, arglist: list):
+    page.locator(".el-input__wrapper").first.click()
+    page.locator("li").filter(has_text=arglist[0]).click()
+    page.wait_for_timeout(2000)
+    return page
+
+
+def appversion_page_change(page: sync_api.Page, arglist: list):
+    page.get_by_label("页", exact=True).clear()
+    page.get_by_label("页", exact=True).fill(arglist[0])
+    page.wait_for_timeout(2000)
+    # page.get_by_label("页", exact=True).press("Enter")
+    page.keyboard.press('Enter')
+    page.wait_for_timeout(3000)
+    return page
 
 
 # app
@@ -580,6 +633,14 @@ def_dict = {
     '领域应用页面查询结果分页': field_pagesize,
     '领域应用页面查询结果切页': field_page_change,
     '领域应用页面查询结果详情': field_search_result_detail,
+
+    # 上游兼容应用全景
+    '进入上游兼容应用全景': appversion_enter,
+    '上游兼容应用全景页面选择版本架构': appversion_choose,
+    '上游兼容应用全景页面搜索': appversion_search,
+    '上游兼容应用全景页面查询结果排序': appversion_sort,
+    '上游兼容应用全景页面查询结果分页': appversion_pagesize,
+    '上游兼容应用全景页面查询结果切页': appversion_page_change,
 
     # 软件包详情
     '软件包详情页面下载': app_binary_download,
