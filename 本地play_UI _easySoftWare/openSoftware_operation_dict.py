@@ -112,11 +112,14 @@ def home_get_solution(page: sync_api.Page, arglist: list):
 def home_download(page: sync_api.Page, arglist: list):
     with page.expect_event('popup') as expectation:
         page.get_by_role("row", name=f"{arglist[0]}").get_by_role("link").click()
-
+        
     page1 = expectation.value
-    page.close()
-    expect(page1.get_by_role("heading", name="openEuler 24.03 LTS"))
-    return page1
+    str1 = arglist[0].replace("-", " ")
+    # page.close()
+    expect(page1.get_by_role("heading", name=str1))
+    page.wait_for_timeout(2000)
+    page1.close()
+    return page
 
 
 def home_choose_app(page: sync_api.Page, arglist: list):
