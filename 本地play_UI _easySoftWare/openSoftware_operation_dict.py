@@ -332,7 +332,7 @@ def field_search_result_detail(page: sync_api.Page, arglist: list):
 # appversion
 def appversion_enter(page: sync_api.Page):
     """
-        进入上游监控页面
+        进入上游兼容应用全景页面
     """
     page.locator("#e2e_headerNav_upstream").get_by_text("上游兼容应用全景").click()
     page.wait_for_timeout(2000)
