@@ -169,7 +169,7 @@ def show_my_models(page: sync_api.Page):
     page.wait_for_timeout(500)
 
 
-查看我创建的组织
+# 查看我创建的组织
 def show_my_orgs(page: sync_api.Page):
     # name = inspect.currentframe().f_code.co_name
     page.locator('#e2e_myAside_organization').click()
