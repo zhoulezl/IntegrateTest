@@ -61,5 +61,10 @@ modelers:
                 魔乐社区UI自动化冒烟测试报告
   model_names:
                 modelers-账号功能,
-                modelers-个人中心
-#  model_names: modelers-数据集
+                modelers-个人中心,
+                modelers-组织,
+                modelers-个人中心,
+                modelers-数据集,
+                modelers-模型,
+                modelers-空间,
+                modelers-讨论区
