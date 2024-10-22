@@ -559,7 +559,7 @@ def change_secret(page: sync_api.Page, arglist: list):
     page.get_by_role("button", name="确认", exact=True).click()
 
 
-删除机密变量
+# 删除机密变量
 def delete_secret(page: sync_api.Page):
     page.locator("a").filter(has_text=re.compile(r"^删除$")).click()
 
