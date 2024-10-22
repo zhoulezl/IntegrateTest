@@ -75,11 +75,6 @@ def go_home(page: sync_api.Page):
     page.locator('#e2e_headerNav_home').click()
 
 
-# 查看文档
-def go_docs(page: sync_api.Page):
-    page.locator('#e2e_headerNav_docs').click()
-
-
 # 退出登录
 def logout(page: sync_api.Page):
     # name = inspect.currentframe().f_code.co_name
@@ -730,6 +725,10 @@ def feedback(page: sync_api.Page):
     page.get_by_role("button", name="确定").click()
     return page
 
+# 文档
+# 查看文档
+def go_docs(page: sync_api.Page):
+    page.locator('#e2e_headerNav_docs').click()
 
 
 def_dict = {
@@ -738,7 +737,6 @@ def_dict = {
             '登录环境': login_common,
             '登录生产环境': login,
             '进入首页': go_home,
-            '查看文档': go_docs,
             '退出登录': logout,
 
             # 个人中心
@@ -818,7 +816,9 @@ def_dict = {
 
             # 反馈
             '体验反馈': feedback,
-            
+
+            # 文档
+            '查看文档': go_docs,
             }
 tag_dict = {'pipeline_tag': '新增标签',
             'frameworks': '新增框架',
