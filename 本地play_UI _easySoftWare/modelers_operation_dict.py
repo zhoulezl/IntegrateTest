@@ -689,6 +689,9 @@ def_dict = {
             '首次登录环境': login_first,
             '登录环境': login_common,
             '登录生产环境': login,
+            '进入首页': go_home,
+            '查看文档': go_docs,
+            '退出登录': logout,
 
             # 个人中心
             '鼠标悬停在个人头像上': hover_user_img,
@@ -697,12 +700,11 @@ def_dict = {
             '删除最新创建的令牌': delete_first_token,
             '注销并取消注销': log_out_user,
             '收藏并取消收藏': like_and_not_like,
-            '体验反馈': feedback,
             '进入账户设置': enter_user_setting,
             '查看我创建的模型': show_my_models,
             '查看我创建的组织': show_my_orgs,
-
-
+            '修改用户昵称签名': update_user_name_fullname,
+            '修改用户头像': update_user_picture,
     
             # 组织
             '悬停方式创建组织': hover_create_organization,
@@ -718,19 +720,21 @@ def_dict = {
             '删除当前组织': delete_current_org,
             '修改组织昵称介绍链接': update_org,
             '修改组织封面': update_org_picture,
-
     
             # 数据集
             '悬停方式创建数据集': hover_create_dataset,
             '查看指定数据集': show_point_dataset,
             '删除当前数据集': delete_current_dataset,
             '修改当前数据集私有': change_current_dataset_private,
-    
+            '查看数据集': go_datasets,
     
             # 模型
             '悬停方式创建模型': hover_create_model,
             '查看指定模型': show_point_model,
             '删除当前模型': delete_current_model,
+            '修改当前模型私有': change_current_model_private,
+            '修改当前模型别名': change_current_model_name,
+            '查看模型库': go_models,
     
             # 空间
             '悬停方式创建空间': hover_create_space,
@@ -742,27 +746,9 @@ def_dict = {
             '创建机密变量': create_secret,
             '编辑机密变量': change_secret,
             '删除机密变量': delete_secret,
-            
-
-
-    
-            
-            
-
-            
-            
-            '修改当前模型私有': change_current_model_private,
-            '修改当前模型别名': change_current_model_name,
-            '下载文件': download_point_file,
-            '退出登录': logout,
-            '编辑模型标签': edit_model_tags,
-            '新建文件': create_file,
-            '删除文件': delete_file,
-            '进入首页': go_home,
-            '查看模型库': go_models,
-            '查看数据集': go_datasets,
             '查看体验空间': go_spaces,
-            '查看文档': go_docs,
+
+            # 讨论区
             '创建讨论': create_issue,
             '回复讨论': review_issue,
             '编辑第一条讨论': edit_issue,
@@ -772,8 +758,16 @@ def_dict = {
             '重启讨论': reuse_issue,
             '切换讨论区状态': change_all_issue,
             '查看讨论': view_issue,
-            '修改用户昵称签名': update_user_name_fullname,
-            '修改用户头像': update_user_picture,
+    
+            # 资源处理
+            '下载文件': download_point_file,
+            '编辑模型标签': edit_model_tags,
+            '新建文件': create_file,
+            '删除文件': delete_file,
+
+            # 反馈
+            '体验反馈': feedback,
+            
             }
 tag_dict = {'pipeline_tag': '新增标签',
             'frameworks': '新增框架',
