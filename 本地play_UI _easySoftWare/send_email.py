@@ -198,7 +198,9 @@ def send_mail(test_data, big_key):
         qq.makeHtml_table(html_table)
         qq.addUploadFile(f"{big_key}-{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试执行报告.xlsx",
                          fr"test_records/{big_key}-{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试执行报告.xlsx")
-        qq.addUploadFile(f"records/videos/{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试.mp4",
+        qq.addUploadFile(f"{big_key}平台{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试.mp4",
                          fr"test_records/{big_key}/{big_key}平台{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试.mp4")
         qq.send()
+    for filename in os.listdir(fr"C:\Users\Administrator\Desktop\本地play_UI _easySoftWare\test_records\{big_key}"):
+        os.remove(os.path.join(fr"C:\Users\Administrator\Desktop\本地play_UI _easySoftWare\test_records\{big_key}", filename))
     print('邮件发送成功！')

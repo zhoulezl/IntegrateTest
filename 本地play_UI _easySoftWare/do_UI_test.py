@@ -23,7 +23,7 @@ def call_function_by_name(func_name, *args, **kwargs):
     return be_called_function(*args, **kwargs)
 
 
-def do_test(result_queue):
+def do_test():
     # 开始先睡3秒，用于录制线程启动
     time.sleep(3)
     case_lists = case_list.get_case_list(config_list[key]['test_case'])
@@ -106,7 +106,7 @@ def do_test(result_queue):
                 operations[i] = str(operations[i][0] + '(' + operations[i][1] + ')')
             operations[i] += '\n'
         case[3] = operations
-    result_queue.put(case_lists)
+    return case_lists
 
 
 if __name__ == '__main__':
@@ -114,16 +114,17 @@ if __name__ == '__main__':
     p = sync_playwright().start()
     # 启动浏览器，返回 Browser 类型对象
     # executable_path = browser_path
-    browser = p.chromium.launch(headless=False)
+    # browser = await async_playwright().chromiun
+    # browser = p.chromium.launch(headless=False)
     # 创建新页面，返回 Page 类型对象
     # 创建 BrowserContext对象
     date = time.localtime()
     video_name = f"{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试"
+    browser = p.chromium.launch(headless=False)
     context = browser.new_context(record_video_dir=f"tmp/", record_video_size={"width": 1920, "height": 1080})
     for key in config_list.keys():
         # print(key)
         # if key == 'openSoftware':
-        #     print("11111111111111111111111111111")
         #     continue
         #     print("11111111111111111111111111111")
 
@@ -139,21 +140,19 @@ if __name__ == '__main__':
 
         # 测试图片和视频保存路径
         test_result_folder = fr"C:\Users\Administrator\Desktop\本地play_UI _easySoftWare\test_records\{key}"
+        # 初始化录制对象
+        vm = video_maker.VideoMaker()
 
-        result_queue = queue.Queue()
-        # 启动测试线程
-        do_test_args = (result_queue,)
-        do_test_thread = threading.Thread(target=do_test, args=do_test_args)
-        do_test_thread.start()
         # 启动录制线程
-        make_screenshot_args = (test_result_folder, do_test_thread,)
-        make_screenshot_thread = threading.Thread(target=video_maker.make_screenshot, args=make_screenshot_args)
+        make_screenshot_args = (test_result_folder,)
+        make_screenshot_thread = threading.Thread(target=vm.make_screenshot, args=make_screenshot_args)
         make_screenshot_thread.start()
-        do_test_thread.join()
+        case_lists = do_test()
+        vm.test_fini = True
         make_screenshot_thread.join()
         # 测试完毕，生成视频，发送邮件
-        case_lists = result_queue.get()
-        video_maker.make_video(test_result_folder,
+
+        vm.make_video(test_result_folder,
                                fr"{test_result_folder}\{key}平台{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试.mp4")
         send_mail(case_lists, key)
     context.close()
