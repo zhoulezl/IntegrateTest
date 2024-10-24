@@ -14,8 +14,10 @@ openSoftware:
                     jun.zhongjun@huawei.com,
                     george.cao@huawei.com,
                     wangxiaoliang30@h-partners.com,
-                    guoxiaozhen1@h-partners.com
-                  
+                    guoxiaozhen1@h-partners.com,
+                    zhaiwenjie1@huawei.com,
+                    zhengkaiwen7@h-partners.com,
+
                     
   test_case:
                   C:\Users\Administrator\Desktop\本地play_UI _easySoftWare\test_cases\软件市场UI自动化测试用例.xlsx
@@ -49,9 +51,17 @@ modelers:
   lsmtp_receivers:
                     2126744957@qq.com,
                     liuyu418@h-partners.com,
-#                    zhoule12@h-partners.com,
-#                    jun.zhongjun@huawei.com,
-#                    george.cao@huawei.com,
+                    zhoule12@h-partners.com,
+                    jun.zhongjun@huawei.com,
+                    george.cao@huawei.com,
+                    gongzhuangbang1@huawei.com,
+                    zhaiwenjie1@huawei.com,
+                    taofeihu1@huawei.com,
+                    lichaoran1@huawei.com,
+                    wangxiaoliang30@h-partners.com,
+                    guoxiaozhen1@h-partners.com,
+                    zhaiwenjie1@huawei.com,
+                    zhongyuanke@huawei.com
   test_case:
                     C:\Users\Administrator\Desktop\本地play_UI _easySoftWare\test_cases\魔乐社区UI自动化测试用例.xlsx
   case_numbers: 7
