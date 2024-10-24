@@ -60,7 +60,7 @@ class QQMail:
             return False
 
 
-def send_mail(test_data,big_key):
+def send_mail(test_data, big_key):
     config_list = YamlHandler('./config/config.yaml').read_yaml()
     # 读取发件邮箱信息
     lsmtp_sender = '2126744957@qq.com'
@@ -176,7 +176,7 @@ def send_mail(test_data,big_key):
     date = time.localtime()
     qq = QQMail(lsmtp_sender, lsmtp_password, lsmtp_receiver)
     print('数据组装完成，开始写入excel')
-    make_excel(excel_data,big_key)
+    make_excel(excel_data, big_key)
     print('excel组装完成,准备压缩全部报告文件')
 
     # folders_to_zip = ['records/videos', 'test_records']
@@ -198,7 +198,7 @@ def send_mail(test_data,big_key):
         qq.makeHtml_table(html_table)
         qq.addUploadFile(f"{big_key}-{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试执行报告.xlsx",
                          fr"test_records/{big_key}-{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试执行报告.xlsx")
-        # qq.addUploadFile(f"records/videos/{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试.mp4",
-        #                  fr"records/videos/{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试.mp4")
+        qq.addUploadFile(f"records/videos/{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试.mp4",
+                         fr"test_records/{big_key}/{big_key}平台{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试.mp4")
         qq.send()
     print('邮件发送成功！')
