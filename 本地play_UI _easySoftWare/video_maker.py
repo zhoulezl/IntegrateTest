@@ -12,6 +12,7 @@ import os
 
 class VideoMaker:
     test_fini = False
+
     def make_screenshot(self, output_image_folder):
         # 确保输出文件夹存在
         if not os.path.exists(output_image_folder):
@@ -63,3 +64,11 @@ class VideoMaker:
                 writer.append_data(image)
 
         print(f"视频已保存到 {output_video_file}")
+
+
+if __name__ == "__main__":
+    running_home = r"D:\pythonPro"
+    for filename in os.listdir(fr"{running_home}\本地play_UI _easySoftWare\test_records\modelers"):
+        os.remove(os.path.join(fr"{running_home}\本地play_UI _easySoftWare\test_records\modelers", filename))
+    for filename in os.listdir(fr"{running_home}\本地play_UI _easySoftWare\test_records\openSoftware"):
+        os.remove(os.path.join(fr"{running_home}\本地play_UI _easySoftWare\test_records\openSoftware", filename))

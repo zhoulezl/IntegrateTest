@@ -12,8 +12,9 @@ from config import YamlHandler
 from send_email import send_mail
 import video_maker
 
+running_home = r"D:\pythonPro"
 # 读取配置文件
-config_list = YamlHandler('./config/config.yaml').read_yaml()
+config_list = YamlHandler(rf'{running_home}\本地play_UI _easySoftWare\config\config.yaml').read_yaml()
 
 
 # 这里是个类似反射的方法，用于按照名称来调用函数
@@ -26,12 +27,12 @@ def call_function_by_name(func_name, *args, **kwargs):
 def do_test():
     # 开始先睡3秒，用于录制线程启动
     time.sleep(3)
-    case_lists = case_list.get_case_list(config_list[key]['test_case'])
+    case_lists = case_list.get_case_list(running_home + config_list[key]['test_case'])
 
     page = context.new_page()
 
     page.set_default_timeout(10000)
-    page.set_viewport_size({'width': 1600, 'height': 900})
+    # page.set_viewport_size({'width': 1600, 'height': 900})
     i = 1
 
     for case in case_lists:
@@ -121,7 +122,7 @@ if __name__ == '__main__':
     date = time.localtime()
     video_name = f"{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试"
     browser = p.chromium.launch(headless=False)
-    context = browser.new_context(record_video_dir=f"tmp/", record_video_size={"width": 1920, "height": 1080})
+    context = browser.new_context(record_video_size={"width": 1920, "height": 1080})
     for key in config_list.keys():
         # print(key)
         # if key == 'openSoftware':
@@ -139,7 +140,7 @@ if __name__ == '__main__':
         # 用于储存do_test方法返回的case_lists
 
         # 测试图片和视频保存路径
-        test_result_folder = fr"C:\Users\Administrator\Desktop\本地play_UI _easySoftWare\test_records\{key}"
+        test_result_folder = fr"{running_home}\本地play_UI _easySoftWare\test_records\{key}"
         # 初始化录制对象
         vm = video_maker.VideoMaker()
 

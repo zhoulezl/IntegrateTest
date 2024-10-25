@@ -10,6 +10,7 @@ import os
 import zipfile
 
 
+running_home = r"D:\pythonPro"
 class QQMail:
     def __init__(self, smtp_sender, smtp_passwd,
                  smtp_receiver):
@@ -61,7 +62,7 @@ class QQMail:
 
 
 def send_mail(test_data, big_key):
-    config_list = YamlHandler('./config/config.yaml').read_yaml()
+    config_list = YamlHandler(rf'{running_home}\本地play_UI _easySoftWare\config\config.yaml').read_yaml()
     # 读取发件邮箱信息
     lsmtp_sender = '2126744957@qq.com'
     lsmtp_password = 'qqvynwenzdimhjcj'
@@ -197,10 +198,10 @@ def send_mail(test_data, big_key):
                       f"{config_list[big_key]['email_name']} {date.tm_year}年{date.tm_mon}月{date.tm_mday}日")
         qq.makeHtml_table(html_table)
         qq.addUploadFile(f"{big_key}-{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试执行报告.xlsx",
-                         fr"test_records/{big_key}-{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试执行报告.xlsx")
+                         fr"{running_home}\本地play_UI _easySoftWare/test_records/{big_key}-{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试执行报告.xlsx")
         qq.addUploadFile(f"{big_key}平台{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试.mp4",
-                         fr"test_records/{big_key}/{big_key}平台{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试.mp4")
+                         fr"{running_home}\本地play_UI _easySoftWare/test_records/{big_key}/{big_key}平台{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试.mp4")
         qq.send()
-    for filename in os.listdir(fr"C:\Users\Administrator\Desktop\本地play_UI _easySoftWare\test_records\{big_key}"):
-        os.remove(os.path.join(fr"C:\Users\Administrator\Desktop\本地play_UI _easySoftWare\test_records\{big_key}", filename))
+    for filename in os.listdir(fr"{running_home}\本地play_UI _easySoftWare\test_records\{big_key}"):
+        os.remove(os.path.join(fr"{running_home}\本地play_UI _easySoftWare\test_records\{big_key}", filename))
     print('邮件发送成功！')
