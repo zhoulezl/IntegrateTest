@@ -28,8 +28,11 @@ def home_search(page: sync_api.Page, arglist: list):
                 要搜索的内容
     """
     page.locator('#e2e_headerNav_home').click()
+    page.wait_for_timeout(1000)
     page.locator('.o-select.o-select-normal.o-select-text.o-select-large').click()
+    page.wait_for_timeout(1000)
     page.locator('.o-option').get_by_text(arglist[0]).click()
+    page.wait_for_timeout(1000)
     page.get_by_placeholder('输入内容进行搜索，多个关键字请用逗号隔开').fill(arglist[1])
     page.keyboard.press('Enter')
     page.wait_for_timeout(2000)  # 等待查询结果返回，暂定2秒
@@ -48,8 +51,11 @@ def home_search_not_found(page: sync_api.Page, arglist: list):
                 要搜索的内容
     """
     page.locator('#e2e_headerNav_home').click()
+    page.wait_for_timeout(1000)
     page.locator('.o-select.o-select-normal.o-select-text.o-select-large').click()
+    page.wait_for_timeout(1000)
     page.locator('.o-option').get_by_text(arglist[0]).click()
+    page.wait_for_timeout(1000)
     page.get_by_placeholder('输入内容进行搜索，多个关键字请用逗号隔开').fill(arglist[1])
     page.keyboard.press('Enter')
     page.wait_for_timeout(2000)  # 等待查询结果返回，暂定2秒
@@ -66,6 +72,7 @@ def home_learn_more(page: sync_api.Page, arglist: list):
                 要了解更多的类别名称
     """
     page.locator('#e2e_headerNav_home').click()
+    page.wait_for_timeout(1000)
     list_a = ['云服务', '数据库', 'AI', '大数据', 'HPC', '分布式存储', '其他']
     if arglist[0] == '云服务':
         page.locator(".o-link").first.click()
@@ -112,7 +119,7 @@ def home_get_solution(page: sync_api.Page, arglist: list):
 def home_download(page: sync_api.Page, arglist: list):
     with page.expect_event('popup') as expectation:
         page.get_by_role("row", name=f"{arglist[0]}").get_by_role("link").click()
-        
+        page.wait_for_timeout(1000)
     page1 = expectation.value
     str1 = arglist[0].replace("-", " ")
     # page.close()
@@ -135,6 +142,7 @@ def home_choose_app(page: sync_api.Page, arglist: list):
         # page.locator("a").filter(has_text=re.compile(r"^noarch(?:\(\d+\))?$")).first.click()
         page.locator('a').filter(has_text=re.compile(rf"^{arglist[2]}(?:\(\d+\))?$")).nth(
             list_1.index(arglist[1])).click()
+        page.wait_for_timeout(1000)
     else:
         page.wait_for_timeout(2000)
         # 收起默认打开的第一个
@@ -142,9 +150,11 @@ def home_choose_app(page: sync_api.Page, arglist: list):
         page.wait_for_timeout(2000)
         # 展开需要展开的
         page.get_by_role("row", name=f"{arglist[0]}").get_by_role("img").click()
+        page.wait_for_timeout(1000)
         # 定位到所在行
         locator = page.locator('.el-table__row').filter(has_text=arglist[1])
         locator.locator('a').filter(has_text=re.compile(rf"^{arglist[2]}(?:\(\d+\))?$")).click()
+        page.wait_for_timeout(1000)
         # 断言传入的第三个参数是存在的（第一个判断不了，因为点完了以后，第一个标签会变）
         expect(page.locator('.o-tag-label').filter(has_text=arglist[2]))
     page.wait_for_timeout(2000)
@@ -153,17 +163,24 @@ def home_choose_app(page: sync_api.Page, arglist: list):
 
 def home_feedback(page: sync_api.Page, arglist: list):
     page.locator('.global-feedback-btn').click()
+    page.wait_for_timeout(1000)
     page.locator('.o-rate-item').nth(int(arglist[0]) - 1).hover()
     page.locator('.o-rate-item').nth(int(arglist[0]) - 1).click()
+    page.wait_for_timeout(1000)
     page.get_by_placeholder('请输入您的反馈').fill(arglist[1])
+    page.wait_for_timeout(1000)
     page.get_by_role('button', name='提交反馈').click()
+    page.wait_for_timeout(1000)
     return page
 
 
 def home_login(page: sync_api.Page, arglist: list):
     page.locator('.o-icon.login-btn').click()
+    page.wait_for_timeout(1000)
     page.get_by_placeholder('请输入您的手机号/用户名/邮箱地址').fill(arglist[0])
+    page.wait_for_timeout(1000)
     page.get_by_placeholder('请输入您的密码').fill(arglist[1])
+    page.wait_for_timeout(1000)
     page.get_by_role('button', name='登录').click()
     page.wait_for_timeout(4000)
     return page
@@ -174,6 +191,7 @@ def CP_enter(page: sync_api.Page):
     page.wait_for_timeout(2000)
     with page.expect_event('popup') as expectation:
         page.locator('.o-link-label').get_by_text('协作平台').click()
+        page.wait_for_timeout(1000)
     page1 = expectation.value
     return page1
 
@@ -181,12 +199,15 @@ def CP_enter(page: sync_api.Page):
 def CP_feedback(page: sync_api.Page, arglist: list):
     locator1 = page.locator('.el-table__row').filter(has_text=arglist[0])
     locator1.locator('.cell').get_by_text('反馈').click()
-
+    page.wait_for_timeout(1000)
     page.locator("span").filter(has_text="CVE状态").click()
+    page.wait_for_timeout(1000)
     page.locator("form input[type=\"text\"]").click()
     page.wait_for_timeout(2000)
     page.get_by_text("有CVE部分修复").nth(1).click()
+    page.wait_for_timeout(1000)
     page.get_by_placeholder('请输入您的理由').click()
+    page.wait_for_timeout(1000)
     page.get_by_placeholder('请输入您的理由').clear()
     page.get_by_placeholder('请输入您的理由').fill(arglist[1])
     page.wait_for_timeout(2000)
@@ -198,6 +219,7 @@ def CP_feedback(page: sync_api.Page, arglist: list):
 def CP_feedback_history(page: sync_api.Page, arglist: list):
     locator1 = page.locator('.el-table__row').filter(has_text=arglist[0])
     locator1.locator('.cell').get_by_text('历史').click()
+    page.wait_for_timeout(1000)
     return page
 
 
@@ -209,45 +231,61 @@ def CP_wait_center(page: sync_api.Page):
 
 def CP_revoke_application(page: sync_api.Page, arglist: list):
     page.get_by_text("我的申请").click()
+    page.wait_for_timeout(1000)
     page.get_by_role("row").filter(has_text=arglist[0]).first.locator("a").get_by_text('撤销申请').click()
+    page.wait_for_timeout(1000)
     page.get_by_role("button", name="确认").click()
+    page.wait_for_timeout(1000)
     return page
 
 
 def CP_approve_pass(page: sync_api.Page, arglist: list):
     page.get_by_role("row").filter(has_text=arglist[0]).first.locator("a").click()
+    page.wait_for_timeout(1000)
     page.get_by_placeholder("请输入审批意见").fill(arglist[1])
+    page.wait_for_timeout(1000)
     page.get_by_role("button", name="通过").click()
+    page.wait_for_timeout(1000)
     return page
 
 
 def CP_approve_not_pass(page: sync_api.Page, arglist: list):
     page.get_by_role("row").filter(has_text=arglist[0]).first.locator("a").click()
+    page.wait_for_timeout(1000)
     page.get_by_placeholder("请输入审批意见").fill(arglist[1])
+    page.wait_for_timeout(1000)
     page.get_by_role("button", name="驳回").click()
+    page.wait_for_timeout(1000)
     return page
 
 
 def CP_application_detail(page: sync_api.Page, arglist: list):
     page.get_by_text("我的申请").click()
+    page.wait_for_timeout(1000)
     page.get_by_role("row").filter(has_text=arglist[0]).locator("a").first.click()
+
     page.wait_for_timeout(2000)
     return page
 
 
 def CP_approve_detail(page: sync_api.Page):
     page.get_by_text("我审批过的").click()
+    page.wait_for_timeout(1000)
     page.get_by_role("row", name="ranger CVE状态 有CVE").locator("a").click()
+
     page.wait_for_timeout(2000)
     return page
 
 
 def CP_appstore(page: sync_api.Page, arglist: list):
     page.get_by_text("软件仓库").click()
+    page.wait_for_timeout(1000)
     page.get_by_text(arglist[0]).click()
+    page.wait_for_timeout(1000)
     page.locator("a").filter(has_text="确定").first.click()
     page.wait_for_timeout(2000)
     page.get_by_role("cell", name="软件仓库").get_by_role("img").click()
+    page.wait_for_timeout(1000)
     page.locator("a").filter(has_text="重置").first.click()
     page.wait_for_timeout(2000)
     return page
@@ -255,12 +293,15 @@ def CP_appstore(page: sync_api.Page, arglist: list):
 
 def CP_wait_center_choose(page: sync_api.Page, arglist: list):
     page.get_by_text("我的申请").click()
+    page.wait_for_timeout(1000)
     page.locator('.o-svg-icon.o-icon-filter.type-fill').first.click()
+    page.wait_for_timeout(1000)
     page.locator("span").filter(has_text=arglist[0]).click()
     page.wait_for_timeout(2000)
     page.locator("a").filter(has_text="确定").first.click()
     page.wait_for_timeout(2000)
     page.locator('.o-svg-icon.o-icon-filter.type-fill').first.click()
+    page.wait_for_timeout(1000)
     page.locator("a").filter(has_text="重置").first.click()
     page.wait_for_timeout(2000)
     return page
@@ -280,12 +321,17 @@ def field_choose(page: sync_api.Page, arglist: list):
     page.locator("a").filter(has_text="显示全部").first.click()
     page.wait_for_timeout(2000)
     page.locator("a").filter(has_text="显示全部").click()
+    page.wait_for_timeout(1000)
     page.locator("span").filter(has_text=re.compile(rf"^{arglist[0]}$")).click()
+    page.wait_for_timeout(1000)
     page.locator("span").filter(has_text=re.compile(rf"^{arglist[1]}$")).click()
+    page.wait_for_timeout(1000)
     list_a = arglist[2].split('|')
     for tip in list_a:
         page.locator("span").filter(has_text=re.compile(rf"^{tip}$")).click()
+        page.wait_for_timeout(1000)
     expect(page.locator('.o-tag-label').filter(has_text=arglist[0]))
+    page.wait_for_timeout(1000)
     expect(page.locator('.o-tag-label').filter(has_text=arglist[1]))
     page.wait_for_timeout(2000)
     return page
@@ -293,18 +339,22 @@ def field_choose(page: sync_api.Page, arglist: list):
 
 def field_search(page: sync_api.Page, arglist: list):
     page.get_by_placeholder('请输入领域应用相关信息').fill(arglist[0])
+    page.wait_for_timeout(1000)
     page.keyboard.press('Enter')
+    page.wait_for_timeout(1000)
     return page
 
 
 def field_sort(page: sync_api.Page, arglist: list):
     page.locator("a").filter(has_text=arglist[0]).click()
+    page.wait_for_timeout(1000)
     page.wait_for_timeout(2000)
     return page
 
 
 def field_pagesize(page: sync_api.Page, arglist: list):
     page.locator(".el-input__wrapper").first.click()
+    page.wait_for_timeout(1000)
     page.locator("li").filter(has_text=arglist[0]).click()
     page.wait_for_timeout(2000)
     return page
@@ -312,6 +362,7 @@ def field_pagesize(page: sync_api.Page, arglist: list):
 
 def field_page_change(page: sync_api.Page, arglist: list):
     page.get_by_label("页", exact=True).clear()
+    page.wait_for_timeout(1000)
     page.get_by_label("页", exact=True).fill(arglist[0])
     page.wait_for_timeout(2000)
     # page.get_by_label("页", exact=True).press("Enter")
@@ -324,6 +375,7 @@ def field_search_result_detail(page: sync_api.Page, arglist: list):
     page.wait_for_timeout(2000)
     with page.expect_event('popup') as expectation:
         page.get_by_role("link", name=arglist[0]).first.click()
+        page.wait_for_timeout(1000)
     page1 = expectation.value
     page.close()
     # app_binary_download(page)
@@ -335,6 +387,7 @@ def appversion_enter(page: sync_api.Page):
         进入上游兼容应用全景页面
     """
     page.locator("#e2e_headerNav_upstream").get_by_text("上游兼容应用全景").click()
+
     page.wait_for_timeout(2000)
     return page
 
@@ -356,18 +409,21 @@ def appversion_choose(page: sync_api.Page, arglist: list):
 
 def appversion_search(page: sync_api.Page, arglist: list):
     page.get_by_placeholder('请输入应用名称相关信息').fill(arglist[0])
+    page.wait_for_timeout(1000)
     page.keyboard.press('Enter')
     return page
 
 
 def appversion_sort(page: sync_api.Page, arglist: list):
     page.locator("a").filter(has_text=arglist[0]).click()
+    page.wait_for_timeout(1000)
     page.wait_for_timeout(2000)
     return page
 
 
 def appversion_pagesize(page: sync_api.Page, arglist: list):
     page.locator(".el-input__wrapper").first.click()
+    page.wait_for_timeout(1000)
     page.locator("li").filter(has_text=arglist[0]).click()
     page.wait_for_timeout(2000)
     return page
@@ -375,6 +431,7 @@ def appversion_pagesize(page: sync_api.Page, arglist: list):
 
 def appversion_page_change(page: sync_api.Page, arglist: list):
     page.get_by_label("页", exact=True).clear()
+    page.wait_for_timeout(1000)
     page.get_by_label("页", exact=True).fill(arglist[0])
     page.wait_for_timeout(2000)
     # page.get_by_label("页", exact=True).press("Enter")
@@ -387,29 +444,35 @@ def appversion_page_change(page: sync_api.Page, arglist: list):
 # 这里由于弹出页面了，所以下载做在了详情页面里
 def app_binary_download(page: sync_api.Page):
     page.get_by_role("button", name="二进制包下载").click()
-
+    page.wait_for_timeout(1000)
     with page.expect_download() as download_info:
         page.get_by_role("button", name="继续前往").click()
+        page.wait_for_timeout(1000)
     download = download_info.value
+    page.wait_for_timeout(1000)
     download.save_as('download/' + download.suggested_filename)
     return page
 
 
 def app_image_copy(page: sync_api.Page):
     page.locator("div:nth-child(3) > .o-icon").click()
+    page.wait_for_timeout(1000)
     return page
 
 
 def app_feedback(page: sync_api.Page, arglist: list):
     page.locator(".o-rate-item").nth(int(arglist[0]) - 1).hover()
+    page.wait_for_timeout(1000)
     page.locator(".o-rate-item").nth(int(arglist[0]) - 1).click()
 
     page.get_by_placeholder("请输入您的反馈").fill(arglist[1])
 
     if arglist[2] == '快速反馈':
         page.get_by_role("button", name="快速反馈").click()
+        page.wait_for_timeout(1000)
     elif arglist[2] == '提交issue':
         page.get_by_role("button", name="提交issue").click()
+        page.wait_for_timeout(1000)
         with page.expect_popup() as page_new_info:
             page.get_by_role("button", name="继续前往").click()
             page.wait_for_timeout(2000)
@@ -430,12 +493,17 @@ def RPM_choose(page: sync_api.Page, arglist: list):
     page.locator("a").filter(has_text="显示全部").first.click()
     page.wait_for_timeout(2000)
     page.locator("a").filter(has_text="显示全部").first.click()
+    page.wait_for_timeout(1000)
     page.locator("span").filter(has_text=re.compile(rf"^{arglist[0]}$")).click()
+    page.wait_for_timeout(1000)
     page.locator("span").filter(has_text=re.compile(rf"^{arglist[1]}$")).click()
+    page.wait_for_timeout(1000)
     list_a = arglist[2].split('|')
     for tip in list_a:
         page.locator("span").filter(has_text=re.compile(rf"^{tip}$")).click()
+        page.wait_for_timeout(1000)
     expect(page.locator('.o-tag-label').filter(has_text=arglist[0]))
+    page.wait_for_timeout(1000)
     expect(page.locator('.o-tag-label').filter(has_text=arglist[1]))
     page.wait_for_timeout(2000)
     return page
@@ -443,7 +511,9 @@ def RPM_choose(page: sync_api.Page, arglist: list):
 
 def RPM_search(page: sync_api.Page, arglist: list):
     page.get_by_placeholder('请输入RPM相关信息').fill(arglist[0])
+    page.wait_for_timeout(1000)
     page.keyboard.press('Enter')
+    page.wait_for_timeout(1000)
     return page
 
 
@@ -455,6 +525,7 @@ def RPM_sort(page: sync_api.Page, arglist: list):
 
 def RPM_pagesize(page: sync_api.Page, arglist: list):
     page.locator(".el-input__wrapper").first.click()
+    page.wait_for_timeout(1000)
     page.locator("li").filter(has_text=arglist[0]).click()
     page.wait_for_timeout(2000)
     return page
@@ -462,8 +533,11 @@ def RPM_pagesize(page: sync_api.Page, arglist: list):
 
 def RPM_page_change(page: sync_api.Page, arglist: list):
     page.get_by_label("页", exact=True).clear()
+    page.wait_for_timeout(1000)
     page.get_by_label("页", exact=True).fill(arglist[0])
+    page.wait_for_timeout(1000)
     page.get_by_label("页", exact=True).press("Enter")
+    page.wait_for_timeout(1000)
     return page
 
 
@@ -471,7 +545,9 @@ def RPM_search_result_detail(page: sync_api.Page, arglist: list):
     page.wait_for_timeout(2000)
     with page.expect_event('popup') as expectation:
         page.get_by_role("link", name=arglist[0]).first.click()
+        page.wait_for_timeout(1000)
     page1 = expectation.value
+    page.wait_for_timeout(1000)
     page.close()
     # app_binary_download(page)
     return page1
@@ -488,13 +564,17 @@ def image_choose(page: sync_api.Page, arglist: list):
     page.locator("a").filter(has_text="显示全部").first.click()
     page.wait_for_timeout(2000)
     page.locator("span").filter(has_text=re.compile(rf"^{arglist[0]}$")).click()
+    page.wait_for_timeout(1000)
     list_a = arglist[1].split('|')
     for tip in list_a:
         page.locator("span").filter(has_text=re.compile(rf"^{tip}$")).click()
+        page.wait_for_timeout(1000)
     list_a = arglist[2].split('|')
     for tip in list_a:
         page.locator("span").filter(has_text=re.compile(rf"^{tip}$")).click()
+        page.wait_for_timeout(1000)
     expect(page.locator('.o-tag-label').filter(has_text=arglist[0]))
+    page.wait_for_timeout(1000)
     expect(page.locator('.o-tag-label').filter(has_text=arglist[1]))
     page.wait_for_timeout(2000)
     return page
@@ -502,7 +582,9 @@ def image_choose(page: sync_api.Page, arglist: list):
 
 def image_search(page: sync_api.Page, arglist: list):
     page.get_by_placeholder('请输入应用镜像相关信息').fill(arglist[0])
+    page.wait_for_timeout(1000)
     page.keyboard.press('Enter')
+    page.wait_for_timeout(1000)
     return page
 
 
@@ -514,6 +596,7 @@ def image_sort(page: sync_api.Page, arglist: list):
 
 def image_pagesize(page: sync_api.Page, arglist: list):
     page.locator(".el-input__wrapper").first.click()
+    page.wait_for_timeout(1000)
     page.locator("li").filter(has_text=arglist[0]).click()
     page.wait_for_timeout(2000)
     return page
@@ -521,8 +604,11 @@ def image_pagesize(page: sync_api.Page, arglist: list):
 
 def image_page_change(page: sync_api.Page, arglist: list):
     page.get_by_label("页", exact=True).clear()
+    page.wait_for_timeout(1000)
     page.get_by_label("页", exact=True).fill(arglist[0])
+    page.wait_for_timeout(1000)
     page.get_by_label("页", exact=True).press("Enter")
+    page.wait_for_timeout(1000)
     return page
 
 
@@ -530,6 +616,7 @@ def image_search_result_detail(page: sync_api.Page, arglist: list):
     page.wait_for_timeout(2000)
     with page.expect_event('popup') as expectation:
         page.get_by_role("link", name=arglist[0]).first.click()
+        page.wait_for_timeout(1000)
     page1 = expectation.value
     # app_image_copy(page)
     return page1
@@ -551,10 +638,13 @@ def OEPKG_choose(page: sync_api.Page, arglist: list):
     list_a = arglist[1].split('|')
     for tip in list_a:
         page.locator("span").filter(has_text=re.compile(rf"^{tip}$")).click()
+        page.wait_for_timeout(1000)
     list_a = arglist[2].split('|')
     for tip in list_a:
         page.locator("span").filter(has_text=re.compile(rf"^{tip}$")).click()
+        page.wait_for_timeout(1000)
     expect(page.locator('.o-tag-label').filter(has_text=arglist[0]))
+    page.wait_for_timeout(1000)
     expect(page.locator('.o-tag-label').filter(has_text=arglist[1]))
     page.wait_for_timeout(2000)
     return page
@@ -562,6 +652,7 @@ def OEPKG_choose(page: sync_api.Page, arglist: list):
 
 def OEPKG_search(page: sync_api.Page, arglist: list):
     page.get_by_placeholder('请输入OEPKG相关信息').fill(arglist[0])
+    page.wait_for_timeout(1000)
     page.keyboard.press('Enter')
     return page
 
@@ -574,6 +665,7 @@ def OEPKG_sort(page: sync_api.Page, arglist: list):
 
 def OEPKG_pagesize(page: sync_api.Page, arglist: list):
     page.locator(".el-input__wrapper").first.click()
+    page.wait_for_timeout(1000)
     page.locator("li").filter(has_text=arglist[0]).click()
     page.wait_for_timeout(2000)
     return page
@@ -581,8 +673,11 @@ def OEPKG_pagesize(page: sync_api.Page, arglist: list):
 
 def OEPKG_page_change(page: sync_api.Page, arglist: list):
     page.get_by_label("页", exact=True).clear()
+    page.wait_for_timeout(1000)
     page.get_by_label("页", exact=True).fill(arglist[0])
+    page.wait_for_timeout(1000)
     page.get_by_label("页", exact=True).press("Enter")
+    page.wait_for_timeout(1000)
     return page
 
 
@@ -590,6 +685,7 @@ def OEPKG_search_result_detail(page: sync_api.Page, arglist: list):
     page.wait_for_timeout(2000)
     with page.expect_event('popup') as expectation:
         page.get_by_role("link", name=arglist[0]).first.click()
+        page.wait_for_timeout(1000)
     page1 = expectation.value
     page.close()
     # app_binary_download(page)

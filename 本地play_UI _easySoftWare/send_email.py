@@ -129,8 +129,8 @@ def send_mail(test_data, big_key):
         count = 0
         pass_count = 0
         for case in test_data:
-            print(model_name)
-            print(case[2])
+            # print(model_name)
+            # print(case[2])
             if model_name in case[2]:
 
                 excel_data[model_name].append(case)

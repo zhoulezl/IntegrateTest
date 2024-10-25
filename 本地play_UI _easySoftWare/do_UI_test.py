@@ -32,7 +32,7 @@ def do_test():
     page = context.new_page()
 
     page.set_default_timeout(10000)
-    # page.set_viewport_size({'width': 1600, 'height': 900})
+    page.set_viewport_size({'width': 1280, 'height': 720})
     i = 1
 
     for case in case_lists:
