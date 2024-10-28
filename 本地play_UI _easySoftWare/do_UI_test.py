@@ -12,7 +12,7 @@ from config import YamlHandler
 from send_email import send_mail
 import video_maker
 
-running_home = r"D:\pythonPro"
+running_home = r"D:\pythonPro\IntegrateTest"
 # 读取配置文件
 config_list = YamlHandler(rf'{running_home}\本地play_UI _easySoftWare\config\config.yaml').read_yaml()
 
