@@ -22,7 +22,7 @@ openSoftware:
   test_case:
                   C:\Users\Administrator\Desktop\本地play_UI _easySoftWare\test_cases\软件市场UI自动化测试用例.xlsx
   case_numbers:
-                  22
+                  23
   operation_dict: openSoftware_operation_dict
   api_tag:
                   openSoftware
