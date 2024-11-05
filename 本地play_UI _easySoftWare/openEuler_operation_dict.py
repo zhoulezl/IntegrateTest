@@ -327,6 +327,15 @@ def click_document(page: sync_api.Page, arglist: list):
         page1.wait_for_timeout(2000)
         page1.close()
         return page
+    elif arglist[0] == "社区":
+        with page.expect_popup() as page_info:
+            page.get_by_text("文档").nth(3).click()
+        page1 = page_info.value
+        expect(page1.locator("#left img")).to_be_visible()
+        print("进入文档成功")
+        page1.wait_for_timeout(2000)
+        page1.close()
+        return page
 
 
 def click_man_pages(page: sync_api.Page):
@@ -353,6 +362,12 @@ def click_course_center(page: sync_api.Page, arglist: list):
     elif arglist[0] == "用户":
         page.get_by_text("课程中心").first.click()
         page.wait_for_timeout(1000)
+        expect(page.get_by_role("heading", name="课程中心")).to_be_visible()
+        print("进入课程中心成功")
+        page.wait_for_timeout(1000)
+        return page
+    elif arglist[0] == "社区":
+        page.get_by_text("课程中心").nth(2).click()
         expect(page.get_by_role("heading", name="课程中心")).to_be_visible()
         print("进入课程中心成功")
         page.wait_for_timeout(1000)
@@ -448,22 +463,36 @@ def hover_home_developer(page: sync_api.Page):
     return page
 
 
-def click_contribution_guide(page: sync_api.Page):
+def click_contribution_guide(page: sync_api.Page, arglist: list):
     """ 点击贡献攻略 """
-    page.get_by_text("贡献攻略").first.click()
-    expect(page.get_by_role("heading", name="贡献攻略")).to_be_visible()
-    page.wait_for_timeout(1000)
-    print("进入贡献攻略成功")
-    return page
+    if arglist[0] == "社区":
+        page.get_by_text("贡献攻略").nth(1).click()
+        expect(page.get_by_role("heading", name="贡献攻略")).to_be_visible()
+        page.wait_for_timeout(1000)
+        print("进入贡献攻略成功")
+        return page
+    elif arglist[0] == "开发者":
+        page.get_by_text("贡献攻略").first.click()
+        expect(page.get_by_role("heading", name="贡献攻略")).to_be_visible()
+        page.wait_for_timeout(1000)
+        print("进入贡献攻略成功")
+        return page
 
 
-def click_sig_center(page: sync_api.Page):
+def click_sig_center(page: sync_api.Page, arglist: list):
     """ 点击SIG中心 """
-    page.get_by_text("SIG中心").first.click()
-    expect(page.get_by_role("heading", name="SIG中心")).to_be_visible()
-    page.wait_for_timeout(1000)
-    print("进入SIG中心成功")
-    return page  # 点击SIG中心
+    if arglist[0] == "开发者":
+        page.get_by_text("SIG中心").first.click()
+        expect(page.get_by_role("heading", name="SIG中心")).to_be_visible()
+        page.wait_for_timeout(1000)
+        print("进入SIG中心成功")
+        return page  # 点击SIG中心
+    elif arglist[0] == "社区":
+        page.get_by_text("SIG中心").nth(1).click()
+        expect(page.get_by_role("heading", name="SIG中心")).to_be_visible()
+        page.wait_for_timeout(1000)
+        print("进入SIG中心成功")
+        return page  # 点击SIG中心
 
 
 def click_openeuler_intern(page: sync_api.Page):
@@ -668,9 +697,17 @@ def click_github_mirror_warehouse(page: sync_api.Page):
 
 
 # 导航-社区
+
+def hover_home_community(page: sync_api.Page):
+    """ 鼠标悬浮社区 """
+    page.locator(".nav-item").nth(2).hover()  # 鼠标悬浮社区
+    page.wait_for_timeout(1000)
+    return page
+
+
 def click_organization_structure(page: sync_api.Page):
     """ 点击组织架构 """
-    page.get_by_text("组织架构").click()
+    page.get_by_role("navigation").get_by_text("组织架构").click()
     expect(page.get_by_text("组织架构")).to_be_visible()
     page.wait_for_timeout(1000)
     print("进入组织架构成功")
@@ -741,6 +778,147 @@ def click_contribution_board(page: sync_api.Page):
     print("进入贡献看板成功")
     page1.close()
     return page  # 点击贡献看板
+
+
+def click_university(page: sync_api.Page):
+    """ 点击高校 """
+    page.get_by_text("高校", exact=True).click()
+    expect(page.get_by_role("heading", name="高校", exact=True)).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入高校成功")
+    return page  # 点击高校
+
+
+def click_recruitment_assessment(page: sync_api.Page):
+    """ 点击人才评定 """
+    with page.expect_popup() as page_info:
+        page.get_by_text("人才评定").click()
+    page1 = page_info.value
+    expect(page1.get_by_text("人才能力评定", exact=True)).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入人才评定成功")
+    page1.close()
+    return page  # 点击人才评定
+
+
+def click_a_tune(page: sync_api.Page):
+    """ 点击A-Tune """
+    page.get_by_role("navigation").get_by_text("A-Tune").click()
+    expect(page.get_by_role("heading", name="A-Tune")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入A-Tune成功")
+    return page  # 点击A-Tune
+
+
+def click_isula(page: sync_api.Page):
+    """ 点击iSula """
+    page.get_by_text("iSula").click()
+    expect(page.get_by_role("heading", name="iSula")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入iSula成功")
+    return page  # 点击iSula
+
+
+def click_strato_virt(page: sync_api.Page):
+    """ 点击StratoVirt """
+    page.get_by_text("StratoVirt").click()
+    expect(page.get_by_role("heading", name="StratoVirt")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入StratoVirt成功")
+    return page  # 点击StratoVirt
+
+
+def click_bisheng_jdk(page: sync_api.Page):
+    """ 点击BiSheng JDK """
+    page.get_by_text("BiSheng JDK").click()
+    expect(page.get_by_role("heading", name="毕昇JDK")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入BiSheng JDK成功")
+    return page  # 点击BiSheng JDK
+
+
+def click_secgear(page: sync_api.Page):
+    """ 点击secGear """
+    page.get_by_text("secGear").click()
+    expect(page.get_by_role("heading", name="secGear")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入secGear成功")
+    return page  # 点击secGear
+
+
+def click_nestos(page: sync_api.Page):
+    """ 点击NestOS """
+    with page.expect_popup() as page_info:
+        page.get_by_text("NestOS").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="NestOS")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入NestOS成功")
+    page1.close()
+    return page  # 点击NestOS
+
+
+# 导航-下载
+
+def hover_home_download(page: sync_api.Page):
+    """ 鼠标悬浮下载 """
+    page.locator(".nav-item").nth(3).hover()  # 鼠标悬浮下载
+    page.wait_for_timeout(1000)
+    return page
+
+
+def click_get_openeuler_os(page: sync_api.Page):
+    """ 点击获取openEuler操作系统 """
+    page.get_by_text("获取openEuler操作系统").click()
+    expect(page.get_by_role("heading", name="获取openEuler操作系统")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入获取openEuler操作系统成功")
+    return page  # 点击获取openEuler操作系统
+
+
+def click_openeuler_24_03_lts(page: sync_api.Page):
+    """ 点击openEuler 24.03 LTS """
+    page.get_by_text("openEuler 24.03 LTS", exact=True).click()
+    expect(page.get_by_role("heading", name="下载", exact=True)).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入openEuler 24.03 LTS成功")
+    return page  # 点击openEuler 24.03 LTS
+
+
+def click_openeuler_24_09(page: sync_api.Page):
+    """ 点击openEuler 24.09 """
+    page.get_by_role("list").get_by_text("openEuler 24.09", exact=True).click()
+    expect(page.get_by_role("heading", name="下载", exact=True)).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入openEuler 24.09成功")
+    return page  # 点击openEuler 24.09
+
+
+def click_community_release(page: sync_api.Page):
+    """ 点击社区发行版 """
+    page.get_by_role("list").get_by_text("社区发行版").click()
+    expect(page.get_by_role("link", name="历史版本下载")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入社区发行版成功")
+    return page  # 点击社区发行版
+
+
+def click_commercial_release(page: sync_api.Page):
+    """ 点击商业发行版 """
+    page.get_by_text("商业发行版").click()
+    expect(page.get_by_role("tab", name="商业发行版")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入商业发行版成功")
+    return page  # 点击商业发行版
+
+
+def click_mirror_warehouse_list(page: sync_api.Page):
+    """ 点击镜像仓列表 """
+    page.get_by_text("镜像仓列表").click()
+    expect(page.get_by_role("heading", name="镜像仓列表")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入镜像仓列表成功")
+    return page  # 点击镜像仓列表
 
 
 # 定义字典
@@ -817,6 +995,7 @@ def_dict = {
     "点击Github镜像仓": click_github_mirror_warehouse,
 
     # 导航-社区
+    "鼠标悬浮社区": hover_home_community,
     "点击组织架构": click_organization_structure,
     "点击社区章程": click_community_charter,
     "点击oEEP": click_oeep,
@@ -825,5 +1004,22 @@ def_dict = {
     "点击社区荣誉": click_community_honor,
     "点击openEuler Call for X 计划": click_openeuler_call_for_x_plan,
     "点击贡献看板": click_contribution_board,
+    "点击高校": click_university,
+    "点击人才评定": click_recruitment_assessment,
+    "点击A-Tune": click_a_tune,
+    "点击iSula": click_isula,
+    "点击StratoVirt": click_strato_virt,
+    "点击BiSheng JDK": click_bisheng_jdk,
+    "点击secGear": click_secgear,
+    "点击NestOS": click_nestos,
+
+    # 导航-下载
+    "鼠标悬浮下载": hover_home_download,
+    "点击获取openEuler操作系统": click_get_openeuler_os,
+    "点击openEuler 24.03 LTS": click_openeuler_24_03_lts,
+    "点击openEuler 24.09": click_openeuler_24_09,
+    "点击社区发行版": click_community_release,
+    "点击商业发行版": click_commercial_release,
+    "点击镜像仓列表": click_mirror_warehouse_list,
 
 }
