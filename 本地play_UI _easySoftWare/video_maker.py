@@ -72,3 +72,5 @@ if __name__ == "__main__":
         os.remove(os.path.join(fr"{running_home}\本地play_UI _easySoftWare\test_records\modelers", filename))
     for filename in os.listdir(fr"{running_home}\本地play_UI _easySoftWare\test_records\openSoftware"):
         os.remove(os.path.join(fr"{running_home}\本地play_UI _easySoftWare\test_records\openSoftware", filename))
+    for filename in os.listdir(fr"{running_home}\本地play_UI _easySoftWare\test_records\openEuler"):
+        os.remove(os.path.join(fr"{running_home}\本地play_UI _easySoftWare\test_records\openEuler", filename))

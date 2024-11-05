@@ -1,45 +1,46 @@
-openSoftware:
-  lsmtp_receivers1:
-#                   liuyu418@h-partners.com,
-#                   2126744957@qq.com,
-#                   george.cao@huawei.com,
-#                   wangxiaoliang30@h-partners.com,
-#                   guoxiaozhen1@h-partners.com,
-#                   lichaoran1@huawei.com,
-#                   caoyanan5@h-partners.com,
-  lsmtp_receivers:
-#                    2126744957@qq.com,
-#                    liuyu418@h-partners.com,
-                    zhoule12@h-partners.com,
-#                    jun.zhongjun@huawei.com,
-#                    george.cao@huawei.com,
-#                    wangxiaoliang30@h-partners.com,
-#                    guoxiaozhen1@h-partners.com,
-#                    zhaiwenjie1@huawei.com,
-#                    zhengkaiwen7@h-partners.com,
+#openSoftware:
+#  lsmtp_receivers1:
+##                   liuyu418@h-partners.com,
+##                   2126744957@qq.com,
+##                   george.cao@huawei.com,
+##                   wangxiaoliang30@h-partners.com,
+##                   guoxiaozhen1@h-partners.com,
+##                   lichaoran1@huawei.com,
+##                   caoyanan5@h-partners.com,
+#  lsmtp_receivers:
+##                    2126744957@qq.com,
+##                    liuyu418@h-partners.com,
+#                    zhoule12@h-partners.com,
+##                    jun.zhongjun@huawei.com,
+##                    george.cao@huawei.com,
+##                    wangxiaoliang30@h-partners.com,
+##                    guoxiaozhen1@h-partners.com,
+##                    zhaiwenjie1@huawei.com,
+##                    zhengkaiwen7@h-partners.com,
+#
+#
+#  test_case:
+#                  \本地play_UI _easySoftWare\test_cases\软件市场UI自动化测试用例.xlsx
+#  case_numbers:
+#                  23
+#  operation_dict: openSoftware_operation_dict
+#  api_tag:
+#                  openSoftware
+#  email_name:
+#                  软件中心UI自动化冒烟测试报告
+#  model_names:
+#                  软件中心-主页,
+#                  软件中心-应用领域,
+#                  软件中心-RPM,
+#                  软件中心-应用镜像,
+#                  软件中心-OEPKG,
+#                  软件中心-上游兼容应用全景,
+#                  软件中心-软件包详情,
+#                  软件中心-协作平台
 
-                    
-  test_case:
-                  \本地play_UI _easySoftWare\test_cases\软件市场UI自动化测试用例.xlsx
-  case_numbers:
-                  23
-  operation_dict: openSoftware_operation_dict
-  api_tag:
-                  openSoftware
-  email_name:
-                  软件中心UI自动化冒烟测试报告
-  model_names:
-                  软件中心-主页,
-                  软件中心-应用领域,
-                  软件中心-RPM,
-                  软件中心-应用镜像,
-                  软件中心-OEPKG,
-                  软件中心-上游兼容应用全景,
-                  软件中心-软件包详情,
-                  软件中心-协作平台
 
 
-modelers:
+openEuler:
   lsmtp_receivers1:
 #                    liuyu418@h-partners.com,
 #                    2126744957@qq.com,
@@ -63,17 +64,62 @@ modelers:
 #                    zhaiwenjie1@huawei.com,
 #                    zhongyuanke@huawei.com
   test_case:
-                    \本地play_UI _easySoftWare\test_cases\魔乐社区UI自动化测试用例.xlsx
-  case_numbers: 7
-  operation_dict: modelers_operation_dict
+                    \本地play_UI _easySoftWare\test_cases\欧拉社区UI自动化测试用例.xlsx
+  case_numbers: 5
+  operation_dict: openEuler_operation_dict
   api_tag: modelers
   email_name:
-                魔乐社区UI自动化冒烟测试报告
+                欧拉社区UI自动化冒烟测试报告
   model_names:
-                modelers-账号功能,
-                modelers-个人中心,
-                modelers-组织,
-                modelers-数据集,
-                modelers-模型,
-                modelers-空间,
-                modelers-讨论区
+                openEuler-账号服务,
+                openEuler-主页,
+                openEuler-个人中心,
+                openEuler-消息中心，
+                openEuler-论坛,
+                openEuler-首页-导航
+
+
+
+#modelers:
+#  lsmtp_receivers1:
+##                    liuyu418@h-partners.com,
+##                    2126744957@qq.com,
+##                    george.cao@huawei.com,
+##                    wangxiaoliang30@h-partners.com,
+##                    guoxiaozhen1@h-partners.com,
+##                    lichaoran1@huawei.com,
+##                    caoyanan5@h-partners.com,
+#  lsmtp_receivers:
+##                    2126744957@qq.com,
+##                    liuyu418@h-partners.com,
+#                    zhoule12@h-partners.com,
+##                    jun.zhongjun@huawei.com,
+##                    george.cao@huawei.com,
+##                    gongzhuangbang1@huawei.com,
+##                    zhaiwenjie1@huawei.com,
+##                    taofeihu1@huawei.com,
+##                    lichaoran1@huawei.com,
+##                    wangxiaoliang30@h-partners.com,
+##                    guoxiaozhen1@h-partners.com,
+##                    zhaiwenjie1@huawei.com,
+##                    zhongyuanke@huawei.com
+#  test_case:
+#                    \本地play_UI _easySoftWare\test_cases\魔乐社区UI自动化测试用例.xlsx
+#  case_numbers: 7
+#  operation_dict: modelers_operation_dict
+#  api_tag: modelers
+#  email_name:
+#                魔乐社区UI自动化冒烟测试报告
+#  model_names:
+#                modelers-账号功能,
+#                modelers-个人中心,
+#                modelers-组织,
+#                modelers-数据集,
+#                modelers-模型,
+#                modelers-空间,
+#                modelers-讨论区
+#
+#
+#
+#
+#

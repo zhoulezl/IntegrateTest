@@ -1,20 +1,46 @@
-import queue
+import os
 import threading
 import time
 
 import modelers_operation_dict
 import openSoftware_operation_dict
+import openEuler_operation_dict
 from playwright.sync_api import sync_playwright
 import case_list
-from configparser import ConfigParser
 
 from config import YamlHandler
 from send_email import send_mail
 import video_maker
 
+import tkinter as tk
+import tkinter.messagebox
+
 running_home = r"D:\pythonPro\IntegrateTest"
 # 读取配置文件
 config_list = YamlHandler(rf'{running_home}\本地play_UI _easySoftWare\config\config.yaml').read_yaml()
+
+
+# 这里是个用于打印当前执行case的窗口方法
+def show_message(content, delay=1500):
+    # 创建根窗口（这里设置为不可见）
+    root = tk.Tk()
+    root.withdraw()
+    # 创建一个顶层窗口来模拟消息框（因为标准的messagebox不支持自动关闭）
+    top = tk.Toplevel(root)
+    top.title("打印内容")
+    top.geometry("800x200")  # 设置窗口大小
+    # 创建一个Label来显示内容
+    label = tk.Label(top, text=content, font=("Helvetica", 15), compound="center", justify="center")
+    label.pack(pady=20)  # 添加一些内边距
+
+    # 使用after方法安排窗口关闭
+    def close_window():
+        top.destroy()
+        root.destroy()  # 同时销毁根窗口
+
+    top.after(delay, close_window)  # 延迟delay毫秒后执行close_window
+    # 进入事件循环（虽然这里我们不会手动干预它，因为窗口会自动关闭）
+    root.mainloop()
 
 
 # 这里是个类似反射的方法，用于按照名称来调用函数
@@ -31,8 +57,8 @@ def do_test():
 
     page = context.new_page()
 
-    page.set_default_timeout(10000)
-    page.set_viewport_size({'width': 1280, 'height': 720})
+    page.set_default_timeout(200000)
+    page.set_viewport_size({'width': 1880, 'height': 1000})
     i = 1
 
     for case in case_lists:
@@ -45,9 +71,11 @@ def do_test():
         def_names = case[1]
         for def_name in def_names:
             print(' ', def_name)
+            show_message((f'测试用例{i:03}', def_name))
             err = None
             try:
-                page.set_viewport_size({'width': 1600, 'height': 900})
+                page.set_viewport_size({'width': 1880, 'height': 1000})
+
                 if key == 'openSoftware':
                     if type(def_name) is str:
                         page = call_function_by_name(openSoftware_operation_dict.def_dict[def_name].__name__, page)
@@ -60,6 +88,12 @@ def do_test():
                         page = call_function_by_name(modelers_operation_dict.def_dict[def_name].__name__, page)
                     elif type(def_name) is list:
                         page = call_function_by_name(modelers_operation_dict.def_dict[def_name[0]].__name__, page,
+                                                     def_name[1].split(','))
+                elif key == 'openEuler':
+                    if type(def_name) is str:
+                        page = call_function_by_name(openEuler_operation_dict.def_dict[def_name].__name__, page)
+                    elif type(def_name) is list:
+                        page = call_function_by_name(openEuler_operation_dict.def_dict[def_name[0]].__name__, page,
                                                      def_name[1].split(','))
             except Exception as e:
                 err = e
@@ -125,9 +159,10 @@ if __name__ == '__main__':
     context = browser.new_context(record_video_size={"width": 1920, "height": 1080})
     for key in config_list.keys():
         # print(key)
+        # continue
+
         # if key == 'openSoftware':
         #     continue
-        #     print("11111111111111111111111111111")
 
         # browser_path = config.get('DEFAULT', 'browser_path')
         # file_path = config.get('DEFAULT', 'file_path')
@@ -143,7 +178,7 @@ if __name__ == '__main__':
         test_result_folder = fr"{running_home}\本地play_UI _easySoftWare\test_records\{key}"
         # 初始化录制对象
         vm = video_maker.VideoMaker()
-
+        vm.test_fini = False
         # 启动录制线程
         make_screenshot_args = (test_result_folder,)
         make_screenshot_thread = threading.Thread(target=vm.make_screenshot, args=make_screenshot_args)
@@ -154,7 +189,13 @@ if __name__ == '__main__':
         # 测试完毕，生成视频，发送邮件
 
         vm.make_video(test_result_folder,
-                               fr"{test_result_folder}\{key}平台{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试.mp4")
+                      fr"{test_result_folder}\{key}平台{date.tm_year}年{date.tm_mon}月{date.tm_mday}日UI自动化测试.mp4")
         send_mail(case_lists, key)
     context.close()
     browser.close()
+    for filename in os.listdir(fr"{running_home}\本地play_UI _easySoftWare\test_records\modelers"):
+        os.remove(os.path.join(fr"{running_home}\本地play_UI _easySoftWare\test_records\modelers", filename))
+    for filename in os.listdir(fr"{running_home}\本地play_UI _easySoftWare\test_records\openSoftware"):
+        os.remove(os.path.join(fr"{running_home}\本地play_UI _easySoftWare\test_records\openSoftware", filename))
+    for filename in os.listdir(fr"{running_home}\本地play_UI _easySoftWare\test_records\openEuler"):
+        os.remove(os.path.join(fr"{running_home}\本地play_UI _easySoftWare\test_records\openEuler", filename))

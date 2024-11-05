@@ -8,7 +8,7 @@ from playwright.sync_api import expect
 
 def shot(page, name, count):
     local_date = time.strftime("%Y-%m-%d", time.localtime(time.time()))
-    shot_path = fr'D:\PY_pros\IntegrateTest\Auto_test_ly\test\shots\{local_date}OpenMind自动化测试截图'
+    shot_path = fr'D:\pythonPro\IntegrateTest\Auto_test_ly\test\shots\{local_date}OpenMind自动化测试截图'
     page.screenshot(path=fr'{shot_path}\{name}_{count}.png')
 
 
@@ -25,14 +25,17 @@ def tag_list_operation(arglist):
 # 进入环境
 # 首次登录环境
 def login_first(page: sync_api.Page, arglist: list):
-    page = login_common(page, arglist)
+    page = login_common1(page, arglist)
     page.get_by_text("跳过").click()
-    page.get_by_role("button", name="全部接受").click()
+    try:
+        page.get_by_role("button", name="全部接受").click()
+    except:
+        pass
     return page
 
 
 # 登录环境
-def login_common(page: sync_api.Page, arglist: list):
+def login_common1(page: sync_api.Page, arglist: list):
     # sh
     # page.goto("https://openmind.test.osinfra.cn/")
     # test
@@ -42,10 +45,7 @@ def login_common(page: sync_api.Page, arglist: list):
     # page.locator('#e2e_header_loginBtn').click()
     # page.wait_for_selector('#e2e_login_account')
     # page.locator('#e2e_login_account').fill(arglist[0])
-    try:
-        page.get_by_role("button", name="登录", exact=True).click()
-    finally:
-        pass
+    page.get_by_role("button", name="登录", exact=True).click()
     page.get_by_placeholder('请输入您的手机号/用户名/邮箱地址').fill(arglist[0])
     # page.locator('#e2e_login_password').fill(arglist[1])
     page.get_by_placeholder('请输入您的密码').fill(arglist[1])
@@ -54,6 +54,15 @@ def login_common(page: sync_api.Page, arglist: list):
     expect(page.locator('#e2e_header_isLogined')).to_be_attached()
     # if not page.locator('#e2e_header_isLogined'):
     #     login_sh(page, arglist)
+    return page
+
+
+def login_common(page: sync_api.Page, arglist: list):
+    page = login_common1(page, arglist)
+    try:
+        page.get_by_role("button", name="全部接受").click()
+    except:
+        pass
     return page
 
 
@@ -154,6 +163,7 @@ def like_and_not_like(page: sync_api.Page):
     page.get_by_role("button", name="收藏").click()
     page.wait_for_timeout(1000)
     page.get_by_role("button", name="收藏").click()
+    return page
 
 
 # 进入账户设置页面
@@ -203,6 +213,7 @@ def update_user_picture(page: sync_api.Page, arglist: list):
     page.wait_for_timeout(1000)
     page.get_by_role("button", name="保存头像").click()
     page.wait_for_timeout(3000)
+    return page
 
 
 # 组织
@@ -389,6 +400,7 @@ def hover_create_model(page: sync_api.Page, arglist: list):
     page.locator('#e2e_headerUser_newModel').click()
     # 填入参数
     create_model(page, arglist)
+    page.wait_for_timeout(2000)
     # page.locator('#e2e_newModels_nameInput').fill(arglist[0])
     # page.get_by_placeholder("请填写模型别名").fill(arglist[1])
     # if arglist[2] == '私有模型':
@@ -400,6 +412,7 @@ def hover_create_model(page: sync_api.Page, arglist: list):
     # page.locator('#e2e_newModels_submitBtn').click()
     # page.wait_for_timeout(500)
     # # input()
+    return page
 
 
 # 创建模型
@@ -428,6 +441,8 @@ def delete_current_model(page: sync_api.Page):
     page.locator('.o-tab-nav').get_by_text('设置').click()
     page.locator('#e2e_deleteModel_inputValidation').fill('我已知晓，并确认删除模型')
     page.locator('#e2e_deleteModel_deleteBtn').click()
+    page.wait_for_timeout(2000)
+    return page
 
 
 # 修改当前模型私有
@@ -438,6 +453,8 @@ def change_current_model_private(page: sync_api.Page):
     page.wait_for_timeout(2000)
     page.get_by_text("私有模型").click()
     page.get_by_role("button", name="保存修改").click()
+    page.wait_for_timeout(2000)
+    return page
 
 
 # 修改当前模型别名
@@ -725,6 +742,7 @@ def feedback(page: sync_api.Page):
     page.get_by_role("button", name="确定").click()
     return page
 
+
 # 文档
 # 查看文档
 def go_docs(page: sync_api.Page):
@@ -732,94 +750,94 @@ def go_docs(page: sync_api.Page):
 
 
 def_dict = {
-            # 进入环境
-            '首次登录环境': login_first,
-            '登录环境': login_common,
-            '登录生产环境': login,
-            '进入首页': go_home,
-            '退出登录': logout,
+    # 进入环境
+    '首次登录环境': login_first,
+    '登录环境': login_common,
+    '登录生产环境': login,
+    '进入首页': go_home,
+    '退出登录': logout,
 
-            # 个人中心
-            '鼠标悬停在个人头像上': hover_user_img,
-            '进入个人中心': enter_user_center,
-            '创建令牌': create_token,
-            '删除最新创建的令牌': delete_first_token,
-            '注销并取消注销': log_out_user,
-            '收藏并取消收藏': like_and_not_like,
-            '进入账户设置': enter_user_setting,
-            '查看我创建的模型': show_my_models,
-            '查看我创建的组织': show_my_orgs,
-            '查看我创建的数据集': show_my_datasets,
-            '修改用户昵称签名': update_user_name_fullname,
-            '修改用户头像': update_user_picture,
-    
-            # 组织
-            '悬停方式创建组织': hover_create_organization,
-            '组织创建模型': org_create_model,
-            '组织创建数据集': org_create_dataset,
-            '组织邀请成员': org_invite_members,
-            '允许主动申请加入组织': allow_want_in_org,
-            '同意主动加入组织': allow_in_org,
-            '同意邀请加入组织': agree_org_invite,
-            '申请加入组织': user_want_in_org,
-            '拒绝加入组织': refuse_org_invite,
-            '查看指定组织': show_point_org,
-            '删除当前组织': delete_current_org,
-            '修改组织昵称介绍链接': update_org,
-            '修改组织封面': update_org_picture,
-    
-            # 数据集
-            '悬停方式创建数据集': hover_create_dataset,
-            '创建数据集': create_dataset,
-            '查看指定数据集': show_point_dataset,
-            '删除当前数据集': delete_current_dataset,
-            '修改当前数据集私有': change_current_dataset_private,
-            '查看数据集': go_datasets,
-    
-            # 模型
-            '悬停方式创建模型': hover_create_model,
-            '创建模型': create_model,
-            '查看指定模型': show_point_model,
-            '删除当前模型': delete_current_model,
-            '修改当前模型私有': change_current_model_private,
-            '修改当前模型别名': change_current_model_name,
-            '查看模型库': go_models,
-    
-            # 空间
-            '悬停方式创建空间': hover_create_space,
-            '删除当前空间': delete_current_space,
-            '修改当前空间': change_current_space,
-            '创建变量': create_variable,
-            '编辑变量': change_variable,
-            '删除变量': delete_variable,
-            '创建机密变量': create_secret,
-            '编辑机密变量': change_secret,
-            '删除机密变量': delete_secret,
-            '查看体验空间': go_spaces,
+    # 个人中心
+    '鼠标悬停在个人头像上': hover_user_img,
+    '进入个人中心': enter_user_center,
+    '创建令牌': create_token,
+    '删除最新创建的令牌': delete_first_token,
+    '注销并取消注销': log_out_user,
+    '收藏并取消收藏': like_and_not_like,
+    '进入账户设置': enter_user_setting,
+    '查看我创建的模型': show_my_models,
+    '查看我创建的组织': show_my_orgs,
+    '查看我创建的数据集': show_my_datasets,
+    '修改用户昵称签名': update_user_name_fullname,
+    '修改用户头像': update_user_picture,
 
-            # 讨论区
-            '创建讨论': create_issue,
-            '回复讨论': review_issue,
-            '编辑第一条讨论': edit_issue,
-            '删除第二条讨论': delete2nd_issue,
-            '举报第二条讨论': report2nd_issue,
-            '关闭讨论': close_issue,
-            '重启讨论': reuse_issue,
-            '切换讨论区状态': change_all_issue,
-            '查看讨论': view_issue,
-    
-            # 资源处理
-            '下载文件': download_point_file,
-            '编辑模型标签': edit_model_tags,
-            '新建文件': create_file,
-            '删除文件': delete_file,
+    # 组织
+    '悬停方式创建组织': hover_create_organization,
+    '组织创建模型': org_create_model,
+    '组织创建数据集': org_create_dataset,
+    '组织邀请成员': org_invite_members,
+    '允许主动申请加入组织': allow_want_in_org,
+    '同意主动加入组织': allow_in_org,
+    '同意邀请加入组织': agree_org_invite,
+    '申请加入组织': user_want_in_org,
+    '拒绝加入组织': refuse_org_invite,
+    '查看指定组织': show_point_org,
+    '删除当前组织': delete_current_org,
+    '修改组织昵称介绍链接': update_org,
+    '修改组织封面': update_org_picture,
 
-            # 反馈
-            '体验反馈': feedback,
+    # 数据集
+    '悬停方式创建数据集': hover_create_dataset,
+    '创建数据集': create_dataset,
+    '查看指定数据集': show_point_dataset,
+    '删除当前数据集': delete_current_dataset,
+    '修改当前数据集私有': change_current_dataset_private,
+    '查看数据集': go_datasets,
 
-            # 文档
-            '查看文档': go_docs,
-            }
+    # 模型
+    '悬停方式创建模型': hover_create_model,
+    '创建模型': create_model,
+    '查看指定模型': show_point_model,
+    '删除当前模型': delete_current_model,
+    '修改当前模型私有': change_current_model_private,
+    '修改当前模型别名': change_current_model_name,
+    '查看模型库': go_models,
+
+    # 空间
+    '悬停方式创建空间': hover_create_space,
+    '删除当前空间': delete_current_space,
+    '修改当前空间': change_current_space,
+    '创建变量': create_variable,
+    '编辑变量': change_variable,
+    '删除变量': delete_variable,
+    '创建机密变量': create_secret,
+    '编辑机密变量': change_secret,
+    '删除机密变量': delete_secret,
+    '查看体验空间': go_spaces,
+
+    # 讨论区
+    '创建讨论': create_issue,
+    '回复讨论': review_issue,
+    '编辑第一条讨论': edit_issue,
+    '删除第二条讨论': delete2nd_issue,
+    '举报第二条讨论': report2nd_issue,
+    '关闭讨论': close_issue,
+    '重启讨论': reuse_issue,
+    '切换讨论区状态': change_all_issue,
+    '查看讨论': view_issue,
+
+    # 资源处理
+    '下载文件': download_point_file,
+    '编辑模型标签': edit_model_tags,
+    '新建文件': create_file,
+    '删除文件': delete_file,
+
+    # 反馈
+    '体验反馈': feedback,
+
+    # 文档
+    '查看文档': go_docs,
+}
 tag_dict = {'pipeline_tag': '新增标签',
             'frameworks': '新增框架',
             'license': '新增许可证',
