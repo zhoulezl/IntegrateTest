@@ -53,6 +53,10 @@ openEuler:
 #                    2126744957@qq.com,
 #                    liuyu418@h-partners.com,
                     zhoule12@h-partners.com,
+                    1179845794@qq.com,
+#                    jun.zhongjun@huawei.com,
+#                    george.cao@huawei.com,
+#                    gongzhuangbang1@huawei.com,
 #                    jun.zhongjun@huawei.com,
 #                    george.cao@huawei.com,
 #                    gongzhuangbang1@huawei.com,
@@ -65,7 +69,7 @@ openEuler:
 #                    zhongyuanke@huawei.com
   test_case:
                     \本地play_UI _easySoftWare\test_cases\欧拉社区UI自动化测试用例.xlsx
-  case_numbers: 5
+  case_numbers: 30
   operation_dict: openEuler_operation_dict
   api_tag: modelers
   email_name:
@@ -74,9 +78,9 @@ openEuler:
                 openEuler-账号服务,
                 openEuler-主页,
                 openEuler-个人中心,
-                openEuler-消息中心，
-                openEuler-论坛,
-                openEuler-首页-导航
+                openEuler-消息中心,
+                openEuler-导航,
+                openEuler-页脚
 
 
 

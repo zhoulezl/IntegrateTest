@@ -11,7 +11,7 @@ def open_url(page: sync_api.Page):
     进入生产环境
     """
     page.goto('https://www.openeuler.org/zh/')
-    page.wait_for_timeout(2000)
+    page.wait_for_timeout(1000)
     return page
 
 
@@ -132,6 +132,8 @@ def enter_summits(page: sync_api.Page):
 
 def suspended_window_feedback(page: sync_api.Page, arglist: list):
     """ 悬浮窗反馈 """
+    page.get_by_role("button", name="全部接受").click()
+    page.wait_for_timeout(1000)
     page.locator("#app div").filter(
         has_text="您向他人推荐 openEuler社区 的可能性有多大？00-不可能10-非常可能0/500 感谢您的反馈，如需帮助，可论坛发帖求助提交").nth(
         3).click()
@@ -141,6 +143,288 @@ def suspended_window_feedback(page: sync_api.Page, arglist: list):
     page.get_by_placeholder("改进哪些方面会让您更愿意推荐？").fill(arglist[1])
     page.get_by_role("button", name="提交").click()
     page.wait_for_timeout(1000)
+    return page
+
+
+def click_support_diversity_devices(page: sync_api.Page):
+    """ 点击支持多样化设备 """
+    page.get_by_text("支持多样性设备").first.click()
+    expect(page.locator("div").filter(has_text=re.compile(
+        r"^支持多样性设备覆盖全场景应用完整开发工具链 立即体验支持多样性设备覆盖全场景应用完整开发工具链$")).get_by_role(
+        "img").first).to_be_visible()
+    print("断言支持多样化设备成功")
+    page.wait_for_timeout(1000)
+    return page
+
+
+def click_cover_all_scene_applications(page: sync_api.Page):
+    """ 点击覆盖全场景应用 """
+    page.get_by_text("覆盖全场景应用").first.click()
+    expect(page.locator("div").filter(has_text=re.compile(
+        r"^支持多样性设备覆盖全场景应用完整开发工具链 立即体验支持多样性设备覆盖全场景应用完整开发工具链$")).get_by_role(
+        "img").first).to_be_visible()
+    print("断言覆盖全场景应用成功")
+    page.wait_for_timeout(1000)
+    return page
+
+
+def click_complete_development_toolchain(page: sync_api.Page):
+    """ 点击完整开发工具链 """
+    page.get_by_text("完整开发工具链").first.click()
+    expect(page.locator("div").filter(has_text=re.compile(
+        r"^支持多样性设备覆盖全场景应用完整开发工具链 立即体验支持多样性设备覆盖全场景应用完整开发工具链$")).get_by_role(
+        "img").first).to_be_visible()
+    print("断言完整开发工具链成功")
+    page.wait_for_timeout(1000)
+    return page
+
+
+def click_try_now(page: sync_api.Page):
+    """ 立即体验 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("button", name="立即体验").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="贡献攻略")).to_be_visible()
+    print("点击立即体验成功")
+    page.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def click_user_cases(page: sync_api.Page, arglist: list):
+    """ 点击用户案例 """
+    if arglist[0] == "金融":
+        page.locator(".case-word").first.click()
+        expect(page.get_by_role("link", name="三湘银行 基于麒麟信安打造银行IT信息化系统安全底座")).to_be_visible()
+        expect(page.get_by_role("link", name="天弘基金 以服务器操作系统配合完成邮件与OA的改造")).to_be_visible()
+        expect(page.get_by_role("link", name="中国建设银行 分布式信用卡核心业务系统，单日交易量超过 1")).to_be_visible()
+        expect(page.get_by_role("link", name="兴业银行 某核心业务系统国产化改造项目")).to_be_visible()
+        page.wait_for_timeout(1000)
+        print("断言金融用户案例成功")
+        return page
+    elif arglist[0] == "运营商":
+        page.locator(".case-word").nth(1).click()
+        expect(page.get_by_role("link", name="天翼云科技有限公司")).to_be_visible()
+        expect(page.locator(".user-card").nth(26)).to_be_visible()
+        expect(page.get_by_role("link", name="中国联通")).to_be_visible()
+        expect(page.get_by_role("link", name="联通系统集成公司")).to_be_visible()
+        # page.wait_for_timeout(2000)
+        print("断言运营商用户案例成功")
+        return page
+    elif arglist[0] == "能源":
+        page.locator(".case-word").nth(2).click()
+        expect(page.get_by_role("link",
+                                name="国家电网 “国家电网河北智慧标杆站” 智慧工地系统，平滑完成操作系统创新，实现业务高效稳定运行")).to_be_visible()
+        expect(page.get_by_role("link", name="全面基于国内主流安全操作系统进行大规模建设")).to_be_visible()
+        expect(page.get_by_role("link", name="国家电网 智能调度系统 D5000")).to_be_visible()
+        expect(page.get_by_role("link", name="南京瀚元科技有限公司 A-OPS")).to_be_visible()
+        page.wait_for_timeout(1000)
+        print("断言能源用户案例成功")
+        return page
+    elif arglist[0] == "物流":
+        page.locator(".case-word").nth(3).click()
+        expect(page.get_by_role("link", name="中国邮政 OA 业务系统迁移改造")).to_be_visible()
+        page.wait_for_timeout(1000)
+        print("断言物流用户案例成功")
+        return page
+    elif arglist[0] == "高校&科研":
+        page.locator(".case-word").nth(4).click()
+        expect(page.get_by_role("link", name="华中科技大学/武汉理工大学 基于openEuler")).to_be_visible()
+        expect(page.get_by_role("link", name="上海交通大学 交大“交我算”计算集群：共建")).to_be_visible()
+        expect(page.get_by_role("link", name="兰州大学 openEuler + 鲲鹏全栈实现HPC性能倍增")).to_be_visible()
+        expect(page.get_by_role("link",
+                                name="南京信息工程大学 极端高温干旱天气模拟与预测平台，有效及时发现预警极端气候，提升应急处置能力，性能提升58%")).to_be_visible()
+        page.wait_for_timeout(1000)
+        print("断言高校&科研用户案例成功")
+        return page
+    elif arglist[0] == "云计算":
+        page.locator(".case-word").nth(5).click()
+        expect(page.get_by_role("link", name="中国电信 中国电信天翼云基于 openEuler 打造")).to_be_visible()
+        expect(page.get_by_role("link", name="中国移动云能力中心 基于openEuler")).to_be_visible()
+        expect(page.get_by_role("link",
+                                name="云宏信息科技股份有限公司 同比例虚拟机计算性能翻倍，金融行业上云效率提高")).to_be_visible()
+        expect(page.get_by_role("link", name="深信服科技股份有限公司 基于openEuler")).to_be_visible()
+        # page.wait_for_timeout(2000)
+        print("断言云计算用户案例成功")
+        return page
+    elif arglist[0] == "其他":
+        page.locator(".case-word").nth(6).click()
+        expect(page.get_by_role("link", name="确保网络环境的安全和高效运行")).to_be_visible()
+        expect(page.get_by_role("link",
+                                name="四川中电启明星技术有限公司 性能卓越，稳定可靠，环境级高可用， 智能运维，安全性，自主可控，可移植、易操作")).to_be_visible()
+        expect(page.get_by_role("link", name="科来网络技术股份有限公司 基于openEuler")).to_be_visible()
+        expect(page.get_by_role("link", name="新华社 新华社科技创新应用项目共筑 AI")).to_be_visible()
+        page.wait_for_timeout(1000)
+        print("断言其他用户案例成功")
+        return page
+
+
+def more_user_cases(page: sync_api.Page):
+    """ 点击查看更多案例 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("button", name="查看更多").first.click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="用户案例")).to_be_visible()
+    print("点击查看更多案例成功")
+    page.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def click_contribution_details(page: sync_api.Page):
+    """ 点击查看贡献详情 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("button", name="查看贡献详情").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("img", name="logo")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("点击贡献攻略成功")
+    page1.close()
+    return page
+
+
+def assert_community_dynamic_data(page: sync_api.Page):
+    """ 断言社区动态数据 """
+    assert page.locator(".round-value").first.inner_text() is not None, "社区动态数据不存在"
+    assert page.locator(".round-value").nth(1).inner_text() is not None, "社区动态数据不存在"
+    assert page.locator(".round-value").nth(2).inner_text() is not None, "社区动态数据不存在"
+    assert page.locator(".round-value").nth(3).inner_text() is not None, "社区动态数据不存在"
+    assert page.locator(".round-value").nth(4).inner_text() is not None, "社区动态数据不存在"
+    page.wait_for_timeout(1000)
+    print("断言社区动态数据成功")
+    return page
+
+
+def home_view_more_blog(page: sync_api.Page):
+    """ 点击查看更多博客 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("button", name="查看更多").nth(1).click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="博客", exact=True)).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("点击查看更多博客成功")
+    page1.close()
+    return page
+
+
+def assert_home_blog_data(page: sync_api.Page):
+    """ 断言首页博客数据 """
+    # print(page.locator(".room-item-right").first.text_content())
+    # page.wait_for_timeout(10000)
+    assert page.locator(".room-item-right").first.text_content() is not None, "首页博客数据不存在"
+    assert page.locator(".room-item-right").nth(1).text_content() is not None, "首页博客数据不存在"
+    assert page.locator(".room-item-right").nth(2).text_content() is not None, "首页博客数据不存在"
+    assert page.locator(".room-item-right").nth(3).text_content() is not None, "首页博客数据不存在"
+    page.wait_for_timeout(1000)
+    print("断言首页博客数据成功")
+    return page
+
+
+def home_view_more_news(page: sync_api.Page):
+    """ 点击查看更多新闻 """
+    page.get_by_role("tab", name="新闻").click()
+    page.wait_for_timeout(1000)
+    with page.expect_popup() as page_info:
+        page.get_by_role("button", name="查看更多").nth(1).click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="新闻")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("点击查看更多新闻成功")
+    page1.close()
+    return page
+
+
+def assert_home_news_data(page: sync_api.Page):
+    """ 断言首页新闻数据 """
+    assert page.locator(".room-item-right").nth(4).text_content() is not None, "首页新闻数据不存在"
+    assert page.locator(".room-item-right").nth(5).text_content() is not None, "首页新闻数据不存在"
+    assert page.locator(".room-item-right").nth(6).text_content() is not None, "首页新闻数据不存在"
+    assert page.locator(".room-item-right").nth(7).text_content() is not None, "首页新闻数据不存在"
+    page.wait_for_timeout(1000)
+    print("断言首页新闻数据成功")
+    return page
+
+
+def calendar_type_switch(page: sync_api.Page):
+    """ 日历类型切换 """
+    page.wait_for_timeout(1000)
+    page.locator("#tab-all").click()
+    page.wait_for_timeout(1000)
+    page.locator("#tab-meetings").click()
+    page.wait_for_timeout(1000)
+    page.locator("#tab-activity").click()
+    page.wait_for_timeout(1000)
+    page.locator("#tab-summit").click()
+    page.wait_for_timeout(1000)
+    page.locator("#tab-all").click()
+    return page
+
+
+def switch_month(page: sync_api.Page):
+    """ 切换月份 """
+    page.wait_for_timeout(1000)
+    old_month = page.locator(".month-date").inner_text()
+    page.locator("#meeting").get_by_role("img").nth(1).click()
+    new_month = page.locator(".month-date").inner_text()
+    assert old_month != new_month, "切换月份失败"
+    print("切换月份成功")
+    return page
+
+
+def meeting_details_collapse_expand(page: sync_api.Page):
+    """ 会议详情折叠/展开 """
+    page.wait_for_timeout(1000)
+    page.get_by_role("cell", name="05").locator("div").nth(1).click()
+    page.get_by_role("button", name="云原生sig例会 SIG组: sig-").click()
+    page.wait_for_timeout(1000)
+    page.get_by_role("button", name="云原生sig例会 SIG组: sig-").click()
+    expect(page.get_by_label("云原生sig例会SIG组: sig-")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("会议详情收起/展开成功")
+    return page
+
+
+def suspended_window_enter_forum(page: sync_api.Page):
+    """ 悬浮穿窗口进入论坛 """
+    page.wait_for_timeout(1000)
+    page.locator(".nav-box1 > div:nth-child(2) > span > svg").hover()
+    page.locator(".nav-box1 > div:nth-child(2) > span > svg").hover()
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="社区论坛").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("link", name="openEuler 论坛")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    print("悬浮穿窗口进入论坛成功")
+    page1.close()
+    return page
+
+
+def suspended_window_enter_quick_issue(page: sync_api.Page):
+    """ 悬浮穿窗口进入快速发布问题 """
+    page.wait_for_timeout(1000)
+    page.locator(".nav-box1 > div:nth-child(2) > span > svg").hover()
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="QuickIssue").click()
+    page1 = page_info.value
+    expect(page1.locator("div").filter(has_text=re.compile(r"^ISSUEPR API 中文 提交 Issue$")).locator(
+        "img").first).to_be_visible()
+    print("悬浮穿窗口进入快速发布问题成功")
+    page.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def suspended_window_enter_faqs(page: sync_api.Page):
+    """ 悬浮穿窗口进入常见问题 """
+    page.wait_for_timeout(1000)
+    page.locator(".nav-box1 > div:nth-child(2) > span > svg").hover()
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="FAQs").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="openEuler常见问题")).to_be_visible()
+    print("悬浮穿窗口进入常见问题成功")
+    page.wait_for_timeout(1000)
+    page1.close()
     return page
 
 
@@ -570,8 +854,9 @@ def click_euler_maker(page: sync_api.Page):
         page.get_by_text("EulerMaker").click()
     page1 = page_info.value
     expect(page1.get_by_text("EulerMaker", exact=True)).to_be_visible()
-    page1.wait_for_timeout(2000)
+    page1.wait_for_timeout(1000)
     print("进入EulerMaker成功")
+    page1.wait_for_timeout(1000)
     page1.close()
     return page  # 点击EulerMaker
 
@@ -921,6 +1206,142 @@ def click_mirror_warehouse_list(page: sync_api.Page):
     return page  # 点击镜像仓列表
 
 
+# 首页动态
+
+def click_news(page: sync_api.Page):
+    """ 点击新闻 """
+    page.get_by_text("新闻").first.click()
+    expect(page.get_by_role("heading", name="新闻")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入新闻成功")
+    return page  # 点击新闻
+
+
+def click_blog(page: sync_api.Page):
+    """ 点击博客 """
+    page.get_by_text("博客").first.click()
+    expect(page.get_by_role("heading", name="博客", exact=True)).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入博客成功")
+    return page  # 点击博客
+
+
+def click_activity(page: sync_api.Page):
+    """ 点击活动 """
+    page.get_by_text("活动").first.click()
+    expect(page.get_by_role("heading", name="活动")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入活动成功")
+    return page  # 点击活动
+
+
+def click_summit(page: sync_api.Page):
+    """ 点击峰会 """
+    page.get_by_text("峰会").first.click()
+    expect(page.get_by_role("heading", name="活动日程")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入峰会成功")
+    return page  # 点击峰会
+
+
+def click_monthly(page: sync_api.Page):
+    """ 点击月刊 """
+    page.get_by_text("月刊").first.click()
+    expect(page.get_by_role("heading", name="月刊")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入月刊成功")
+    return page  # 点击月刊
+
+
+def click_openeuler_forum(page: sync_api.Page):
+    """ 点击论坛 """
+    with page.expect_popup() as page_info:
+        page.get_by_text("论坛").first.click()
+    page1 = page_info.value
+    expect(page1.get_by_role("link", name="openEuler 论坛")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入论坛成功")
+    page1.close()
+    return page  # 点击论坛
+
+
+def click_mail_list(page: sync_api.Page):
+    """ 点击邮件列表 """
+    page.get_by_text("邮件列表").first.click()
+    expect(page.get_by_role("heading", name="邮件列表")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入邮件列表成功")
+    return page  # 点击邮件列表
+
+
+def click_online_meeting(page: sync_api.Page):
+    """ 点击线上会议 """
+    page.get_by_text("线上会议").first.click()
+    expect(page.get_by_role("heading", name="线上会议")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入线上会议成功")
+    return page  # 点击线上会议
+
+
+def click_social_media(page: sync_api.Page):
+    """ 点击社交媒体 """
+    page.get_by_text("社交媒体").first.click()
+    expect(page.get_by_role("heading", name="友情链接")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入社交媒体成功")
+    return page  # 点击社交媒体
+
+
+# 页脚
+def openatom_foundation(page: sync_api.Page):
+    """ 点击开放原子开源基金会 """
+    with page.expect_popup() as page_info:
+        page.locator(".atom > a").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("link", name="LOGO")).to_be_visible()
+    page.wait_for_timeout(1000)
+    page1.close()
+    print("进入开放原子开源基金会成功")
+    return page  # 点击开放原子开源基金会
+
+
+def brand(page: sync_api.Page):
+    """ 点击品牌 """
+    page.get_by_role("button", name="全部接受").click()
+    page.get_by_role("link", name="品牌").click()
+    expect(page.get_by_role("heading", name="品牌")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入品牌成功")
+    return page  # 点击品牌
+
+
+def privacy_policy(page: sync_api.Page):
+    """ 点击隐私政策 """
+    page.get_by_role("link", name="隐私政策").click()
+    expect(page.get_by_role("heading", name="隐私政策")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入隐私政策成功")
+    return page  # 点击隐私政策
+
+
+def law_declaration(page: sync_api.Page):
+    """ 点击法律声明 """
+    page.get_by_role("link", name="法律声明").click()
+    expect(page.get_by_role("heading", name="法律声明")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入法律声明成功")
+    return page  # 点击法律声明
+
+
+def about_cookies(page: sync_api.Page):
+    """ 点击关于cookies """
+    page.get_by_role("link", name="关于cookies").click()
+    expect(page.get_by_role("heading", name="关于 COOKIES")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入关于cookies成功")
+    return page  # 点击关于cookies
+
+
 # 定义字典
 def_dict = {
     # 进入环境
@@ -937,6 +1358,24 @@ def_dict = {
     "进入社区论坛": enter_openeuler_forum,
     "进入活动专区": enter_summits,
     "悬浮窗反馈": suspended_window_feedback,
+    "点击支持多样性设备": click_support_diversity_devices,
+    "点击覆盖全场景应用": click_cover_all_scene_applications,
+    "点击完整开发工具链": click_complete_development_toolchain,
+    "点击立即体验": click_try_now,
+    "点击主页用户案例": click_user_cases,
+    "更多用户案例": more_user_cases,
+    "点击查看贡献详情": click_contribution_details,
+    "断言社区动态有数据": assert_community_dynamic_data,
+    "主页查看更多博客": home_view_more_blog,
+    "断言主页博客有数据": assert_home_blog_data,
+    "主页查看更多新闻": home_view_more_news,
+    "断言主页新闻有数据": assert_home_news_data,
+    "日历类型切换": calendar_type_switch,
+    "切换月份": switch_month,
+    "会议详情收起与展开": meeting_details_collapse_expand,
+    "悬浮窗进入社区论坛": suspended_window_enter_forum,
+    "悬浮窗进入QuickIssue": suspended_window_enter_quick_issue,
+    "悬浮窗进入FAQs": suspended_window_enter_faqs,
 
     # 个人中心
     "进入个人中心": enter_user_center,
@@ -1021,5 +1460,23 @@ def_dict = {
     "点击社区发行版": click_community_release,
     "点击商业发行版": click_commercial_release,
     "点击镜像仓列表": click_mirror_warehouse_list,
+
+    # 首页动态
+    "点击新闻": click_news,
+    "点击博客": click_blog,
+    "点击活动": click_activity,
+    "点击峰会": click_summit,
+    "点击月刊": click_monthly,
+    "点击论坛": click_openeuler_forum,
+    "点击邮件列表": click_mail_list,
+    "点击线上会议": click_online_meeting,
+    "点击社交媒体": click_social_media,
+
+    # 页脚
+    "开放原子开源基金会": openatom_foundation,
+    "品牌": brand,
+    "隐私政策": privacy_policy,
+    "法律声明": law_declaration,
+    "关于cookies": about_cookies,
 
 }
