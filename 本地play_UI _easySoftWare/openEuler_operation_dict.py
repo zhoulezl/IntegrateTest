@@ -17,51 +17,47 @@ def open_url_test(page: sync_api.Page):
         进入测试环境
     """
     page.goto('https://openeuler.test.osinfra.cn/zh/')
-    page.wait_for_timeout(1000)
     return page
 
 
 def longin(page: sync_api.Page, arglist: list):
     """ 登录 """
-    page.locator(".login > .o-icon > svg").click()
+    page.locator(".login > .o-icon > svg").click()  # 点击右上角头像图标
     page.wait_for_timeout(2000)
-    page.get_by_placeholder("请输入您的手机号/用户名/邮箱地址").fill(arglist[0])
-    page.get_by_placeholder("请输入您的密码").fill(arglist[1])
-    page.get_by_role("button", name="登录").click()
+    page.get_by_placeholder("请输入您的手机号/用户名/邮箱地址").fill(arglist[0])  # 输入账号
+    page.get_by_placeholder("请输入您的密码").fill(arglist[1])  # 输入密码
+    page.get_by_role("button", name="登录").click()  # 点击登录按钮
     page.wait_for_timeout(2000)
-    page.hover('.user-img')
-    expect(page.get_by_text("退出登录")).to_be_visible()
-    print("登录成功")
-    return page
+    page.hover('.user-img')  # 鼠标悬浮在头像上
+    expect(page.get_by_text("退出登录")).to_be_visible()  # 有退出登录，则断言成功
+    return page  # 返回登录后的页面
 
 
 def longin_and_sign_privacy_statement(page: sync_api.Page, arglist: list):
     """ 登录并签署隐私声明 """
     page.wait_for_timeout(1000)
-    page.locator(".login > .o-icon > svg").click()
-    page.wait_for_timeout(2000)
-    page.get_by_placeholder("请输入您的手机号/用户名/邮箱地址").fill(arglist[0])
-    page.get_by_placeholder("请输入您的密码").fill(arglist[1])
-    page.get_by_role("button", name="登录").click()
-    page.wait_for_timeout(2000)
-    page.locator("label span").first.click()
-    page.get_by_role("button", name="确认").click()
-    page.wait_for_timeout(2000)
-    page.hover('.img[class*="img"]')
+    page.locator(".login > .o-icon > svg").click()  # 点击右上角头像图标
     page.wait_for_timeout(1000)
-    expect(page.get_by_text("退出登录")).to_be_visible()
-    print("登录并签署隐私声明成功")
+    page.get_by_placeholder("请输入您的手机号/用户名/邮箱地址").fill(arglist[0])  # 输入账号
+    page.get_by_placeholder("请输入您的密码").fill(arglist[1])  # 输入密码
+    page.get_by_role("button", name="登录").click()  # 点击登录按钮
+    page.wait_for_timeout(1000)
+    page.locator("label span").first.click()  # 勾选隐私声明
+    page.get_by_role("button", name="确认").click()  # 点击确认按钮
+    page.wait_for_timeout(1000)
+    page.hover('.img[class*="img"]')  # 鼠标悬浮在头像上
+    page.wait_for_timeout(1000)
+    expect(page.get_by_text("退出登录")).to_be_visible()  # 有退出登录，则断言成功
     return page
 
 
 def logout(page: sync_api.Page):
     """ 退出登录 """
-    page.locator('img[class*="img"]').first.hover()
-    page.get_by_text("退出登录").click()
-    page.wait_for_timeout(2000)
-    expect(page.locator(".login > .o-icon > svg")).to_be_visible()
-    print("退出登录成功")
+    page.locator('img[class*="img"]').first.hover()  # 鼠标悬浮在头像上
+    page.get_by_text("退出登录").click()  # 点击退出登录按钮
     page.wait_for_timeout(1000)
+    expect(page.locator(".login > .o-icon > svg")).to_be_visible()  # 断言
+    page.wait_for_timeout(500)
     return page
 
 
@@ -86,7 +82,6 @@ def enter_success_tories(page: sync_api.Page):
     page1 = page_info.value
     page1.wait_for_timeout(2000)
     expect(page1.get_by_role("heading", name="用户案例")).to_be_visible()
-    print("进入案例中心成功")
     page1.close()
     return page
 
@@ -98,7 +93,6 @@ def enter_migration_center(page: sync_api.Page):
     page1 = page_info.value
     page1.wait_for_timeout(2000)
     expect(page1.get_by_text("迁移专区", exact=True)).to_be_visible()
-    print("进入迁移专区成功")
     page1.close()
     return page
 
@@ -110,7 +104,6 @@ def enter_openeuler_forum(page: sync_api.Page):
     page1 = page_info.value
     page1.wait_for_timeout(2000)
     expect(page1.get_by_role("link", name="话题")).to_be_visible()
-    print("进入社区论坛成功")
     page1.close()
     return page
 
@@ -122,7 +115,6 @@ def enter_summits(page: sync_api.Page):
     page1 = page_info.value
     page1.wait_for_timeout(2000)
     expect(page1.get_by_role("heading", name="活动")).to_be_visible()
-    print("进入活动专区成功")
     page1.close()
     return page
 
@@ -149,7 +141,6 @@ def click_support_diversity_devices(page: sync_api.Page):
     expect(page.locator("div").filter(has_text=re.compile(
         r"^支持多样性设备覆盖全场景应用完整开发工具链 立即体验支持多样性设备覆盖全场景应用完整开发工具链$")).get_by_role(
         "img").first).to_be_visible()
-    print("断言支持多样化设备成功")
     page.wait_for_timeout(1000)
     return page
 
@@ -160,7 +151,6 @@ def click_cover_all_scene_applications(page: sync_api.Page):
     expect(page.locator("div").filter(has_text=re.compile(
         r"^支持多样性设备覆盖全场景应用完整开发工具链 立即体验支持多样性设备覆盖全场景应用完整开发工具链$")).get_by_role(
         "img").first).to_be_visible()
-    print("断言覆盖全场景应用成功")
     page.wait_for_timeout(1000)
     return page
 
@@ -171,7 +161,6 @@ def click_complete_development_toolchain(page: sync_api.Page):
     expect(page.locator("div").filter(has_text=re.compile(
         r"^支持多样性设备覆盖全场景应用完整开发工具链 立即体验支持多样性设备覆盖全场景应用完整开发工具链$")).get_by_role(
         "img").first).to_be_visible()
-    print("断言完整开发工具链成功")
     page.wait_for_timeout(1000)
     return page
 
@@ -182,7 +171,6 @@ def click_try_now(page: sync_api.Page):
         page.get_by_role("button", name="立即体验").click()
     page1 = page_info.value
     expect(page1.get_by_role("heading", name="贡献攻略")).to_be_visible()
-    print("点击立即体验成功")
     page.wait_for_timeout(1000)
     page1.close()
     return page
@@ -214,7 +202,6 @@ def click_user_cases(page: sync_api.Page, arglist: list):
         if category in ["金融", "能源", "高校&科研", "云计算", "其他"]:
             assert_user_cards(page, 4)
         page.wait_for_timeout(1000)
-        print(f"断言{category}用户案例成功")
         return page
     else:
         raise ValueError("未识别的案例类型")
@@ -226,7 +213,6 @@ def more_user_cases(page: sync_api.Page):
         page.get_by_role("button", name="查看更多").first.click()
     page1 = page_info.value
     expect(page1.get_by_role("heading", name="用户案例")).to_be_visible()
-    print("点击查看更多案例成功")
     page.wait_for_timeout(1000)
     page1.close()
     return page
@@ -239,7 +225,6 @@ def click_contribution_details(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_role("img", name="logo")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("点击贡献攻略成功")
     page1.close()
     return page
 
@@ -252,7 +237,6 @@ def assert_community_dynamic_data(page: sync_api.Page):
     assert page.locator(".round-value").nth(3).inner_text() is not None, "社区动态数据不存在"
     assert page.locator(".round-value").nth(4).inner_text() is not None, "社区动态数据不存在"
     page.wait_for_timeout(1000)
-    print("断言社区动态数据成功")
     return page
 
 
@@ -263,7 +247,6 @@ def home_view_more_blog(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_role("heading", name="博客", exact=True)).to_be_visible()
     page.wait_for_timeout(1000)
-    print("点击查看更多博客成功")
     page1.close()
     return page
 
@@ -277,7 +260,6 @@ def assert_home_blog_data(page: sync_api.Page):
     assert page.locator(".room-item-right").nth(2).text_content() is not None, "首页博客数据不存在"
     assert page.locator(".room-item-right").nth(3).text_content() is not None, "首页博客数据不存在"
     page.wait_for_timeout(1000)
-    print("断言首页博客数据成功")
     return page
 
 
@@ -290,7 +272,6 @@ def home_view_more_news(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_role("heading", name="新闻")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("点击查看更多新闻成功")
     page1.close()
     return page
 
@@ -302,7 +283,6 @@ def assert_home_news_data(page: sync_api.Page):
     assert page.locator(".room-item-right").nth(6).text_content() is not None, "首页新闻数据不存在"
     assert page.locator(".room-item-right").nth(7).text_content() is not None, "首页新闻数据不存在"
     page.wait_for_timeout(1000)
-    print("断言首页新闻数据成功")
     return page
 
 
@@ -328,7 +308,6 @@ def switch_month(page: sync_api.Page):
     page.locator("#meeting").get_by_role("img").nth(1).click()
     new_month = page.locator(".month-date").inner_text()
     assert old_month != new_month, "切换月份失败"
-    print("切换月份成功")
     return page
 
 
@@ -341,7 +320,6 @@ def meeting_details_collapse_expand(page: sync_api.Page):
     page.get_by_role("button", name="云原生sig例会 SIG组").click()
     expect(page.get_by_label("云原生sig例会SIG组: sig-")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("会议详情收起/展开成功")
     return page
 
 
@@ -355,7 +333,6 @@ def suspended_window_enter_forum(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_role("link", name="openEuler 论坛")).to_be_visible()
     page1.wait_for_timeout(1000)
-    print("悬浮穿窗口进入论坛成功")
     page1.close()
     return page
 
@@ -369,7 +346,6 @@ def suspended_window_enter_quick_issue(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.locator("div").filter(has_text=re.compile(r"^ISSUEPR API 中文 提交 Issue$")).locator(
         "img").first).to_be_visible()
-    print("悬浮穿窗口进入快速发布问题成功")
     page.wait_for_timeout(1000)
     page1.close()
     return page
@@ -383,7 +359,6 @@ def suspended_window_enter_faqs(page: sync_api.Page):
         page.get_by_role("link", name="FAQs").click()
     page1 = page_info.value
     expect(page1.get_by_role("heading", name="openEuler常见问题")).to_be_visible()
-    print("悬浮穿窗口进入常见问题成功")
     page.wait_for_timeout(1000)
     page1.close()
     return page
@@ -396,27 +371,22 @@ def enter_user_center(page: sync_api.Page):
     with page.expect_popup() as page1_info:
         page.get_by_text("个人中心").click()
     page1 = page1_info.value
-    # expect(page1.get_by_text("用户名称")).to_be_visible()
-    # page.close()
-    print("进入个人中心成功")
     return page1
 
 
 def change_user_avatar(page: sync_api.Page, arglist: list):
     """ 个人中心更换头像 """
-    old_img_src = page.locator("//img[@class='img']").get_attribute("src")
-    print(old_img_src)
+    old_img_src = page.locator("//img[@class='img']").get_attribute("src")  # 获取旧头像地址
+    # print(old_img_src)
     page.wait_for_timeout(1000)
     page.locator("//input[@type='file']").set_input_files(f"{arglist[0]}")
     page.wait_for_timeout(2000)
-    new_img_src = page.locator("//img[@class='img']").get_attribute("src")
-    print(new_img_src)
+    new_img_src = page.locator("//img[@class='img']").get_attribute("src")  # 获取新头像地址
+    # print(new_img_src)
     assert old_img_src != new_img_src, "更换头像失败"
-    print("更换头像成功")
     page.wait_for_timeout(1000)
     page.close()
     all_page = page.context.pages
-
     return all_page[0]
 
 
@@ -426,7 +396,6 @@ def change_nickname(page: sync_api.Page, arglist: list):
     page.get_by_placeholder("请输入你的昵称").fill(arglist[0])
     page.get_by_role("button", name="保存").click()
     expect(page.get_by_placeholder("请输入你的昵称")).to_have_value(arglist[0])
-    print("昵称修改成功")
     return page
 
 
@@ -436,7 +405,6 @@ def change_company(page: sync_api.Page, arglist: list):
     page.get_by_placeholder("请输入你的公司").fill(arglist[0])
     page.get_by_role("button", name="保存").click()
     expect(page.get_by_placeholder("请输入你的公司")).to_have_value(arglist[0])
-    print("公司修改成功")
     page.wait_for_timeout(1000)
     page.close()
     all_page = page.context.pages
@@ -450,7 +418,6 @@ def cancel_signature(page: sync_api.Page):
     page.locator(".el-input__inner").fill("delete")
     page.get_by_role("button", name="确认").click()
     expect(page.get_by_text("请先 登录 !")).to_be_visible()
-    print("取消签署成功")
     return page
 
 
@@ -463,7 +430,6 @@ def enter_messag2_center(page: sync_api.Page):
     page1 = page_info.value
     page1.wait_for_timeout(2000)
     expect(page1.get_by_text("消息中心")).to_be_visible()
-    print("进入消息中心成功")
     return page1
 
 
@@ -520,7 +486,6 @@ def click_user_case(page: sync_api.Page):
     """ 点击用户案例 """
     page.get_by_role("navigation").get_by_text("用户案例").click()
     expect(page.get_by_role("heading", name="用户案例")).to_be_visible()
-    print("进入用户案例成功")
     page.wait_for_timeout(1000)
     return page
 
@@ -529,7 +494,6 @@ def click_tech_white_paper(page: sync_api.Page):
     """ 点击技术白皮书 """
     page.get_by_text("技术白皮书").click()
     expect(page.get_by_role("heading", name="技术白皮书")).to_be_visible()
-    print("进入技术白皮书成功")
     page.wait_for_timeout(1000)
     return page
 
@@ -538,7 +502,6 @@ def click_industry_white_paper(page: sync_api.Page):
     """ 点击行业白皮书 """
     page.get_by_text("行业白皮书").click()
     expect(page.get_by_role("heading", name="行业白皮书")).to_be_visible()
-    print("进入行业白皮书成功")
     page.wait_for_timeout(1000)
     return page
 
@@ -547,40 +510,57 @@ def click_market_report(page: sync_api.Page):
     """ 点击市场研究报告 """
     page.get_by_text("市场研究报告").click()
     expect(page.get_by_role("heading", name="市场研究报告")).to_be_visible()
-    print("进入市场研究报告成功")
     page.wait_for_timeout(1000)
     return page
 
 
 def click_document(page: sync_api.Page, arglist: list):
     """ 点击文档 """
-    if arglist[0] == "开发者":
+    index_map = {
+        "开发者": 2,
+        "用户": 0,
+        "社区": 3
+    }
+    if arglist[0] in index_map:
         with page.expect_popup() as page_info:
-            page.get_by_text("文档").nth(2).click()
+            page.get_by_text("文档").nth(index_map[arglist[0]]).click()
         page1 = page_info.value
         expect(page1.locator("#left img")).to_be_visible()
-        print("进入文档成功")
         page1.wait_for_timeout(2000)
         page1.close()
-        return page
-    elif arglist[0] == "用户":
-        with page.expect_popup() as page_info:
-            page.get_by_text('文档').first.click()
-        page1 = page_info.value
-        expect(page1.locator("#left img")).to_be_visible()
-        print("进入文档成功")
-        page1.wait_for_timeout(2000)
-        page1.close()
-        return page
-    elif arglist[0] == "社区":
-        with page.expect_popup() as page_info:
-            page.get_by_text("文档").nth(3).click()
-        page1 = page_info.value
-        expect(page1.locator("#left img")).to_be_visible()
-        print("进入文档成功")
-        page1.wait_for_timeout(2000)
-        page1.close()
-        return page
+    return page
+
+
+# 简化前
+# def click_document(page: sync_api.Page, arglist: list):
+#     """ 点击文档 """
+#     if arglist[0] == "开发者":
+#         with page.expect_popup() as page_info:
+#             page.get_by_text("文档").nth(2).click()
+#         page1 = page_info.value
+#         expect(page1.locator("#left img")).to_be_visible()
+#         print("进入文档成功")
+#         page1.wait_for_timeout(2000)
+#         page1.close()
+#         return page
+#     elif arglist[0] == "用户":
+#         with page.expect_popup() as page_info:
+#             page.get_by_text('文档').first.click()
+#         page1 = page_info.value
+#         expect(page1.locator("#left img")).to_be_visible()
+#         print("进入文档成功")
+#         page1.wait_for_timeout(2000)
+#         page1.close()
+#         return page
+#     elif arglist[0] == "社区":
+#         with page.expect_popup() as page_info:
+#             page.get_by_text("文档").nth(3).click()
+#         page1 = page_info.value
+#         expect(page1.locator("#left img")).to_be_visible()
+#         print("进入文档成功")
+#         page1.wait_for_timeout(2000)
+#         page1.close()
+#         return page
 
 
 def click_man_pages(page: sync_api.Page):
@@ -589,7 +569,6 @@ def click_man_pages(page: sync_api.Page):
         page.get_by_text("Man Pages").click()
     page1 = page_info.value
     expect(page1.get_by_role("heading", name="Man Pages")).to_be_visible()
-    print("进入Man Pages成功")
     page1.wait_for_timeout(2000)
     page1.close()
     return page
@@ -597,26 +576,43 @@ def click_man_pages(page: sync_api.Page):
 
 def click_course_center(page: sync_api.Page, arglist: list):
     """ 点击课程中心 """
-    if arglist[0] == "开发者":
-        page.get_by_text("课程中心").nth(1).click()
+    index_map = {
+        "开发者": 1,
+        "用户": 0,
+        "社区": 2
+    }
+
+    if arglist[0] in index_map:
+        page.get_by_text("课程中心").nth(index_map[arglist[0]]).click()
         page.wait_for_timeout(1000)
         expect(page.get_by_role("heading", name="课程中心")).to_be_visible()
-        print("进入课程中心成功")
         page.wait_for_timeout(1000)
         return page
-    elif arglist[0] == "用户":
-        page.get_by_text("课程中心").first.click()
-        page.wait_for_timeout(1000)
-        expect(page.get_by_role("heading", name="课程中心")).to_be_visible()
-        print("进入课程中心成功")
-        page.wait_for_timeout(1000)
-        return page
-    elif arglist[0] == "社区":
-        page.get_by_text("课程中心").nth(2).click()
-        expect(page.get_by_role("heading", name="课程中心")).to_be_visible()
-        print("进入课程中心成功")
-        page.wait_for_timeout(1000)
-        return page
+
+
+# 简化前
+# def click_course_center(page: sync_api.Page, arglist: list):
+#     """ 点击课程中心 """
+#     if arglist[0] == "开发者":
+#         page.get_by_text("课程中心").nth(1).click()
+#         page.wait_for_timeout(1000)
+#         expect(page.get_by_role("heading", name="课程中心")).to_be_visible()
+#         print("进入课程中心成功")
+#         page.wait_for_timeout(1000)
+#         return page
+#     elif arglist[0] == "用户":
+#         page.get_by_text("课程中心").first.click()
+#         page.wait_for_timeout(1000)
+#         expect(page.get_by_role("heading", name="课程中心")).to_be_visible()
+#         print("进入课程中心成功")
+#         page.wait_for_timeout(1000)
+#         return page
+#     elif arglist[0] == "社区":
+#         page.get_by_text("课程中心").nth(2).click()
+#         expect(page.get_by_role("heading", name="课程中心")).to_be_visible()
+#         print("进入课程中心成功")
+#         page.wait_for_timeout(1000)
+#         return page
 
 
 def click_migration_center(page: sync_api.Page):
@@ -625,7 +621,6 @@ def click_migration_center(page: sync_api.Page):
     page.wait_for_timeout(1000)
     expect(page.get_by_text("迁移专区", exact=True)).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入迁移中心成功")
     return page
 
 
@@ -634,7 +629,6 @@ def click_operation_center(page: sync_api.Page):
     page.get_by_text("运维专区").click()
     expect(page.get_by_role("heading", name="运维专区")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入运维专区成功")
     return page
 
 
@@ -647,7 +641,6 @@ def click_software_center(page: sync_api.Page):
     page1.wait_for_timeout(2000)
     expect(page1.get_by_role("heading", name="openEuler软件中心")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入软件中心成功")
     page1.close()
     return page
 
@@ -659,7 +652,6 @@ def click_compatibility_test(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_text("openEuler兼容性测评服务")).to_be_visible()
     page1.wait_for_timeout(1000)
-    print("进入兼容性技术测评成功")
     page1.close()
     return page
 
@@ -669,7 +661,6 @@ def click_security_center(page: sync_api.Page):
     page.get_by_text("安全中心").click()
     expect(page.get_by_role("heading", name="安全中心")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入安全中心成功")
     return page
 
 
@@ -678,7 +669,6 @@ def click_bug_center(page: sync_api.Page):
     page.get_by_text("缺陷中心").click()
     expect(page.get_by_role("heading", name="缺陷中心")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入缺陷中心成功")
     return page
 
 
@@ -687,7 +677,6 @@ def click_osv_test(page: sync_api.Page):
     page.get_by_text("OSV技术测评", exact=True).click()
     expect(page.get_by_role("heading", name="OSV技术测评列表")).to_be_visible()  # 验证页面标题
     page.wait_for_timeout(1000)
-    print("进入OSV技术测评成功")
     return page
 
 
@@ -696,7 +685,6 @@ def click_compatibility_list(page: sync_api.Page):  # 点击兼容性列表
     page.get_by_text("兼容性列表", exact=True).click()
     expect(page.get_by_role("heading", name="兼容性列表")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入兼容性列表成功")
     return page
 
 
@@ -710,34 +698,60 @@ def hover_home_developer(page: sync_api.Page):
 
 def click_contribution_guide(page: sync_api.Page, arglist: list):
     """ 点击贡献攻略 """
-    if arglist[0] == "社区":
-        page.get_by_text("贡献攻略").nth(1).click()
-        expect(page.get_by_role("heading", name="贡献攻略")).to_be_visible()
-        page.wait_for_timeout(1000)
-        print("进入贡献攻略成功")
-        return page
-    elif arglist[0] == "开发者":
-        page.get_by_text("贡献攻略").first.click()
-        expect(page.get_by_role("heading", name="贡献攻略")).to_be_visible()
-        page.wait_for_timeout(1000)
-        print("进入贡献攻略成功")
-        return page
+    index = 1 if arglist[0] == "社区" else 0
+    page.get_by_text("贡献攻略").nth(index).click()
+    expect(page.get_by_role("heading", name="贡献攻略")).to_be_visible()
+    page.wait_for_timeout(1000)
+    print("进入贡献攻略成功")
+    return page
 
+
+# 简化前
+# def click_contribution_guide(page: sync_api.Page, arglist: list):
+#     """ 点击贡献攻略 """
+#     if arglist[0] == "社区":
+#         page.get_by_text("贡献攻略").nth(1).click()
+#         expect(page.get_by_role("heading", name="贡献攻略")).to_be_visible()
+#         page.wait_for_timeout(1000)
+#         print("进入贡献攻略成功")
+#         return page
+#     elif arglist[0] == "开发者":
+#         page.get_by_text("贡献攻略").first.click()
+#         expect(page.get_by_role("heading", name="贡献攻略")).to_be_visible()
+#         page.wait_for_timeout(1000)
+#         print("进入贡献攻略成功")
+#         return page
 
 def click_sig_center(page: sync_api.Page, arglist: list):
     """ 点击SIG中心 """
+
+    def enter_sig_center(index):
+        page.get_by_text("SIG中心").nth(index).click()
+        expect(page.get_by_role("heading", name="SIG中心")).to_be_visible()
+        page.wait_for_timeout(1000)
+        return page
+
     if arglist[0] == "开发者":
-        page.get_by_text("SIG中心").first.click()
-        expect(page.get_by_role("heading", name="SIG中心")).to_be_visible()
-        page.wait_for_timeout(1000)
-        print("进入SIG中心成功")
-        return page  # 点击SIG中心
+        return enter_sig_center(0)  # 第一个SIG中心
     elif arglist[0] == "社区":
-        page.get_by_text("SIG中心").nth(1).click()
-        expect(page.get_by_role("heading", name="SIG中心")).to_be_visible()
-        page.wait_for_timeout(1000)
-        print("进入SIG中心成功")
-        return page  # 点击SIG中心
+        return enter_sig_center(1)  # 第二个SIG中心
+
+
+# 简化前
+# def click_sig_center(page: sync_api.Page, arglist: list):
+#     """ 点击SIG中心 """
+#     if arglist[0] == "开发者":
+#         page.get_by_text("SIG中心").first.click()
+#         expect(page.get_by_role("heading", name="SIG中心")).to_be_visible()
+#         page.wait_for_timeout(1000)
+#         print("进入SIG中心成功")
+#         return page  # 点击SIG中心
+#     elif arglist[0] == "社区":
+#         page.get_by_text("SIG中心").nth(1).click()
+#         expect(page.get_by_role("heading", name="SIG中心")).to_be_visible()
+#         page.wait_for_timeout(1000)
+#         print("进入SIG中心成功")
+#         return page  # 点击SIG中心
 
 
 def click_openeuler_intern(page: sync_api.Page):
@@ -745,8 +759,7 @@ def click_openeuler_intern(page: sync_api.Page):
     page.get_by_text("开源实习").click()
     expect(page.get_by_role("heading", name="openEuler开源实习")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入开源实习成功")
-    return page  # 点击开源实习
+    return page
 
 
 def click_cla_sign(page: sync_api.Page):
@@ -756,9 +769,8 @@ def click_cla_sign(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_role("button", name="Sign Corporate CLA")).to_be_visible()
     page.wait_for_timeout(2000)
-    print("进入CLA签署成功")
     page1.close()
-    return page  # 点击CLA签署
+    return page
 
 
 def click_quick_issue(page: sync_api.Page):
@@ -768,9 +780,8 @@ def click_quick_issue(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_text("ISSUE", exact=True)).to_be_visible()
     page1.wait_for_timeout(2000)
-    print("进入QuickIssue成功")
     page1.close()
-    return page  # 点击QuickIssue
+    return page
 
 
 def click_software_package_contribution(page: sync_api.Page):
@@ -780,9 +791,8 @@ def click_software_package_contribution(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_text("贡献软件包").first).to_be_visible()
     page1.wait_for_timeout(2000)
-    print("进入软件包贡献成功")
     page1.close()
-    return page  # 点击软件包贡献
+    return page
 
 
 def click_euler_test(page: sync_api.Page):
@@ -792,9 +802,8 @@ def click_euler_test(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_text("radiaTest")).to_be_visible()
     page1.wait_for_timeout(2000)
-    print("进入EulerTest成功")
     page1.close()
-    return page  # 点击EulerTest
+    return page
 
 
 def click_compass_ci(page: sync_api.Page):
@@ -804,7 +813,6 @@ def click_compass_ci(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_text("Compass CI", exact=True)).to_be_visible()
     page1.wait_for_timeout(2000)
-    print("进入Compass-CI成功")
     page1.close()
     return page
 
@@ -816,10 +824,9 @@ def click_euler_maker(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_text("EulerMaker", exact=True)).to_be_visible()
     page1.wait_for_timeout(1000)
-    print("进入EulerMaker成功")
     page1.wait_for_timeout(1000)
     page1.close()
-    return page  # 点击EulerMaker
+    return page
 
 
 def click_pkgship(page: sync_api.Page):
@@ -829,9 +836,8 @@ def click_pkgship(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_role("heading", name="Packages in the palm of your")).to_be_visible()
     page1.wait_for_timeout(2000)
-    print("进入Pkgship成功")
     page1.close()
-    return page  # 点击Pkgship
+    return page
 
 
 def click_license_tool_portal(page: sync_api.Page):
@@ -841,9 +847,8 @@ def click_license_tool_portal(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_text("貂蝉 License Show Room")).to_be_visible()
     page1.wait_for_timeout(2000)
-    print("进入License工具门户成功")
     page1.close()
-    return page  # 点击License工具门户
+    return page
 
 
 def click_x2openeuler(page: sync_api.Page):
@@ -853,9 +858,8 @@ def click_x2openeuler(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_role("img", name="logo")).to_be_visible()
     page1.wait_for_timeout(2000)
-    print("进入x2openEuler成功")
     page1.close()
-    return page  # 点击x2openEuler
+    return page
 
 
 def click_oepkgs(page: sync_api.Page):
@@ -865,9 +869,8 @@ def click_oepkgs(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_role("img", name="logo-176-")).to_be_visible()
     page1.wait_for_timeout(2000)
-    print("进入OEPKGS成功")
     page1.close()
-    return page  # 点击OEPKGS
+    return page
 
 
 def click_oecp(page: sync_api.Page):
@@ -877,9 +880,8 @@ def click_oecp(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_text("openEuler/oecp", exact=True)).to_be_visible()
     page1.wait_for_timeout(2000)
-    print("进入oecp成功")
     page1.close()
-    return page  # 点击oecp
+    return page
 
 
 def click_euler_launcher(page: sync_api.Page):
@@ -889,9 +891,8 @@ def click_euler_launcher(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_text("openEuler/eulerlauncher", exact=True)).to_be_visible()
     page1.wait_for_timeout(2000)
-    print("进入EulerLauncher成功")
     page1.close()
-    return page  # 点击EulerLauncher
+    return page
 
 
 def click_user_software_warehouse(page: sync_api.Page):
@@ -901,9 +902,8 @@ def click_user_software_warehouse(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_role("heading", name="openEuler Copr hosts")).to_be_visible()
     page1.wait_for_timeout(2000)
-    print("进入用户软件仓成功")
     page1.close()
-    return page  # 点击用户软件仓
+    return page
 
 
 def click_code_warehouse(page: sync_api.Page):
@@ -913,9 +913,8 @@ def click_code_warehouse(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_role("link", name="openEuler", exact=True)).to_be_visible()
     page1.wait_for_timeout(2000)
-    print("进入代码仓成功")
     page1.close()
-    return page  # 点击代码仓
+    return page
 
 
 def click_software_package_warehouse(page: sync_api.Page):
@@ -925,9 +924,8 @@ def click_software_package_warehouse(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_role("link", name="src-openEuler", exact=True)).to_be_visible()
     page1.wait_for_timeout(2000)
-    print("进入软件包仓成功")
     page1.close()
-    return page  # 点击软件包仓
+    return page
 
 
 def click_github_mirror_warehouse(page: sync_api.Page):
@@ -937,9 +935,8 @@ def click_github_mirror_warehouse(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_role("heading", name="openEuler")).to_be_visible()
     page1.wait_for_timeout(2000)
-    print("进入Github镜像仓成功")
     page1.close()
-    return page  # 点击Github镜像仓
+    return page
 
 
 # 导航-社区
@@ -956,8 +953,7 @@ def click_organization_structure(page: sync_api.Page):
     page.get_by_role("navigation").get_by_text("组织架构").click()
     expect(page.get_by_text("组织架构")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入组织架构成功")
-    return page  # 点击组织架构
+    return page
 
 
 def click_community_charter(page: sync_api.Page):
@@ -965,8 +961,7 @@ def click_community_charter(page: sync_api.Page):
     page.get_by_role("navigation").get_by_text("社区章程").click()
     expect(page.get_by_text("政策和规则")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入社区章程成功")
-    return page  # 点击社区章程
+    return page
 
 
 def click_oeep(page: sync_api.Page):
@@ -974,8 +969,7 @@ def click_oeep(page: sync_api.Page):
     page.get_by_text("oEEP").click()
     expect(page.get_by_role("heading", name="oEEP 类型分类：")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入oEEP成功")
-    return page  # 点击oEEP
+    return page
 
 
 def click_city_user_group(page: sync_api.Page):
@@ -983,8 +977,7 @@ def click_city_user_group(page: sync_api.Page):
     page.get_by_text("城市用户组").click()
     expect(page.get_by_role("heading", name="openEuler 用户组")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入城市用户组成功")
-    return page  # 点击城市用户组
+    return page
 
 
 def click_member_units(page: sync_api.Page):
@@ -992,8 +985,7 @@ def click_member_units(page: sync_api.Page):
     page.get_by_text("成员单位").click()
     expect(page.get_by_text("成员单位")).to_be_visible()
     page.wait_for_timeout(2000)
-    print("进入成员单位成功")
-    return page  # 点击成员单位
+    return page
 
 
 def click_community_honor(page: sync_api.Page):
@@ -1001,8 +993,7 @@ def click_community_honor(page: sync_api.Page):
     page.get_by_text("社区荣誉").click()
     expect(page.get_by_role("heading", name="社区荣誉")).to_be_visible()
     page.wait_for_timeout(2000)
-    print("进入社区荣誉成功")
-    return page  # 点击社区荣誉
+    return page
 
 
 def click_openeuler_call_for_x_plan(page: sync_api.Page):
@@ -1010,8 +1001,7 @@ def click_openeuler_call_for_x_plan(page: sync_api.Page):
     page.get_by_text("openEuler Call for X 计划", exact=True).click()
     expect(page.get_by_role("heading", name="openEuler Call for X 计划")).to_be_visible()
     page.wait_for_timeout(2000)
-    print("进入openEuler Call for X 计划成功")
-    return page  # 点击openEuler Call for X 计划
+    return page
 
 
 def click_contribution_board(page: sync_api.Page):
@@ -1021,9 +1011,8 @@ def click_contribution_board(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_role("img", name="logo")).to_be_visible()
     page1.wait_for_timeout(2000)
-    print("进入贡献看板成功")
     page1.close()
-    return page  # 点击贡献看板
+    return page
 
 
 def click_university(page: sync_api.Page):
@@ -1031,8 +1020,7 @@ def click_university(page: sync_api.Page):
     page.get_by_text("高校", exact=True).click()
     expect(page.get_by_role("heading", name="高校", exact=True)).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入高校成功")
-    return page  # 点击高校
+    return page
 
 
 def click_recruitment_assessment(page: sync_api.Page):
@@ -1042,7 +1030,6 @@ def click_recruitment_assessment(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_text("人才能力评定", exact=True)).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入人才评定成功")
     page1.close()
     return page  # 点击人才评定
 
@@ -1052,7 +1039,6 @@ def click_a_tune(page: sync_api.Page):
     page.get_by_role("navigation").get_by_text("A-Tune").click()
     expect(page.get_by_role("heading", name="A-Tune")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入A-Tune成功")
     return page  # 点击A-Tune
 
 
@@ -1061,7 +1047,6 @@ def click_isula(page: sync_api.Page):
     page.get_by_text("iSula").click()
     expect(page.get_by_role("heading", name="iSula")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入iSula成功")
     return page  # 点击iSula
 
 
@@ -1070,8 +1055,7 @@ def click_strato_virt(page: sync_api.Page):
     page.get_by_text("StratoVirt").click()
     expect(page.get_by_role("heading", name="StratoVirt")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入StratoVirt成功")
-    return page  # 点击StratoVirt
+    return page
 
 
 def click_bisheng_jdk(page: sync_api.Page):
@@ -1079,8 +1063,7 @@ def click_bisheng_jdk(page: sync_api.Page):
     page.get_by_text("BiSheng JDK").click()
     expect(page.get_by_role("heading", name="毕昇JDK")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入BiSheng JDK成功")
-    return page  # 点击BiSheng JDK
+    return page
 
 
 def click_secgear(page: sync_api.Page):
@@ -1088,8 +1071,7 @@ def click_secgear(page: sync_api.Page):
     page.get_by_text("secGear").click()
     expect(page.get_by_role("heading", name="secGear")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入secGear成功")
-    return page  # 点击secGear
+    return page
 
 
 def click_nestos(page: sync_api.Page):
@@ -1099,9 +1081,8 @@ def click_nestos(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_role("heading", name="NestOS")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入NestOS成功")
     page1.close()
-    return page  # 点击NestOS
+    return page
 
 
 # 导航-下载
@@ -1118,8 +1099,7 @@ def click_get_openeuler_os(page: sync_api.Page):
     page.get_by_text("获取openEuler操作系统").click()
     expect(page.get_by_role("heading", name="获取openEuler操作系统")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入获取openEuler操作系统成功")
-    return page  # 点击获取openEuler操作系统
+    return page
 
 
 def click_openeuler_24_03_lts(page: sync_api.Page):
@@ -1127,8 +1107,7 @@ def click_openeuler_24_03_lts(page: sync_api.Page):
     page.get_by_text("openEuler 24.03 LTS", exact=True).click()
     expect(page.get_by_role("heading", name="下载", exact=True)).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入openEuler 24.03 LTS成功")
-    return page  # 点击openEuler 24.03 LTS
+    return page
 
 
 def click_openeuler_24_09(page: sync_api.Page):
@@ -1136,8 +1115,7 @@ def click_openeuler_24_09(page: sync_api.Page):
     page.get_by_role("list").get_by_text("openEuler 24.09", exact=True).click()
     expect(page.get_by_role("heading", name="下载", exact=True)).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入openEuler 24.09成功")
-    return page  # 点击openEuler 24.09
+    return page
 
 
 def click_community_release(page: sync_api.Page):
@@ -1145,8 +1123,7 @@ def click_community_release(page: sync_api.Page):
     page.get_by_role("list").get_by_text("社区发行版").click()
     expect(page.get_by_role("link", name="历史版本下载")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入社区发行版成功")
-    return page  # 点击社区发行版
+    return page
 
 
 def click_commercial_release(page: sync_api.Page):
@@ -1154,8 +1131,7 @@ def click_commercial_release(page: sync_api.Page):
     page.get_by_text("商业发行版").click()
     expect(page.get_by_role("tab", name="商业发行版")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入商业发行版成功")
-    return page  # 点击商业发行版
+    return page
 
 
 def click_mirror_warehouse_list(page: sync_api.Page):
@@ -1163,8 +1139,7 @@ def click_mirror_warehouse_list(page: sync_api.Page):
     page.get_by_text("镜像仓列表").click()
     expect(page.get_by_role("heading", name="镜像仓列表")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入镜像仓列表成功")
-    return page  # 点击镜像仓列表
+    return page
 
 
 # 首页动态
@@ -1174,8 +1149,7 @@ def click_news(page: sync_api.Page):
     page.get_by_text("新闻").first.click()
     expect(page.get_by_role("heading", name="新闻")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入新闻成功")
-    return page  # 点击新闻
+    return page
 
 
 def click_blog(page: sync_api.Page):
@@ -1183,8 +1157,7 @@ def click_blog(page: sync_api.Page):
     page.get_by_text("博客").first.click()
     expect(page.get_by_role("heading", name="博客", exact=True)).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入博客成功")
-    return page  # 点击博客
+    return page
 
 
 def click_activity(page: sync_api.Page):
@@ -1192,8 +1165,7 @@ def click_activity(page: sync_api.Page):
     page.get_by_text("活动").first.click()
     expect(page.get_by_role("heading", name="活动")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入活动成功")
-    return page  # 点击活动
+    return page
 
 
 def click_summit(page: sync_api.Page):
@@ -1201,8 +1173,7 @@ def click_summit(page: sync_api.Page):
     page.get_by_text("峰会").first.click()
     expect(page.get_by_role("heading", name="活动日程")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入峰会成功")
-    return page  # 点击峰会
+    return page
 
 
 def click_monthly(page: sync_api.Page):
@@ -1210,8 +1181,7 @@ def click_monthly(page: sync_api.Page):
     page.get_by_text("月刊").first.click()
     expect(page.get_by_role("heading", name="月刊")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入月刊成功")
-    return page  # 点击月刊
+    return page
 
 
 def click_openeuler_forum(page: sync_api.Page):
@@ -1221,9 +1191,8 @@ def click_openeuler_forum(page: sync_api.Page):
     page1 = page_info.value
     expect(page1.get_by_role("link", name="openEuler 论坛")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入论坛成功")
     page1.close()
-    return page  # 点击论坛
+    return page
 
 
 def click_mail_list(page: sync_api.Page):
@@ -1231,8 +1200,7 @@ def click_mail_list(page: sync_api.Page):
     page.get_by_text("邮件列表").first.click()
     expect(page.get_by_role("heading", name="邮件列表")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入邮件列表成功")
-    return page  # 点击邮件列表
+    return page
 
 
 def click_online_meeting(page: sync_api.Page):
@@ -1240,8 +1208,7 @@ def click_online_meeting(page: sync_api.Page):
     page.get_by_text("线上会议").first.click()
     expect(page.get_by_role("heading", name="线上会议")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入线上会议成功")
-    return page  # 点击线上会议
+    return page
 
 
 def click_social_media(page: sync_api.Page):
@@ -1249,8 +1216,7 @@ def click_social_media(page: sync_api.Page):
     page.get_by_text("社交媒体").first.click()
     expect(page.get_by_role("heading", name="友情链接")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入社交媒体成功")
-    return page  # 点击社交媒体
+    return page
 
 
 # 页脚
@@ -1262,8 +1228,7 @@ def openatom_foundation(page: sync_api.Page):
     expect(page1.get_by_role("link", name="LOGO")).to_be_visible()
     page.wait_for_timeout(1000)
     page1.close()
-    print("进入开放原子开源基金会成功")
-    return page  # 点击开放原子开源基金会
+    return page
 
 
 def brand(page: sync_api.Page):
@@ -1272,7 +1237,6 @@ def brand(page: sync_api.Page):
     page.get_by_role("link", name="品牌").click()
     expect(page.get_by_role("heading", name="品牌")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入品牌成功")
     return page  # 点击品牌
 
 
@@ -1281,8 +1245,7 @@ def privacy_policy(page: sync_api.Page):
     page.get_by_role("link", name="隐私政策").click()
     expect(page.get_by_role("heading", name="隐私政策")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入隐私政策成功")
-    return page  # 点击隐私政策
+    return page
 
 
 def law_declaration(page: sync_api.Page):
@@ -1290,7 +1253,6 @@ def law_declaration(page: sync_api.Page):
     page.get_by_role("link", name="法律声明").click()
     expect(page.get_by_role("heading", name="法律声明")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入法律声明成功")
     return page  # 点击法律声明
 
 
@@ -1299,8 +1261,7 @@ def about_cookies(page: sync_api.Page):
     page.get_by_role("link", name="关于cookies").click()
     expect(page.get_by_role("heading", name="关于 COOKIES")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入关于cookies成功")
-    return page  # 点击关于cookies
+    return page
 
 
 # 定义字典
