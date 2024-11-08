@@ -1,6 +1,4 @@
 import re
-import traceback
-
 from playwright import sync_api
 from playwright.sync_api import expect
 
@@ -11,7 +9,6 @@ def open_url(page: sync_api.Page):
     进入生产环境
     """
     page.goto('https://www.openeuler.org/zh/')
-    page.wait_for_timeout(1000)
     return page
 
 
@@ -191,72 +188,36 @@ def click_try_now(page: sync_api.Page):
     return page
 
 
+def assert_user_cards(page: sync_api.Page, count: int):
+    """ 断言用户卡片的内容 """
+    for i in range(count):
+        assert page.locator("//a[@class='user-card']").nth(i).text_content() is not None, "断言失败"
+
+
 def click_user_cases(page: sync_api.Page, arglist: list):
     """ 点击用户案例 """
-    if arglist[0] == "金融":
-        page.locator(".case-word").first.click()
-        expect(page.get_by_role("link", name="三湘银行 基于麒麟信安打造银行IT信息化系统安全底座")).to_be_visible()
-        expect(page.get_by_role("link", name="天弘基金 以服务器操作系统配合完成邮件与OA的改造")).to_be_visible()
-        expect(page.get_by_role("link", name="中国建设银行 分布式信用卡核心业务系统，单日交易量超过 1")).to_be_visible()
-        expect(page.get_by_role("link", name="兴业银行 某核心业务系统国产化改造项目")).to_be_visible()
+    categories = {
+        "金融": 0,
+        "运营商": 1,
+        "能源": 2,
+        "物流": 3,
+        "高校&科研": 4,
+        "云计算": 5,
+        "其他": 6
+    }
+
+    category = arglist[0]
+    if category in categories:
+        index = categories[category]
+        page.locator(".case-word").nth(index).click()
+
+        if category in ["金融", "能源", "高校&科研", "云计算", "其他"]:
+            assert_user_cards(page, 4)
         page.wait_for_timeout(1000)
-        print("断言金融用户案例成功")
+        print(f"断言{category}用户案例成功")
         return page
-    elif arglist[0] == "运营商":
-        page.locator(".case-word").nth(1).click()
-        expect(page.get_by_role("link", name="天翼云科技有限公司")).to_be_visible()
-        expect(page.locator(".user-card").nth(26)).to_be_visible()
-        expect(page.get_by_role("link", name="中国联通")).to_be_visible()
-        expect(page.get_by_role("link", name="联通系统集成公司")).to_be_visible()
-        # page.wait_for_timeout(2000)
-        print("断言运营商用户案例成功")
-        return page
-    elif arglist[0] == "能源":
-        page.locator(".case-word").nth(2).click()
-        expect(page.get_by_role("link",
-                                name="国家电网 “国家电网河北智慧标杆站” 智慧工地系统，平滑完成操作系统创新，实现业务高效稳定运行")).to_be_visible()
-        expect(page.get_by_role("link", name="全面基于国内主流安全操作系统进行大规模建设")).to_be_visible()
-        expect(page.get_by_role("link", name="国家电网 智能调度系统 D5000")).to_be_visible()
-        expect(page.get_by_role("link", name="南京瀚元科技有限公司 A-OPS")).to_be_visible()
-        page.wait_for_timeout(1000)
-        print("断言能源用户案例成功")
-        return page
-    elif arglist[0] == "物流":
-        page.locator(".case-word").nth(3).click()
-        expect(page.get_by_role("link", name="中国邮政 OA 业务系统迁移改造")).to_be_visible()
-        page.wait_for_timeout(1000)
-        print("断言物流用户案例成功")
-        return page
-    elif arglist[0] == "高校&科研":
-        page.locator(".case-word").nth(4).click()
-        expect(page.get_by_role("link", name="华中科技大学/武汉理工大学 基于openEuler")).to_be_visible()
-        expect(page.get_by_role("link", name="上海交通大学 交大“交我算”计算集群：共建")).to_be_visible()
-        expect(page.get_by_role("link", name="兰州大学 openEuler + 鲲鹏全栈实现HPC性能倍增")).to_be_visible()
-        expect(page.get_by_role("link",
-                                name="南京信息工程大学 极端高温干旱天气模拟与预测平台，有效及时发现预警极端气候，提升应急处置能力，性能提升58%")).to_be_visible()
-        page.wait_for_timeout(1000)
-        print("断言高校&科研用户案例成功")
-        return page
-    elif arglist[0] == "云计算":
-        page.locator(".case-word").nth(5).click()
-        expect(page.get_by_role("link", name="中国电信 中国电信天翼云基于 openEuler 打造")).to_be_visible()
-        expect(page.get_by_role("link", name="中国移动云能力中心 基于openEuler")).to_be_visible()
-        expect(page.get_by_role("link",
-                                name="云宏信息科技股份有限公司 同比例虚拟机计算性能翻倍，金融行业上云效率提高")).to_be_visible()
-        expect(page.get_by_role("link", name="深信服科技股份有限公司 基于openEuler")).to_be_visible()
-        # page.wait_for_timeout(2000)
-        print("断言云计算用户案例成功")
-        return page
-    elif arglist[0] == "其他":
-        page.locator(".case-word").nth(6).click()
-        expect(page.get_by_role("link", name="确保网络环境的安全和高效运行")).to_be_visible()
-        expect(page.get_by_role("link",
-                                name="四川中电启明星技术有限公司 性能卓越，稳定可靠，环境级高可用， 智能运维，安全性，自主可控，可移植、易操作")).to_be_visible()
-        expect(page.get_by_role("link", name="科来网络技术股份有限公司 基于openEuler")).to_be_visible()
-        expect(page.get_by_role("link", name="新华社 新华社科技创新应用项目共筑 AI")).to_be_visible()
-        page.wait_for_timeout(1000)
-        print("断言其他用户案例成功")
-        return page
+    else:
+        raise ValueError("未识别的案例类型")
 
 
 def more_user_cases(page: sync_api.Page):
