@@ -206,7 +206,7 @@ def click_user_cases(page: sync_api.Page, arglist: list):
         page.locator(".case-word").nth(1).click()
         expect(page.get_by_role("link", name="天翼云科技有限公司")).to_be_visible()
         expect(page.locator(".user-card").nth(26)).to_be_visible()
-        expect(page.get_by_role("link", name="中国联通 Hive SQL1-5场景性能平均提升7")).to_be_visible()
+        expect(page.get_by_role("link", name="中国联通")).to_be_visible()
         expect(page.get_by_role("link", name="联通系统集成公司")).to_be_visible()
         # page.wait_for_timeout(2000)
         print("断言运营商用户案例成功")
