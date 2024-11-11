@@ -822,8 +822,8 @@ def click_euler_maker(page: sync_api.Page):
     with page.expect_popup() as page_info:
         page.get_by_text("EulerMaker").click()
     page1 = page_info.value
-    expect(page1.get_by_text("EulerMaker", exact=True)).to_be_visible()
-    page1.wait_for_timeout(1000)
+    page1.wait_for_timeout(3000)
+    expect(page1.get_by_role("heading", name="欢迎使用EulerMaker")).to_be_visible()
     page1.wait_for_timeout(1000)
     page1.close()
     return page
@@ -878,8 +878,9 @@ def click_oecp(page: sync_api.Page):
     with page.expect_popup() as page_info:
         page.get_by_text("oecp").click()
     page1 = page_info.value
-    expect(page1.get_by_text("openEuler/oecp", exact=True)).to_be_visible()
     page1.wait_for_timeout(2000)
+    expect(page1.get_by_role("link", name="openEuler", exact=True)).to_be_visible()
+    page1.wait_for_timeout(1000)
     page1.close()
     return page
 
