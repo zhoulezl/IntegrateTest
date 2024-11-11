@@ -9,8 +9,9 @@ from config import YamlHandler
 import os
 import zipfile
 
-
 running_home = r"D:\pythonPro\IntegrateTest"
+
+
 class QQMail:
     def __init__(self, smtp_sender, smtp_passwd,
                  smtp_receiver):

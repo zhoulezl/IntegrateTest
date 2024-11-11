@@ -692,7 +692,6 @@ def click_compatibility_list(page: sync_api.Page):  # 点击兼容性列表
 def hover_home_developer(page: sync_api.Page):
     """ 鼠标悬浮开发者 """
     page.locator(".nav-item").nth(1).hover()  # 鼠标悬浮开发者
-    page.wait_for_timeout(1000)
     return page
 
 
@@ -702,7 +701,6 @@ def click_contribution_guide(page: sync_api.Page, arglist: list):
     page.get_by_text("贡献攻略").nth(index).click()
     expect(page.get_by_role("heading", name="贡献攻略")).to_be_visible()
     page.wait_for_timeout(1000)
-    print("进入贡献攻略成功")
     return page
 
 

@@ -4,7 +4,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
 
 
-def make_excel(data: dict,big_key):
+def make_excel(data: dict, big_key):
     data = data
     # 创建一个新的工作簿
     wb = Workbook()
@@ -194,4 +194,5 @@ if __name__ == '__main__':
                                         '下载文件\n',
                                         '删除当前数据集\n', '退出登录\n'], '测试通过']],
                   '总计': ['总计', 2, 0, 100]}
+
     make_excel(excel_data)

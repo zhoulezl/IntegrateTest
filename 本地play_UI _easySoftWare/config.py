@@ -2,6 +2,7 @@ from configparser import ConfigParser
 import os
 import yaml
 
+
 class YamlHandler:
     def __init__(self, file):
         self.file = file
