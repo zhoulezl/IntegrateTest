@@ -40,32 +40,30 @@ import requests
 import os
 
 
-
-
 # 2.在文件列表中依次获取页列表，放置在页列表 caseSheets中
 class AutoTestFile:
     def __init__(self, caseFlie):
         self.caseFlie = caseFlie
 
-    #取得全部页
+    # 取得全部页
     def __getSheets(self, caseFlie):
         pass
 
-    #计算通过率
+    # 计算通过率
     def __getPassRate(self):
         pass
 
 
-#3. 通过页名，取得每页的全部case
+# 3. 通过页名，取得每页的全部case
 class CaseSheet:
     def __init__(self, caseSheet):
         self.caseSheet = caseSheet
 
-    #取得当前页全部case
+    # 取得当前页全部case
     def __getCases(self):
         pass
 
-    #取得当前页case数量
+    # 取得当前页case数量
     def __getCaseNum(self):
         pass
 
@@ -91,11 +89,13 @@ class Case:
         self.caseDesignTime = caseList[9]
         self.caseIsPass = False
 
-        #初始化时直接执行，同时给caseIsPass字段赋值
+        # 初始化时直接执行，同时给caseIsPass字段赋值
         def __caseTesting(self):
             pass
 
         self.caseTesting()
+
+
 if __name__ == '__main__':
     #  1.获取当前目录下的自动化测试文件，放置在文件列表：caseFiles[]
     caseFlies = []

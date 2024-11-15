@@ -1,8 +1,8 @@
 import subprocess
 
 # 指定JMeter的bin目录和JMX脚本路径D:/app/oneid.jtl
-jmeter_bin = "D:/apache-jmeter-5.6.3/bin/"
-jmx_script = "D:/PY_pros/pythonProject/autoTest/maoyan.jmx"
+jmeter_bin = "D:/jimter/apache-jmeter-5.6.3/apache-jmeter-5.6.3/bin/"
+jmx_script = "D:/pythonPro/IntegrateTest/Auto_test_ly/autoTest/maoyan.jmx"
 
 # 使用subprocess模块调用JMeter命令行执行JMX脚本
 cmd = f"{jmeter_bin}jmeter -n -t {jmx_script}"
