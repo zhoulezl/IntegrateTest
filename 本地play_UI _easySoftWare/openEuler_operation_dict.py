@@ -1605,9 +1605,7 @@ def suspended_window_feedback(page: sync_api.Page, arglist: list):
     """ 悬浮窗反馈 """
     page.get_by_role("button", name="全部接受").click()
     page.wait_for_timeout(1000)
-    page.locator("#app div").filter(
-        has_text="您向他人推荐 openEuler社区 的可能性有多大？00-不可能10-非常可能0/500 感谢您的反馈，如需帮助，可论坛发帖求助提交").nth(
-        3).click()
+    page.locator("#feedback").get_by_role("img").first.click()
     page.wait_for_timeout(1000)
     page.locator(f"div:nth-child(3) > div:nth-child({arglist[0]})").first.click()  # 9,8,7,6,5
     page.wait_for_timeout(1000)
@@ -1794,49 +1792,69 @@ def assert_community_dynamic_data(page: sync_api.Page):
     return page
 
 
-def home_view_more_blog(page: sync_api.Page):
-    """ 点击查看更多博客 """
+def assert_blog_data_and_more(page: sync_api.Page):
+    """ 断言博客数据和查看更多 """
+    page.get_by_role("main").get_by_text("博客").click()
+    expect(page.locator(
+        ".o-card o-card-layout-v o-card-hoverable o-card-cursor-pointer trend-card trend-blog")).first.to_be_visible()
+    page.wait_for_timeout(1000)
+    expect(page.locator(".o-card o-card-layout-v o-card-hoverable o-card-cursor-pointer trend-card trend-blog").nth(
+        1)).to_be_visible()
+    page.wait_for_timeout(1000)
+    expect(page.locator(".o-card o-card-layout-v o-card-hoverable o-card-cursor-pointer trend-card trend-blog").nth(
+        2)).to_be_visible()
+    page.wait_for_timeout(1000)
+    expect(page.locator(".o-card o-card-layout-v o-card-hoverable o-card-cursor-pointer trend-card trend-blog").nth(
+        3)).to_be_visible()
+    page.wait_for_timeout(1000)
+    expect(page.locator(".o-card o-card-layout-v o-card-hoverable o-card-cursor-pointer trend-card trend-blog").nth(
+        4)).to_be_visible()
+    page.wait_for_timeout(1000)
+    return page
+
+
+def home_more_blog(page: sync_api.Page):
+    """ 点击首页查看更多博客 """
     with page.expect_popup() as page_info:
-        page.get_by_role("button", name="查看更多").nth(1).click()
+        page.get_by_role("link", name="查看更多").nth(1).click()
     page1 = page_info.value
     expect(page1.get_by_role("heading", name="博客", exact=True)).to_be_visible()
-    page.wait_for_timeout(1000)
+    page1.wait_for_timeout(1000)
     page1.close()
     return page
 
 
-def assert_home_blog_data(page: sync_api.Page):
-    """ 断言首页博客数据 """
-    # print(page.locator(".room-item-right").first.text_content())
-    # page.wait_for_timeout(10000)
-    assert page.locator(".room-item-right").first.text_content() is not None, "首页博客数据不存在"
-    assert page.locator(".room-item-right").nth(1).text_content() is not None, "首页博客数据不存在"
-    assert page.locator(".room-item-right").nth(2).text_content() is not None, "首页博客数据不存在"
-    assert page.locator(".room-item-right").nth(3).text_content() is not None, "首页博客数据不存在"
+def assert_news_data_and_more(page: sync_api.Page):
+    """ 断言新闻数据和查看更多 """
+    page.get_by_role("main").get_by_text("新闻").click()
+    expect(page.locator(
+        ".o-card o-card-layout-v o-card-hoverable o-card-cursor-pointer trend-card")).first.to_be_visible()
+    page.wait_for_timeout(1000)
+    expect(page.locator(".o-card o-card-layout-v o-card-hoverable o-card-cursor-pointer trend-card").nth(
+        1)).to_be_visible()
+    page.wait_for_timeout(1000)
+    expect(page.locator(".o-card o-card-layout-v o-card-hoverable o-card-cursor-pointer trend-card").nth(
+        2)).to_be_visible()
+    page.wait_for_timeout(1000)
+    expect(page.locator(".o-card o-card-layout-v o-card-hoverable o-card-cursor-pointer trend-card").nth(
+        3)).to_be_visible()
+    page.wait_for_timeout(1000)
+    expect(page.locator(".o-card o-card-layout-v o-card-hoverable o-card-cursor-pointer trend-card").nth(
+        4)).to_be_visible()
+    page.wait_for_timeout(1000)
+
     page.wait_for_timeout(1000)
     return page
 
 
-def home_view_more_news(page: sync_api.Page):
-    """ 点击查看更多新闻 """
-    page.get_by_role("tab", name="新闻").click()
-    page.wait_for_timeout(1000)
+def home_more_news(page: sync_api.Page):
+    """ 点击首页查看更多新闻 """
     with page.expect_popup() as page_info:
-        page.get_by_role("button", name="查看更多").nth(1).click()
+        page.get_by_role("link", name="查看更多").nth(1).click()
     page1 = page_info.value
     expect(page1.get_by_role("heading", name="新闻")).to_be_visible()
-    page.wait_for_timeout(1000)
     page1.close()
-    return page
-
-
-def assert_home_news_data(page: sync_api.Page):
-    """ 断言首页新闻数据 """
-    assert page.locator(".room-item-right").nth(4).text_content() is not None, "首页新闻数据不存在"
-    assert page.locator(".room-item-right").nth(5).text_content() is not None, "首页新闻数据不存在"
-    assert page.locator(".room-item-right").nth(6).text_content() is not None, "首页新闻数据不存在"
-    assert page.locator(".room-item-right").nth(7).text_content() is not None, "首页新闻数据不存在"
-    page.wait_for_timeout(1000)
+    page1.wait_for_timeout(1000)
     return page
 
 
@@ -1881,13 +1899,11 @@ def meeting_details_collapse_expand(page: sync_api.Page):
 
 def suspended_window_enter_forum(page: sync_api.Page):
     """ 悬浮穿窗口进入论坛 """
-    page.wait_for_timeout(1000)
-    page.locator(".nav-box1 > div:nth-child(2) > span > svg").hover()
-    page.locator(".nav-box1 > div:nth-child(2) > span > svg").hover()
+    page.locator("#issueback").get_by_role("img").first.click()
     with page.expect_popup() as page_info:
-        page.get_by_role("link", name="社区论坛").click()
+        page.get_by_role("link", name="社区论坛 发帖互助解决各类问题").click()
     page1 = page_info.value
-    expect(page1.get_by_role("link", name="openEuler 论坛")).to_be_visible()
+    expect(page1.get_by_role("link", name="话题")).to_be_visible()
     page1.wait_for_timeout(1000)
     page1.close()
     return page
@@ -1895,13 +1911,11 @@ def suspended_window_enter_forum(page: sync_api.Page):
 
 def suspended_window_enter_quick_issue(page: sync_api.Page):
     """ 悬浮穿窗口进入快速发布问题 """
-    page.wait_for_timeout(1000)
-    page.locator(".nav-box1 > div:nth-child(2) > span > svg").hover()
+    page.locator("#issueback").get_by_role("img").first.click()
     with page.expect_popup() as page_info:
-        page.get_by_role("link", name="QuickIssue").click()
+        page.get_by_role("link", name="QuickIssue 快捷提交/查询社区Issues").click()
     page1 = page_info.value
-    expect(page1.locator("div").filter(has_text=re.compile(r"^ISSUEPR API 中文 提交 Issue$")).locator(
-        "img").first).to_be_visible()
+    expect(page1.get_by_role("button", name="提交 Issue")).to_be_visible()
     page.wait_for_timeout(1000)
     page1.close()
     return page
@@ -1909,18 +1923,252 @@ def suspended_window_enter_quick_issue(page: sync_api.Page):
 
 def suspended_window_enter_faqs(page: sync_api.Page):
     """ 悬浮穿窗口进入常见问题 """
-    page.wait_for_timeout(1000)
-    page.locator(".nav-box1 > div:nth-child(2) > span > svg").hover()
+    page.locator("#issueback").get_by_role("img").first.click()
     with page.expect_popup() as page_info:
         page.get_by_role("link", name="FAQs").click()
     page1 = page_info.value
-    expect(page1.get_by_role("heading", name="openEuler常见问题")).to_be_visible()
-    page.wait_for_timeout(1000)
+    expect(page1.get_by_role("heading", name="openEuler 常见问题")).to_be_visible()
+    page1.wait_for_timeout(1000)
     page1.close()
     return page
 
 
 # 页脚
+
+def enter_footer_member_units(page: sync_api.Page):
+    """ 进入页脚成员单位 """
+    with page.expect_popup() as page_info:
+        page.locator("#tour_footer").get_by_role("link", name="成员单位").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("complementary").get_by_text("成员单位")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_organization_structure(page: sync_api.Page):
+    """ 进入页脚组织架构 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="组织架构").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("complementary").get_by_text("组织架构")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_community_charter(page: sync_api.Page):
+    """ 进入页脚社区章程 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="社区章程").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="openEuler项目群开源治理制度")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_contribution_board(page: sync_api.Page):
+    """ 进入页脚贡献板 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="贡献看板").click()
+    page1 = page_info.value
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_community_intro(page: sync_api.Page):
+    """ 进入页脚社区介绍 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="社区介绍").click()
+    page1 = page_info.value
+    current_url = page1.url
+    print(current_url)
+    assert current_url == ("https://www.openeuler.org/whitepaper/"
+                           "openEuler%20%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA%E4%BB%8B%E7%BB%8D.pdf"), "URL 不匹配！"
+    page1.wait_for_timeout(3000)
+    page1.close()
+    return page
+
+
+def enter_footer_news(page: sync_api.Page):
+    """ 进入页脚新闻 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="新闻").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="新闻")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_blog(page: sync_api.Page):
+    """ 进入页脚博客 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="博客").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="博客", exact=True)).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_white_paper(page: sync_api.Page):
+    """ 进入页脚白皮书 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="白皮书", exact=True).click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="白皮书")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_get_openeuler_os(page: sync_api.Page):
+    """ 进入页脚获取openEuler操作系统 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="获取openEuler操作系统").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="获取openEuler操作系统")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_latest_community_release(page: sync_api.Page):
+    """ 进入页脚最新社区发行版 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="最新社区发行版").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="下载", exact=True)).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_commercial_release(page: sync_api.Page):
+    """ 进入页脚商业发行版 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="商业发行版").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("tab", name="商业发行版")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_software_center(page: sync_api.Page):
+    """ 进入页脚软件中心 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="软件中心").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="openEuler软件中心")).to_be_visible()
+    page1.wait_for_timeout(2000)
+    page1.close()
+    return page
+
+
+def enter_footer_document(page: sync_api.Page):
+    """ 进入页脚文档 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="文档").click()
+    page1 = page_info.value
+    expect(page1.locator("#left img")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_faq(page: sync_api.Page):
+    """ 进入页脚FAQ """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="FAQ").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="openEuler 常见问题")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_mail_list(page: sync_api.Page):
+    """ 进入页脚邮件列表 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="邮件列表").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="邮件列表")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_contact_us(page: sync_api.Page):
+    """ 进入页脚联系我们 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="联系我们").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="联系我们")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_activities(page: sync_api.Page):
+    """ 进入页脚活动 """
+
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="活动", exact=True).click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="活动")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_forum(page: sync_api.Page):
+    """ 进入页脚论坛 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="论坛").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("link", name="话题")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_sig_center(page: sync_api.Page):
+    """ 进入页脚SIG中心 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="SIG中心", exact=True).click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="SIG中心")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_contribution_strategy(page: sync_api.Page):
+    """ 进入页脚贡献攻略 """
+    with page.expect_popup() as page_info:
+        page.locator("#tour_footer").get_by_role("link", name="贡献攻略").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="贡献攻略")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
+def enter_footer_course_center(page: sync_api.Page):
+    """ 进入页脚课程中心 """
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="课程中心").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="课程中心")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
+    return page
+
+
 def openatom_foundation(page: sync_api.Page):
     """ 点击开放原子开源基金会 """
     with page.expect_popup() as page_info:
@@ -1935,33 +2183,45 @@ def openatom_foundation(page: sync_api.Page):
 def brand(page: sync_api.Page):
     """ 点击品牌 """
     page.get_by_role("button", name="全部接受").click()
-    page.get_by_role("link", name="品牌").click()
-    expect(page.get_by_role("heading", name="品牌")).to_be_visible()
-    page.wait_for_timeout(1000)
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="品牌").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="商标", exact=True)).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
     return page  # 点击品牌
 
 
 def privacy_policy(page: sync_api.Page):
     """ 点击隐私政策 """
-    page.get_by_role("link", name="隐私政策").click()
-    expect(page.get_by_role("heading", name="隐私政策")).to_be_visible()
-    page.wait_for_timeout(1000)
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="隐私政策").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="隐私政策")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
     return page
 
 
 def law_declaration(page: sync_api.Page):
     """ 点击法律声明 """
-    page.get_by_role("link", name="法律声明").click()
-    expect(page.get_by_role("heading", name="法律声明")).to_be_visible()
-    page.wait_for_timeout(1000)
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="法律声明").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="法律声明")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
     return page  # 点击法律声明
 
 
 def about_cookies(page: sync_api.Page):
     """ 点击关于cookies """
-    page.get_by_role("link", name="关于cookies").click()
-    expect(page.get_by_role("heading", name="关于 COOKIES")).to_be_visible()
-    page.wait_for_timeout(1000)
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="关于cookies").click()
+    page1 = page_info.value
+    expect(page1.get_by_role("heading", name="关于 COOKIES")).to_be_visible()
+    page1.wait_for_timeout(1000)
+    page1.close()
     return page
 
 
@@ -2116,7 +2376,6 @@ def_dict = {
     "进入首页安全中心": enter_security_center_home,
     "进入首页迁移专区": enter_migration_center_home,
     "进入首页活动专区": enter_summits_home,
-    "悬浮窗反馈": suspended_window_feedback,
     "点击支持多样性设备": click_support_diversity_devices,
     "点击覆盖全场景应用": click_cover_all_scene_applications,
     "点击完整开发工具链": click_complete_development_toolchain,
@@ -2129,18 +2388,40 @@ def_dict = {
     "查看更多": more_user_cases,
     "点击查看贡献详情": click_contribution_details,
     "断言社区活力有数据": assert_community_dynamic_data,
-    "主页查看更多博客": home_view_more_blog,
-    "断言主页博客有数据": assert_home_blog_data,
-    "主页查看更多新闻": home_view_more_news,
-    "断言主页新闻有数据": assert_home_news_data,
+    "首页断言博客数据": assert_blog_data_and_more,
+    "首页查看更多博客": home_more_blog,
+    "首页断言新闻数据": assert_news_data_and_more,
+    "首页查看更多新闻": home_more_news,
     "日历类型切换": calendar_type_switch,
     "切换月份": switch_month,
     "会议详情收起与展开": meeting_details_collapse_expand,
     "悬浮窗进入社区论坛": suspended_window_enter_forum,
     "悬浮窗进入QuickIssue": suspended_window_enter_quick_issue,
     "悬浮窗进入FAQs": suspended_window_enter_faqs,
+    "悬浮窗反馈": suspended_window_feedback,
 
     # 页脚
+    "进入页脚成员单位": enter_footer_member_units,
+    "进入页脚组织架构": enter_footer_organization_structure,
+    "进入页脚社区章程": enter_footer_community_charter,
+    "进入页脚贡献看板": enter_footer_contribution_board,
+    "进入页脚社区介绍": enter_footer_community_intro,
+    "进入页脚新闻": enter_footer_news,
+    "进入页脚博客": enter_footer_blog,
+    "进入页脚白皮书": enter_footer_white_paper,
+    "进入页脚获取openEuler操作系统": enter_footer_get_openeuler_os,
+    "进入页脚最新社区发行版": enter_footer_latest_community_release,
+    "进入页脚商业发行版": enter_footer_commercial_release,
+    "进入页脚软件中心": enter_footer_software_center,
+    "进入页脚文档": enter_footer_document,
+    "进入页脚FAQ": enter_footer_faq,
+    "进入页脚联系我们": enter_footer_contact_us,
+    "进入页脚邮件列表": enter_footer_mail_list,
+    "进入页脚活动": enter_footer_activities,
+    "进入页脚论坛": enter_footer_forum,
+    "进入页脚SIG中心": enter_footer_sig_center,
+    "进入页脚贡献攻略": enter_footer_contribution_strategy,
+    "进入页脚课程中心": enter_footer_course_center,
     "开放原子开源基金会": openatom_foundation,
     "品牌": brand,
     "隐私政策": privacy_policy,
