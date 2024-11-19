@@ -458,6 +458,7 @@ def navigation_study(page: sync_api.Page, arglist: list):
 
     if arglist[0] in navigation_options:
         page.get_by_text("学习", exact=True).click()
+        page.wait_for_timeout(1000)
         page.locator(navigation_options[arglist[0]]).click()
         page.wait_for_timeout(2000)
 
@@ -661,7 +662,7 @@ def click_tutorials(page: sync_api.Page):
             "link").nth(3).click()
     page1 = page_info.value
     page1.wait_for_timeout(2000)
-    expect(page1.get_by_text("合集·openEuler Mini Courses")).to_be_visible()
+    expect(page1.locator(".bili-avatar-img")).to_be_visible()
     page1.wait_for_timeout(2000)
     page1.close()
     return page
@@ -685,8 +686,9 @@ def click_migrate_openeuler_os(page: sync_api.Page):
         page.locator("li").filter(has_text="学习文档中心课程中心迁移与运维技术展示课程中心 HCIA-").get_by_role(
             "link").nth(4).click()
     page1 = page_info.value
+    page1.wait_for_timeout(4000)
     expect(page1.locator("#breacrumb-box").get_by_text("半月智谈")).to_be_visible()
-    page1.wait_for_timeout(2000)
+    page1.wait_for_timeout(1000)
     page1.close()
     return page
 
@@ -793,7 +795,7 @@ def enter_euler_maker(page: sync_api.Page):
             "link").first.click()
     page1 = page_info.value
     page1.wait_for_timeout(2000)
-    expect(page1.get_by_role("heading", name="欢迎使用EulerMaker")).to_be_visible()
+    expect(page1.get_by_text("EulerMaker 登录简体中文")).to_be_visible()
     page1.wait_for_timeout(1000)
     page1.close()
     return page
@@ -2225,6 +2227,129 @@ def about_cookies(page: sync_api.Page):
     return page
 
 
+def friend(page: sync_api.Page):
+    """ 点击友情链接 """
+    page.get_by_role("button", name="全部接受").click()
+    page.wait_for_timeout(500)
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="木兰开源社区").click()
+    page1 = page_info.value
+    page1.wait_for_timeout(3000)
+    expect(page1.get_by_text("©木兰开源社区")).to_be_visible()
+    page1.close()
+
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="鲲鹏社区").click()
+    page2 = page_info.value
+    page2.wait_for_timeout(3000)
+    expect(page2.get_by_role("link", name="鲲鹏社区", exact=True)).to_be_visible()
+    page2.close()
+
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="鲲鹏小智").click()
+    page3 = page_info.value
+    page3.wait_for_timeout(3000)
+    expect(page3.get_by_text("欢迎使用鲲鹏小智", exact=True)).to_be_visible()
+    page3.close()
+
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="鹏城实验室").click()
+    page4 = page_info.value
+    page4.wait_for_timeout(3000)
+    expect(page4.get_by_role("button", name="首页")).to_be_visible()
+    page4.close()
+
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="infoQ").click()
+    page5 = page_info.value
+    page5.wait_for_timeout(3000)
+    expect(page5.get_by_role("link", name="logo")).to_be_visible()
+    page5.close()
+
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="开源社", exact=True).click()
+    page6 = page_info.value
+    page6.wait_for_timeout(4000)
+    new_url = page6.url
+    assert new_url == "https://kaiyuanshe.cn/", "断言失败"
+    page6.close()
+
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="中科微澜").click()
+    page7 = page_info.value
+    page7.wait_for_timeout(2000)
+    page7.get_by_role("button", name="高级").click()
+    page7.get_by_role("link", name="继续前往www.vulab.com.cn（不安全）").click()
+    page7.wait_for_timeout(2000)
+    expect(page7.get_by_role("img")).to_be_visible()
+    page7.close()
+
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="Authing").click()
+    page8 = page_info.value
+    page8.wait_for_timeout(3000)
+    expect(page8.get_by_role("link", name="关于 Authing")).to_be_visible()
+    page8.close()
+
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="openGauss").click()
+    page9 = page_info.value
+    page9.wait_for_timeout(3000)
+    expect(page9.get_by_role("link", name="openGauss logo")).to_be_visible()
+    page9.close()
+
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="昇思MindSpore").click()
+    page10 = page_info.value
+    page10.wait_for_timeout(3000)
+    expect(page10.get_by_role("button", name="我已阅读并同意")).to_be_visible()
+    page10.close()
+
+    with page.expect_popup() as page_info:
+        page.get_by_role("link", name="Ebaina").click()
+    page11 = page_info.value
+    page11.wait_for_timeout(3000)
+    expect(page11.locator(".logo")).to_be_visible()
+    page11.close()
+
+    with page.expect_popup() as page_info:
+        page.locator(".links-logo").first.click()
+    page12 = page_info.value
+    page12.wait_for_timeout(3000)
+    expect(page12.get_by_label("OSCHINA")).to_be_visible()
+    page12.close()
+
+    with page.expect_popup() as page_info:
+        page.locator(".iszh > a:nth-child(2)").click()
+    page13 = page_info.value
+    page13.wait_for_timeout(3000)
+    expect(page13.get_by_role("link", name="CSDN首页")).to_be_visible()
+    page13.close()
+
+    with page.expect_popup() as page_info:
+        page.locator(".iszh > a:nth-child(3)").click()
+    page14 = page_info.value
+    page14.wait_for_timeout(3000)
+    expect(page14.get_by_role("link", name="稀土掘金")).to_be_visible()
+    page14.close()
+
+    with page.expect_popup() as page_info:
+        page.locator(".iszh > a:nth-child(4)").click()
+    page15 = page_info.value
+    page15.wait_for_timeout(3000)
+    expect(page15.get_by_role("link", name="首页")).to_be_visible()
+    page15.close()
+
+    with page.expect_popup() as page_info:
+        page.locator(".iszh > a:nth-child(5)").click()
+    page16 = page_info.value
+    page16.wait_for_timeout(3000)
+    expect(page16.get_by_label("今日头条徽标")).to_be_visible()
+    page16.close()
+
+    return page  # 点击友情链接
+
+
 # 定义字典
 def_dict = {
     # 进入环境
@@ -2427,5 +2552,6 @@ def_dict = {
     "隐私政策": privacy_policy,
     "法律声明": law_declaration,
     "关于cookies": about_cookies,
+    "友情链接": friend,
 
 }
