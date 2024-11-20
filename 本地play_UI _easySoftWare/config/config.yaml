@@ -69,7 +69,7 @@ openEuler:
 #                    zhongyuanke@huawei.com
   test_case:
                     \本地play_UI _easySoftWare\test_cases\欧拉社区UI自动化测试用例.xlsx
-  case_numbers: 32
+  case_numbers: 42
   operation_dict: openEuler_operation_dict
   api_tag: modelers
   email_name:
@@ -80,7 +80,8 @@ openEuler:
                 openEuler-个人中心,
                 openEuler-消息中心,
                 openEuler-导航,
-                openEuler-页脚
+                openEuler-页脚,
+                openEuler-新手指引
 
 
 

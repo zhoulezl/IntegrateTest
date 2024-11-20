@@ -57,7 +57,7 @@ def do_test():
 
     page = context.new_page()
 
-    page.set_default_timeout(200000)
+    page.set_default_timeout(20000)
     page.set_viewport_size({'width': 1880, 'height': 1000})
     i = 1
 

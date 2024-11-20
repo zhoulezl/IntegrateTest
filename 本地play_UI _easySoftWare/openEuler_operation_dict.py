@@ -5,17 +5,13 @@ from playwright.sync_api import expect
 
 # 账号服务
 def open_url(page: sync_api.Page):
-    """
-    进入生产环境
-    """
+    """进入生产环"""
     page.goto('https://www.openeuler.org/zh/')
     return page
 
 
 def open_url_test(page: sync_api.Page):
-    """
-        进入测试环境
-    """
+    """进入测试环境"""
     page.goto('https://openeuler-website.test.osinfra.cn/zh/')
     return page
 
@@ -27,9 +23,21 @@ def longin(page: sync_api.Page, arglist: list):
     page.get_by_placeholder("请输入您的手机号/用户名/邮箱地址").fill(arglist[0])  # 输入账号
     page.get_by_placeholder("请输入您的密码").fill(arglist[1])  # 输入密码
     page.get_by_role("button", name="登录").click()  # 点击登录按钮
-    page.wait_for_timeout(2000)
-    page.hover('.user-img')  # 鼠标悬浮在头像上
-    expect(page.get_by_text("退出登录")).to_be_visible()  # 有退出登录，则断言成功
+    page.wait_for_timeout(1000)
+    element = page.locator("label span").first
+    # page.wait_for_timeout(1000)
+    try:
+        expect(element).to_be_visible()
+        page.wait_for_timeout(1000)
+        page.locator("label span").first.click()
+        page.get_by_role("button", name="确认").click()
+        page.wait_for_timeout(1000)
+        page.hover('.user-img')  # 鼠标悬浮在头像上
+        expect(page.get_by_text("退出登录")).to_be_visible()  # 有退出登录，则断言成功
+    except Exception:
+        page.hover('.user-img')  # 鼠标悬浮在头像上
+        expect(page.get_by_text("退出登录")).to_be_visible()  # 有退出登录，则断言成功
+
     return page  # 返回登录后的页面
 
 
@@ -80,14 +88,15 @@ def change_user_avatar(page: sync_api.Page, arglist: list):
     # print(old_img_src)
     page.wait_for_timeout(1000)
     page.locator("//input[@type='file']").set_input_files(f"{arglist[0]}")
-    page.wait_for_timeout(2000)
+    page.wait_for_timeout(1000)
     new_img_src = page.locator("//img[@class='img']").get_attribute("src")  # 获取新头像地址
     # print(new_img_src)
     assert old_img_src != new_img_src, "更换头像失败"
-    page.wait_for_timeout(1000)
-    page.close()
-    all_page = page.context.pages
-    return all_page[0]
+    page.wait_for_timeout(2000)
+    return page
+    # page.close()
+    # all_page = page.context.pages
+    # return all_page[0]
 
 
 def change_nickname(page: sync_api.Page, arglist: list):
@@ -112,7 +121,7 @@ def change_company(page: sync_api.Page, arglist: list):
 
 
 def cancel_signature(page: sync_api.Page):
-    """取消签署"""
+    """取消签署协议"""
     page.get_by_text("账号安全").click()
     page.get_by_role("button", name="取消签署").click()
     page.locator(".el-input__inner").fill("delete")
@@ -178,15 +187,18 @@ def navigation_download(page: sync_api.Page, arglist: list):
     """ 选择导航_下载"""
     page.get_by_role("navigation").get_by_text("下载", exact=True).click()
     page.wait_for_timeout(1000)
-    if arglist[0] == '获取方式':
-        page.locator(".nav-sub > .active").first.click()
-    elif arglist[0] == '社区发行版':
-        page.locator(".nav-sub > div:nth-child(2)").first.click()
-    elif arglist[0] == '其他版本':
-        page.locator("div:nth-child(3)").first.click()
-    elif arglist[0] == '下载服务':
-        page.locator("div:nth-child(4)").first.click()
-    page.wait_for_timeout(1000)
+
+    options = {
+        '获取方式': ".nav-sub > .active",
+        '社区发行版': ".nav-sub > div:nth-child(2)",
+        '其他版本': "div:nth-child(3)",
+        '下载服务': "div:nth-child(4)"
+    }
+
+    if arglist[0] in options:
+        page.locator(options[arglist[0]]).first.click()
+
+    page.wait_for_timeout(1500)
     return page
 
 
@@ -203,7 +215,7 @@ def click_public_cloud(page: sync_api.Page):
     navigation_download(page, ['获取方式'])
     page.locator(".system-container > div").first.click()
     expect(page.get_by_role("heading", name="公有云上openEuler镜像使用指南 Permalink")).to_be_visible()
-    page.wait_for_timeout(2000)
+    page.wait_for_timeout(000)
     return page
 
 
@@ -241,7 +253,7 @@ def click_raspberry_pi(page: sync_api.Page):
         page.locator("li").filter(has_text="下载获取方式社区发行版其他版本下载服务获取方式获取").get_by_role(
             "link").first.click()
     page1 = page_info.value
-    page1.wait_for_timeout(4000)
+    page1.wait_for_timeout(3000)
     expect(page1.get_by_text("openEuler/raspberrypi", exact=True)).to_be_visible()
     page1.wait_for_timeout(500)
     page1.close()
@@ -250,13 +262,9 @@ def click_raspberry_pi(page: sync_api.Page):
 
 def click_openeuler_24_03_lts(page: sync_api.Page, arglist: list):
     """ 点击openEuler 20.03 LTS """
-    if arglist[0] == '获取方式快捷链接':
-        navigation_download(page, ['获取方式'])
-        page.locator(".shortcut > .link").first.click()
-        expect(page.get_by_role("heading", name="下载", exact=True)).to_be_visible()
-    elif arglist[0] == '社区发行版':
-        navigation_download(page, ['社区发行版'])
-        page.locator(".link").first.click()
+    if arglist[0] in ['获取方式快捷链接', '社区发行版']:
+        navigation_download(page, [arglist[0]])
+        page.locator(".shortcut > .link" if arglist[0] == '获取方式快捷链接' else ".link").first.click()
         expect(page.get_by_role("heading", name="下载", exact=True)).to_be_visible()
 
     return page
@@ -278,16 +286,17 @@ def click_openeuler_repo_source(page: sync_api.Page):
 
 def click_image_warehouse_list(page: sync_api.Page, arglist: list):
     """ 点击镜像仓库列表 """
-    if arglist[0] == '获取方式':
-        navigation_download(page, ['获取方式'])
-        page.locator(".content-right > div > div > div:nth-child(3) > .link").first.click()
+    options = {
+        '获取方式': (['获取方式'], ".content-right > div > div > div:nth-child(3) > .link"),
+        '下载服务': (['下载服务'], "div:nth-child(2) > .item-title > .link")
+    }
+
+    if arglist[0] in options:
+        navigation_download(page, options[arglist[0]][0])
+        page.locator(options[arglist[0]][1]).first.click()
         expect(page.get_by_role("heading", name="镜像仓列表")).to_be_visible()
         page.wait_for_timeout(2000)
-    elif arglist[0] == '下载服务':
-        navigation_download(page, ['下载服务'])
-        page.locator("div:nth-child(2) > .item-title > .link").first.click()
-        expect(page.get_by_role("heading", name="镜像仓列表")).to_be_visible()
-        page.wait_for_timeout(2000)
+
     return page
 
 
@@ -300,10 +309,13 @@ def openeuler_24_03_lts_scene_filter(page: sync_api.Page):
         page.locator(f".system-container > div:nth-child({index})").first.click()
         page.wait_for_timeout(2000)
         expect(page.get_by_role("heading", name="下载", exact=True)).to_be_visible()
-        navigation_download(page, ['社区发行版'])
 
     for i in range(1, 5):
-        click_and_download(i)
+        if i == 4:
+            click_and_download(i)
+        else:
+            click_and_download(i)
+            navigation_download(page, ['社区发行版'])
 
     page.wait_for_timeout(500)
     return page
@@ -321,10 +333,15 @@ def openeuler_24_09_scene_filter(page: sync_api.Page):
     """ openEuler 24.09场景筛选 """
     navigation_download(page, ['社区发行版'])
     for i in range(1, 5):  # 遍历1到4，代表不同的div
-        page.locator(f"div:nth-child(2) > .system-container > div:nth-child({i})").first.click()
-        page.wait_for_timeout(2000)
-        expect(page.get_by_role("heading", name="下载", exact=True)).to_be_visible()
-        navigation_download(page, ['社区发行版'])
+        if i == 4:
+            page.locator(f"div:nth-child(2) > .system-container > div:nth-child({i})").first.click()
+            page.wait_for_timeout(2000)
+            expect(page.get_by_role("heading", name="下载", exact=True)).to_be_visible()
+        else:
+            page.locator(f"div:nth-child(2) > .system-container > div:nth-child({i})").first.click()
+            page.wait_for_timeout(2000)
+            expect(page.get_by_role("heading", name="下载", exact=True)).to_be_visible()
+            navigation_download(page, ['社区发行版'])
 
     page.wait_for_timeout(500)
     return page
@@ -346,10 +363,13 @@ def openeuler_22_03_lts_sp4_scene_filter(page: sync_api.Page):
         page.locator(f"div:nth-child(3) > .system-container > div:nth-child({index})").first.click()
         page.wait_for_timeout(2000)
         expect(page.get_by_role("heading", name="openEuler 22.03 LTS SP4")).to_be_visible()
-        navigation_download(page, ['社区发行版'])
 
     for i in range(1, 5):
-        click_and_download(i)
+        if i == 4:
+            click_and_download(i)
+        else:
+            click_and_download(i)
+            navigation_download(page, ['社区发行版'])
     page.wait_for_timeout(500)
     return page
 
@@ -373,7 +393,7 @@ def click_24_03_lts_installation_guide(page: sync_api.Page):
     page1 = page_info.value
     page1.wait_for_timeout(1000)
     expect(page1.get_by_role("heading", name="安装指南")).to_be_visible()
-    page1.wait_for_timeout(500)
+    page1.wait_for_timeout(600)
     page1.close()
     return page
 
@@ -387,7 +407,7 @@ def click_24_09_installation_guide(page: sync_api.Page):
     page1 = page_info.value
     page1.wait_for_timeout(1000)
     expect(page1.get_by_role("heading", name="安装指南")).to_be_visible()
-    page1.wait_for_timeout(500)
+    page1.wait_for_timeout(600)
     page1.close()
     return page
 
@@ -460,7 +480,7 @@ def navigation_study(page: sync_api.Page, arglist: list):
         page.get_by_text("学习", exact=True).click()
         page.wait_for_timeout(1000)
         page.locator(navigation_options[arglist[0]]).click()
-        page.wait_for_timeout(2000)
+        page.wait_for_timeout(3000)
 
     return page
 
@@ -502,6 +522,7 @@ def click_development_tutorials(page: sync_api.Page):
     page1 = page_info.value
     page1.wait_for_timeout(2000)
     expect(page1.get_by_role("img", name="logo")).to_be_visible()
+    page1.wait_for_timeout(1000)
     page1.close()
     return page
 
@@ -516,6 +537,7 @@ def click_process_standards(page: sync_api.Page):
     page1 = page_info.value
     page1.wait_for_timeout(2000)
     expect(page1.locator("#left img")).to_be_visible()
+    page1.wait_for_timeout(1000)
     page1.close()
     return page
 
@@ -606,7 +628,7 @@ def click_start_learning(page: sync_api.Page, arglist: list):
             ".active > .nav-dropdown > .nav-drop-content > .nav-sub-content "
             "> .content-left > .content-container > div > .system-container > div").first.click()
         expect(page.get_by_role("heading", name="HCIA-openEuler 认证培训课程")).to_be_visible()
-        page.wait_for_timeout(3000)
+        page.wait_for_timeout(1500)
     elif arglist[0] == 'openEuler安全知识培训':
         with page.expect_popup() as page_info:
             page.locator("li").filter(has_text="学习文档中心课程中心迁移与运维技术展示课程中心 HCIA-").get_by_role(
@@ -782,7 +804,7 @@ def navigation_develop(page: sync_api.Page, arglist: list):
     if arglist[0] in options:
         page.get_by_text("开发", exact=True).click()
         page.locator(options[arglist[0]]).click()
-        page.wait_for_timeout(1000)
+        page.wait_for_timeout(2000)
 
     return page
 
@@ -794,8 +816,8 @@ def enter_euler_maker(page: sync_api.Page):
         page.locator("li").filter(has_text="开发构建测试发布分析问题反馈构建EulerMaker").get_by_role(
             "link").first.click()
     page1 = page_info.value
-    page1.wait_for_timeout(2000)
-    expect(page1.get_by_text("EulerMaker 登录简体中文")).to_be_visible()
+    page1.wait_for_timeout(6000)
+    expect(page1.get_by_role("button", name="登录")).to_be_visible()
     page1.wait_for_timeout(1000)
     page1.close()
     return page
@@ -962,7 +984,7 @@ def navigation_support(page: sync_api.Page, arglist: list):
             element_selector = ".active > .nav-dropdown > .nav-drop-content > .nav-sub > .active"
 
         page.locator(element_selector).click()
-        page.wait_for_timeout(1000)
+        page.wait_for_timeout(2000)
 
     return page
 
@@ -998,7 +1020,7 @@ def click_openeuler_hardware_compatibility_test_intro(page: sync_api.Page):
         ".content-right > div > div > .shortcut > .link").click()
     page.wait_for_timeout(1000)
     expect(page.get_by_role("heading", name="简介")).to_be_visible()
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(3000)
     return page
 
 
@@ -1022,9 +1044,9 @@ def enter_osv_tech_assessment(page: sync_api.Page):
     page.locator(
         ".active > .nav-dropdown > .nav-drop-content > .nav-sub-"
         "content > .content-left > .content-container > div:nth-child(2) > .item-title > .link").click()
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(2000)
     expect(page.get_by_role("heading", name="OSV技术测评列表")).to_be_visible()
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(2000)
     return page
 
 
@@ -1091,7 +1113,7 @@ def navigation_community(page: sync_api.Page, arglist: list):
         page.get_by_text("社区", exact=True).click()
         page.locator(menu_mapping[selected_option]).click()
 
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(2000)
     return page
 
 
@@ -1123,8 +1145,9 @@ def enter_member_units(page: sync_api.Page):
     page.locator(
         ".active > .nav-dropdown > .nav-drop-content >"
         " .nav-sub-content > .content-left > .content-container > div:nth-child(3) > .item-title > .link").click()
+    page.wait_for_timeout(2000)
     expect(page.get_by_role("complementary").get_by_text("成员单位")).to_be_visible()
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(500)
     return page
 
 
@@ -1183,7 +1206,7 @@ def enter_openeuler_community_intro_pdf(page: sync_api.Page):
             "link").nth(1).click()
     page1 = page_info.value
     current_url = page1.url
-    print(current_url)
+    # print(current_url)
     assert current_url == ("https://www.openeuler.org/whitepaper/openEuler%20"
                            "%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA%E4%BB%8B%E7%BB%8D.pdf"), "URL 不匹配！"
     page1.wait_for_timeout(3000)
@@ -1262,8 +1285,9 @@ def enter_open_internship(page: sync_api.Page):
 def enter_enterprise_cla_process(page: sync_api.Page):
     """ 进入企业CLA流程 """
     navigation_community(page, ['贡献与成长'])
-    page.locator(
-        ".active > .nav-dropdown > .nav-drop-content > .nav-sub-content > .content-right > div > div > div > .link").first.click()
+    page.locator(".active > .nav-dropdown > .nav-drop-content > .nav-sub-content >"
+                 " .content-right > div > div > div > .link").first.click()
+    page.wait_for_timeout(3000)
     expect(page.get_by_role("heading", name="企业签署 CLA ，正式加入 openEuler 社区的流程")).to_be_visible()
     page.wait_for_timeout(1000)
     return page
@@ -1320,6 +1344,7 @@ def enter_a_tune(page: sync_api.Page):
     page.locator(
         ".active > .nav-dropdown > .nav-drop-content > .nav-sub-content > "
         ".content-left > .content-container > div > .item-title > .link").first.click()
+    page.wait_for_timeout(2000)
     expect(page.get_by_role("heading", name="A-Tune")).to_be_visible()
     page.wait_for_timeout(1000)
     return page
@@ -1540,6 +1565,17 @@ def openeuler_2023_community_annual_report(page: sync_api.Page):
 
 
 # 首页操作
+def new_guide(page: sync_api.Page):
+    """ 新手指引 """
+    for i in range(13):  # 点击“下一步”按钮10次
+        page.get_by_role("button", name="下一步").click()
+        page.wait_for_timeout(1000)
+    page.get_by_role("button", name="知道了").click()
+    page.wait_for_timeout(1000)
+    expect(page.locator("#tour_headerNav_tool").get_by_role("img").nth(3)).to_be_visible()
+    return page
+
+
 def skip_new_guide(page: sync_api.Page):
     """ 跳过新手指引 """
     page.get_by_text("跳过").click()
@@ -1855,8 +1891,8 @@ def home_more_news(page: sync_api.Page):
         page.get_by_role("link", name="查看更多").nth(1).click()
     page1 = page_info.value
     expect(page1.get_by_role("heading", name="新闻")).to_be_visible()
-    page1.close()
     page1.wait_for_timeout(1000)
+    page1.close()
     return page
 
 
@@ -1901,34 +1937,41 @@ def meeting_details_collapse_expand(page: sync_api.Page):
 
 def suspended_window_enter_forum(page: sync_api.Page):
     """ 悬浮穿窗口进入论坛 """
+    page.get_by_role("button", name="全部接受").click()
     page.locator("#issueback").get_by_role("img").first.click()
     with page.expect_popup() as page_info:
         page.get_by_role("link", name="社区论坛 发帖互助解决各类问题").click()
     page1 = page_info.value
-    expect(page1.get_by_role("link", name="话题")).to_be_visible()
     page1.wait_for_timeout(1000)
+    expect(page1.get_by_role("link", name="话题")).to_be_visible()
+    page1.wait_for_timeout(2000)
     page1.close()
     return page
 
 
 def suspended_window_enter_quick_issue(page: sync_api.Page):
     """ 悬浮穿窗口进入快速发布问题 """
+    page.reload()
     page.locator("#issueback").get_by_role("img").first.click()
     with page.expect_popup() as page_info:
         page.get_by_role("link", name="QuickIssue 快捷提交/查询社区Issues").click()
     page1 = page_info.value
+    page1.wait_for_timeout(1000)
     expect(page1.get_by_role("button", name="提交 Issue")).to_be_visible()
-    page.wait_for_timeout(1000)
+    page1.wait_for_timeout(2000)
     page1.close()
     return page
 
 
 def suspended_window_enter_faqs(page: sync_api.Page):
     """ 悬浮穿窗口进入常见问题 """
-    page.locator("#issueback").get_by_role("img").first.click()
+    page.reload()
+    page.locator("#issueback").get_by_role("img").first.hover()
+    page.wait_for_timeout(1000)
     with page.expect_popup() as page_info:
         page.get_by_role("link", name="FAQs").click()
     page1 = page_info.value
+    page1.wait_for_timeout(1000)
     expect(page1.get_by_role("heading", name="openEuler 常见问题")).to_be_visible()
     page1.wait_for_timeout(1000)
     page1.close()
@@ -1986,7 +2029,7 @@ def enter_footer_community_intro(page: sync_api.Page):
         page.get_by_role("link", name="社区介绍").click()
     page1 = page_info.value
     current_url = page1.url
-    print(current_url)
+    # print(current_url)
     assert current_url == ("https://www.openeuler.org/whitepaper/"
                            "openEuler%20%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA%E4%BB%8B%E7%BB%8D.pdf"), "URL 不匹配！"
     page1.wait_for_timeout(3000)
@@ -2344,7 +2387,7 @@ def friend(page: sync_api.Page):
         page.locator(".iszh > a:nth-child(5)").click()
     page16 = page_info.value
     page16.wait_for_timeout(3000)
-    expect(page16.get_by_label("今日头条徽标")).to_be_visible()
+    expect(page16.get_by_label("微头条")).to_be_visible()
     page16.close()
 
     return page  # 点击友情链接
@@ -2495,6 +2538,7 @@ def_dict = {
     "openEuler 2023 社区年报": openeuler_2023_community_annual_report,
 
     # 首页
+    "新手指引": new_guide,
     "跳过新手指引": skip_new_guide,
     "切换首页banner": change_home_banner,
     "进入技术白皮书": enter_technical_white_paper,
