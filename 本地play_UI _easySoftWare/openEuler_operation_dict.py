@@ -2020,6 +2020,8 @@ def enter_footer_contribution_board(page: sync_api.Page):
         page.get_by_role("link", name="贡献看板").click()
     page1 = page_info.value
     page1.wait_for_timeout(1000)
+    expect(page1.get_by_role("img", name="logo")).to_be_visible()
+    page1.wait_for_timeout(500)
     page1.close()
     return page
 
