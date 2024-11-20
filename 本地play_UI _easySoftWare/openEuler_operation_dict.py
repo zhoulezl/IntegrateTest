@@ -1047,6 +1047,7 @@ def enter_osv_tech_assessment(page: sync_api.Page):
     page.wait_for_timeout(2000)
     expect(page.get_by_role("heading", name="OSV技术测评列表")).to_be_visible()
     page.wait_for_timeout(2000)
+    page.go_back()
     return page
 
 
