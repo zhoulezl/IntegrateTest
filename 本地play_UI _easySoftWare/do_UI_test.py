@@ -6,8 +6,8 @@ import modelers_operation_dict
 import openSoftware_operation_dict
 from playwright.sync_api import sync_playwright
 import case_list
+import openEuler_operation_dict_aoto
 import openEuler_operation_dict
-import openEuler_operation_dict_old
 from config import YamlHandler
 from send_email import send_mail
 import video_maker
@@ -52,11 +52,11 @@ def call_function_by_name(func_name, *args, **kwargs):
 
 def do_test():
     # 开始先睡3秒，用于录制线程启动
-    time.sleep(3)
+    time.sleep(1)
     case_lists = case_list.get_case_list(running_home + config_list[key]['test_case'])
 
     page = context.new_page()
-
+    page.wait_for_load_state('domcontentloaded')
     page.set_default_timeout(20000)
     page.set_viewport_size({'width': 1880, 'height': 1000})
     i = 1
@@ -98,7 +98,7 @@ def do_test():
             except Exception as e:
                 err = e
             finally:
-                time.sleep(3)
+                time.sleep(1)
                 if err is not None and "Call log:" in str(err):
                     # if err != "":
                     #     err = str(err).split('  -   ')[0:2]
