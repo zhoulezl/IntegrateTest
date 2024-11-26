@@ -6,7 +6,6 @@ import modelers_operation_dict
 import openSoftware_operation_dict
 from playwright.sync_api import sync_playwright
 import case_list
-import openEuler_operation_dict_aoto
 import openEuler_operation_dict
 from config import YamlHandler
 from send_email import send_mail

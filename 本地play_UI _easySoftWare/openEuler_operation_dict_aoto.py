@@ -1734,65 +1734,72 @@ def click_view_donation_benefits_home(page: sync_api.Page):
 def click_user_cases(page: sync_api.Page, arglist: list):
     """ 点击用户案例 """
     if arglist[0] == "金融":
-        page.wait_for_timeout(1000)
+        # page.wait_for_timeout(1000)
         page.get_by_text("金融").click()
-        page.wait_for_timeout(1000)
-        expect(page.get_by_role("link", name="三湘银行 基于麒麟信安打造银行IT信息化系统安全底座")).to_be_visible()
-        expect(page.get_by_role("link", name="天弘基金 以服务器操作系统配合完成邮件与OA的改造")).to_be_visible()
-        expect(page.get_by_role("link", name="中国建设银行 分布式信用卡核心业务系统，单日交易量超过 1")).to_be_visible()
-        expect(page.get_by_role("link", name="兴业银行 某核心业务系统国产化改造项目")).to_be_visible()
+        # page.wait_for_timeout(1000)
+        expect(page.get_by_role("main")).to_contain_text("三湘银行基于麒麟信安打造银行IT信息化系统安全底座")
+        expect(page.get_by_role("main")).to_contain_text("天弘基金以服务器操作系统配合完成邮件与OA的改造")
+        expect(page.get_by_role("main")).to_contain_text(
+            "中国建设银行分布式信用卡核心业务系统，单日交易量超过 1 亿笔，峰值TPS超过 6000")
+        expect(page.get_by_role("main")).to_contain_text("兴业银行某核心业务系统国产化改造项目")
     elif arglist[0] == "运营商":
-        page.wait_for_timeout(1000)
+        # page.wait_for_timeout(1000)
         page.get_by_text("运营商").click()
-        page.wait_for_timeout(1000)
-        expect(page.get_by_role("link", name="中国联通 Hive SQL1-5场景性能平均提升7")).to_be_visible()
-        expect(page.get_by_role("link",
-                                name="联通系统集成公司 联通智能化运营平台 完成全生命周期运营平台的平稳迁移")).to_be_visible()
-        expect(page.get_by_role("link",
-                                name="中国移动 中移苏州研究院完成服务器操作系统无感知迁移，实现业务高效稳定运行")).to_be_visible()
-        expect(page.get_by_role("link", name="中国移动云能力中心 打造运营商行业级迁移解决方案")).to_be_visible()
+        # page.wait_for_timeout(1000)
+        expect(page.get_by_role("main")).to_contain_text(
+            "联通系统集成公司联通智能化运营平台 完成全生命周期运营平台的平稳迁移")
+        expect(page.get_by_role("main")).to_contain_text(
+            "中国移动中移苏州研究院完成服务器操作系统无感知迁移，实现业务高效稳定运行")
+        expect(page.get_by_role("main")).to_contain_text("中国移动云能力中心打造运营商行业级迁移解决方案")
+        expect(page.get_by_role("main")).to_contain_text("天翼云科技有限公司", expected=True)
+        expect(page.get_by_role("main")).to_contain_text(
+            "基于stratovirt的安全容器为函数计算提供完善的租户隔离和安全运行环境，并且在内存底噪、启动速度、并发、密度上具备较大优势。",
+            expected=True)
     elif arglist[0] == "能源":
-        page.wait_for_timeout(1000)
+        # page.wait_for_timeout(1000)
         page.get_by_text("能源").click()
-        page.wait_for_timeout(1000)
-        expect(page.get_by_role("link",
-                                name="国家电网 “国家电网河北智慧标杆站” 智慧工地系统，平滑完成操作系统创新，实现业务高效稳定运行")).to_be_visible()
-        expect(page.get_by_role("link",
-                                name="新能源风场电力监控系统 全面基于国内主流安全操作系统进行大规模建设")).to_be_visible()
-        expect(page.get_by_role("link", name="国家电网 智能调度系统 D5000")).to_be_visible()
-        expect(page.get_by_role("link", name="南京瀚元科技有限公司 A-OPS")).to_be_visible()
+        # page.wait_for_timeout(1000)
+        expect(page.get_by_role("main")).to_contain_text(
+            "中国电建集团华东勘测设计研究院有限公司面向新能源领域的国产操作系统O-PowerOS")
+        expect(page.get_by_role("main")).to_contain_text("国家电网基于openEuler实现等保四级安全防护建设")
+        expect(page.get_by_role("main")).to_contain_text("迁移适配后产品支持多架构，部署时长大幅降低")
+        expect(page.get_by_role("main")).to_contain_text(
+            "国家电网“国家电网河北智慧标杆站” 智慧工地系统，平滑完成操作系统创新，实现业务高效稳定运行")
     elif arglist[0] == "物流":
-        page.wait_for_timeout(1000)
+        # page.wait_for_timeout(1000)
         page.get_by_text("物流").click()
-        page.wait_for_timeout(1000)
-        expect(page.get_by_role("link", name="中国邮政 OA 业务系统迁移改造")).to_be_visible()
+        expect(page.get_by_role("main")).to_contain_text("中国邮政OA 业务系统迁移改造")
+
     elif arglist[0] == "高校&科研":
-        page.wait_for_timeout(1000)
+        # page.wait_for_timeout(1000)
         page.get_by_text("高校&科研").click()
-        page.wait_for_timeout(1000)
-        expect(page.get_by_role("link", name="华中科技大学/武汉理工大学 基于openEuler")).to_be_visible()
-        expect(page.get_by_role("link", name="上海交通大学 交大“交我算”计算集群：共建")).to_be_visible()
-        expect(page.get_by_role("link", name="兰州大学 openEuler + 鲲鹏全栈实现HPC性能倍增")).to_be_visible()
-        expect(page.get_by_role("link",
-                                name="南京信息工程大学 极端高温干旱天气模拟与预测平台，有效及时发现预警极端气候，提升应急处置能力，性能提升58%")).to_be_visible()
+        # page.wait_for_timeout(1000)
+        expect(page.get_by_role("main")).to_contain_text(
+            "华中科技大学/武汉理工大学基于openEuler+鲲鹏打造超大规模计算流体力学平台")
+        expect(page.get_by_role("main")).to_contain_text("上海交通大学交大“交我算”计算集群：共建openEuler开源技术新生态")
+        expect(page.get_by_role("main")).to_contain_text("兰州大学openEuler + 鲲鹏全栈实现HPC性能倍增")
+        expect(page.get_by_role("main")).to_contain_text(
+            "南京信息工程大学极端高温干旱天气模拟与预测平台，有效及时发现预警极端气候，提升应急处置能力，性能提升58%")
     elif arglist[0] == "云计算":
-        page.wait_for_timeout(1000)
+        # page.wait_for_timeout(1000)
         page.get_by_text("云计算").click()
-        page.wait_for_timeout(1000)
-        expect(page.get_by_role("link", name="中国电信 中国电信天翼云基于 openEuler 打造")).to_be_visible()
-        expect(page.get_by_role("link", name="中国移动云能力中心 基于openEuler")).to_be_visible()
-        expect(page.get_by_role("link",
-                                name="云宏信息科技股份有限公司 同比例虚拟机计算性能翻倍，金融行业上云效率提高")).to_be_visible()
-        expect(page.get_by_role("link", name="深信服科技股份有限公司 基于openEuler")).to_be_visible()
+        # page.wait_for_timeout(1000)
+        expect(page.get_by_role("main")).to_contain_text(
+            "中国电信中国电信天翼云基于 openEuler 打造CTyunOS，服务电信集团云改数转战略，助力数字经济发展")
+        expect(page.get_by_role("main")).to_contain_text("中国移动云能力中心基于openEuler的安全可信技术探索和实践")
+        expect(page.get_by_role("main")).to_contain_text(
+            "云宏信息科技股份有限公司同比例虚拟机计算性能翻倍，金融行业上云效率提高")
+        expect(page.get_by_role("main")).to_contain_text("深信服科技股份有限公司基于openEuler实现桌面云提质降本")
     elif arglist[0] == "其他":
-        page.wait_for_timeout(1000)
+        # page.wait_for_timeout(1000)
         page.get_by_text("其他").click()
-        page.wait_for_timeout(1000)
-        expect(page.get_by_role("link", name="东方通DPI流量采集平台V2.0")).to_be_visible()
-        expect(page.get_by_role("link",
-                                name="四川中电启明星技术有限公司 性能卓越，稳定可靠，环境级高可用， 智能运维，安全性，自主可控，可移植、易操作")).to_be_visible()
-        expect(page.get_by_role("link", name="科来网络技术股份有限公司 基于openEuler")).to_be_visible()
-        expect(page.get_by_role("link", name="新华社 新华社科技创新应用项目共筑 AI")).to_be_visible()
+        expect(page.get_by_role("main")).to_contain_text("东方通DPI流量采集平台V2.0确保网络环境的安全和高效运行")
+        expect(page.get_by_role("main")).to_contain_text(
+            "四川中电启明星技术有限公司性能卓越，稳定可靠，环境级高可用， 智能运维，安全性，自主可控，可移植、易操作")
+        expect(page.get_by_role("main")).to_contain_text(
+            "科来网络技术股份有限公司基于openEuler打造全流量安全分析解决方案，助力用户提升安全防御水平。")
+        expect(page.get_by_role("main")).to_contain_text(
+            "新华社新华社科技创新应用项目共筑 AI 创新方案安全智能加速内容生态建设")
     return page
 
 
